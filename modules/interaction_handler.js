@@ -150,6 +150,24 @@ function removePrevPoint(prevPointAxis){
     drawLinePivot = prevPointAxis
 }
 
+function isAxisPoint(axisPoint){
+    if (pointPrevAxises.length <= 0) return false
+
+    let isFound = false
+
+    for (let i = 0; i < pointPrevAxises.length; i++){
+        const pointAxis = pointPrevAxises[i]
+
+        if (Math.abs(axisPoint[0] - pointAxis[0]) < 2 && Math.abs(axisPoint[1] - pointAxis[1]) < 2){
+            isFound = true
+
+            break
+        }
+    }
+
+    return isFound
+}
+
 function handleDrawing(event){
     if (!solving) return
 
@@ -177,6 +195,9 @@ function handleDrawing(event){
             drawLineMove[0] = 0
         }
     }
+
+    if (drawLineMove[0] > _puzzleData.pointDistance) drawLineMove[0] = _puzzleData.pointDistance
+    if (drawLineMove[1] > _puzzleData.pointDistance) drawLineMove[1] = _puzzleData.pointDistance
 
     //if (Math.abs(drawLineMove[0]) * multiX > Math.abs(drawLineMove[1]) * multiY){
     if (mainAxis === "x"){
@@ -206,8 +227,23 @@ function handleDrawing(event){
             drawLine.style.width = "0px"
             drawLineCircle.style.left = `${drawLinePivot[0]}px`
         }
+        
+        if (drawLineMove[0] < 0 && isAxisPoint([drawLinePivot[0] - _puzzleData.pointDistance, drawLinePivot[1]]) && drawLineMove[0] <= -_puzzleData.pointDistance + _puzzleData.pointSize + margin){
+            drawLineMove = [-_puzzleData.pointDistance + _puzzleData.pointSize + margin, 0]
+            
+            drawLine.style.width = `${Math.abs(drawLineMove[0])}px`
+            drawLine.style.left = `${drawLinePivot[0] + _puzzleData.pointSize / 2 - Math.abs(drawLineMove[0])}px`
+            drawLineCircle.style.left = `${drawLinePivot[0] - Math.abs(drawLineMove[0])}px`
+            direction = -1
+        }
+        
+        if (drawLineMove[0] > 0 && isAxisPoint([drawLinePivot[0] + _puzzleData.pointDistance, drawLinePivot[1]]) && drawLineMove[0] >= _puzzleData.pointDistance - _puzzleData.pointSize - margin){
+            drawLineMove = [_puzzleData.pointDistance - _puzzleData.pointSize - margin, 0]
 
-        mainAxis = "x"
+            drawLine.style.width = `${drawLineMove[0]}px`
+            drawLine.style.left = `${drawLinePivot[0] + _puzzleData.pointSize / 2}px`
+            drawLineCircle.style.left = `${drawLinePivot[0] + Math.abs(drawLineMove[0])}px`
+        }
     }
     else{
         drawLine.style.left = `${drawLinePivot[0]}px`
@@ -237,7 +273,22 @@ function handleDrawing(event){
             drawLineCircle.style.top = `${drawLinePivot[1]}px`
         }
 
-        mainAxis = "y"
+        if (drawLineMove[1] < 0 && isAxisPoint([drawLinePivot[0], drawLinePivot[1] - _puzzleData.pointDistance]) && drawLineMove[1] <= -_puzzleData.pointDistance + _puzzleData.pointSize + margin){
+            drawLineMove = [0, -_puzzleData.pointDistance + _puzzleData.pointSize + margin]
+            
+            drawLine.style.height = `${Math.abs(drawLineMove[1])}px`
+            drawLine.style.top = `${drawLinePivot[1] + _puzzleData.pointSize / 2 - Math.abs(drawLineMove[1])}px`
+            drawLineCircle.style.top = `${drawLinePivot[1] - Math.abs(drawLineMove[1])}px`
+            direction = -1
+        }
+        
+        if (drawLineMove[1] > 0 && isAxisPoint([drawLinePivot[0], drawLinePivot[1] + _puzzleData.pointDistance]) && drawLineMove[1] >= _puzzleData.pointDistance - _puzzleData.pointSize - margin){
+            drawLineMove = [0, _puzzleData.pointDistance - _puzzleData.pointSize - margin]
+
+            drawLine.style.height = `${drawLineMove[1]}px`
+            drawLine.style.top = `${drawLinePivot[1] + _puzzleData.pointSize / 2}px`
+            drawLineCircle.style.top = `${drawLinePivot[1] + Math.abs(drawLineMove[1])}px`
+        }
     }
 
     prevMousePosition = mousePosition
