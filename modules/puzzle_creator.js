@@ -214,7 +214,36 @@ function createPuzzleEnds(puzzle, puzzlePoints, ends, size, endLength, colors){
     return puzzleEnds
 }
 
-export function createPuzzle(size, grid, starts, ends, colors){
+function createHexagons(puzzle, puzzlePoints, size, colors, hexagons){
+    let hexagonData = []
+
+    hexagons.forEach(hexagon => {
+        const leftPosition = size + (size * 3) * hexagon[0]
+        const topPosition = size + (size * 3) * hexagon[1]
+
+        const hexagonElement = document.createElement("div")
+        hexagonElement.classList.add("hexagon")
+        hexagonElement.classList.add("puzzle-rule")
+        hexagonElement.style.width = `${size - size / 8}px`
+        hexagonElement.style.height = `${size}px`
+        hexagonElement.style.left = `${leftPosition + size / 16}px`
+        hexagonElement.style.top = `${topPosition}px`
+        hexagonElement.style.backgroundColor = colors[5]
+        hexagonElement.style.rotate = "90deg"
+        hexagonElement.style.scale = "0.9"
+
+        puzzle.append(hexagonElement)
+        hexagonData.push({
+            hexagon: hexagon,
+            element: hexagonElement,
+            position: [leftPosition, topPosition]
+        })
+    })
+
+    return hexagonData
+}
+
+export function createPuzzle(size, grid, starts, ends, colors, rules){
     const puzzle = document.createElement("div")
     puzzle.classList.add("puzzle-holder")
     puzzle.style.width = `${size[0]}px`
@@ -232,6 +261,16 @@ export function createPuzzle(size, grid, starts, ends, colors){
     const puzzleStarts = createPuzzleStarts(puzzle, puzzlePoints, starts, startSize, pointSize, colors)
     const puzzleEnds = createPuzzleEnds(puzzle, puzzlePoints, ends, pointSize, endLength, colors)
 
+    let _rules = []
+
+    if (rules.hexagons){
+        const hexagonData = createHexagons(puzzle, puzzlePoints, pointSize, colors, rules.hexagons)
+        _rules.push({
+            data: hexagonData,
+            type: "hexagons"
+        })
+    }
+
     return {
         element: puzzle,
         puzzlePoints: puzzlePoints,
@@ -244,6 +283,7 @@ export function createPuzzle(size, grid, starts, ends, colors){
         ends: ends,
         colors: colors,
         pointSize: pointSize,
-        pointDistance: pointSize * 3
+        pointDistance: pointSize * 3,
+        rules: _rules
     }
 }

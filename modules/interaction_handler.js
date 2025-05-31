@@ -1,5 +1,6 @@
 let _puzzleData = null
 let _events = []
+let _solutionFunction = null
 
 let solving = false
 let startClickDebounce = false
@@ -14,6 +15,8 @@ let prevMousePosition = null
 let mainAxis = "x"
 let lastTouch = null
 let selectedEnd = null
+let usedStart = null
+let correct = false
 
 function removeEvents(){
     _events.forEach(_event => {
@@ -23,11 +26,35 @@ function removeEvents(){
     _events = []
 }
 
+function changeElementsColorToDefault(){
+    for (let element of _puzzleData.element.children){
+        if (element.classList.contains("puzzle-rule")) continue
+
+        element.style.backgroundColor = _puzzleData.colors[1]
+    }
+}
+
 function startClick(puzzleStart, element){
     if (solving) return
 
     solving = true
     startClickDebounce = true
+
+    usedStart = puzzleStart
+
+    if (correct){
+        correct = false
+
+        changeElementsColorToDefault()
+
+        if (drawLine){
+            drawLine.remove()
+        }
+
+        endDrawing()
+
+        selectedEnd = null
+    }
 
     setTimeout(() => {
         startClickDebounce = false
@@ -473,32 +500,82 @@ function endDrawing(){
     drawLineCircle = null
 }
 
+function convertPositionsToGrid(pointPositions){
+    let gridPositions = []
+
+    pointPositions.forEach(pointPosition => {
+        for (let i = 0; i < _puzzleData.puzzlePoints.length; i++){
+            const puzzlePoint = _puzzleData.puzzlePoints[i]
+            const position = puzzlePoint.position
+
+            if (Math.abs(position[0] - pointPosition[0]) < 2 && Math.abs(position[1] - pointPosition[1]) < 2){
+                const gridPosition = puzzlePoint.gridPosition
+
+                gridPositions.push(gridPosition)
+
+                break
+            }
+        }
+    })
+
+    return gridPositions
+}
+
 function documentClick(){
     if (solving && !startClickDebounce){
         solving = false
 
         document.body.style.cursor = "default"
 
-        for (let element of _puzzleData.element.children){
-            element.style.backgroundColor = _puzzleData.colors[1]
+        let correctSolution = false
+        correct = false
+
+        if (selectedEnd && _solutionFunction){
+            let pointAxises = Array.from(pointPrevAxises)
+
+            pointAxises.push(selectedEnd.puzzlePoint.position)
+
+            let gridPointAxises = convertPositionsToGrid(pointAxises)
+
+            correctSolution = _solutionFunction(selectedEnd, pointAxises, gridPointAxises, usedStart, _puzzleData)
+            correct = correctSolution
+
+            if (correct){
+                drawElements.forEach(drawElement => {
+                    drawElement.element.style.backgroundColor = _puzzleData.colors[3]
+                })
+
+                drawElementsPoints.forEach(drawElementsPoint => {
+                    drawElementsPoint.element.style.backgroundColor = _puzzleData.colors[3]
+                })
+
+                usedStart.puzzlePoint.puzzlePoint.style.backgroundColor = _puzzleData.colors[3]
+                selectedEnd.endPoint.style.backgroundColor = _puzzleData.colors[3]
+                selectedEnd.endLine.style.backgroundColor = _puzzleData.colors[3]
+            }
         }
+
+        document.exitPointerLock()
+
+        if (correctSolution) return
+
+        changeElementsColorToDefault()
 
         if (drawLine){
             drawLine.remove()
         }
 
         endDrawing()
-
-        document.exitPointerLock()
     }
 }
 
-export function handlePuzzle(puzzleData){
+export function handlePuzzle(puzzleData, solutionFunction){
     if (_puzzleData){
         removeEvents()
     }
 
     _puzzleData = puzzleData
+    _solutionFunction = solutionFunction
 
     for (let i = 0; i < puzzleData.puzzleStarts.length; i++){
         const puzzleStart = puzzleData.puzzleStarts[i]
