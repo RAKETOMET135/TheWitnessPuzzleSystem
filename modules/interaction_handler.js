@@ -178,7 +178,7 @@ function handleTouch(event){
 
     lastTouch = [touch.clientX, touch.clientY]
 
-    handleDrawingBoth(touch.clientX, touch.clientY, delta[0], delta[1])
+    handleDrawingBoth(touch.clientX, touch.clientY, delta[0] * 2, delta[1] * 2)
 }
 
 function handleDrawing(event){
