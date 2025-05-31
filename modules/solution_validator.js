@@ -272,6 +272,52 @@ function createGroups(solutionPointsGrid, puzzleData){
     return groups
 }   
 
+function checkGroups(groups, ruleDatas){
+    let correct = true
+
+    groups.forEach(group => {
+        let groupCorrect = true
+        let checkColor = false
+        let toCheckColor = null
+
+        let datas = []
+
+        for (let i = 0; i < group.length; i++){
+            const tile = group[i]
+            let tileData = null
+
+            for (let j = 0; j < ruleDatas.length; j++){
+                const data = ruleDatas[j]
+
+                if (data.gridPosition[0] !== tile.gridPosition[0] || data.gridPosition[1] !== tile.gridPosition[1]) continue
+
+                tileData = data
+            }
+
+            if (tileData && tileData.colorSensitive){
+                checkColor = true
+                toCheckColor = tileData.color
+            }
+
+            if (tileData){
+                datas.push(tileData)
+            }
+        }
+
+        for (let i = 0; i < datas.length; i++){
+            const data = datas[i]
+
+            if (checkColor && data.color){
+                if (data.color !== toCheckColor) groupCorrect = false
+            }
+        }
+
+        if (!groupCorrect) correct = false
+    })
+
+    return correct
+}
+
 export function validate_solution(solutionEnd, solutionPoints, solutionPointsGrid, solutionStart, puzzleData){ 
     solutionPointsGrid.push(solutionEnd.puzzlePoint.gridPosition)
 
@@ -280,6 +326,8 @@ export function validate_solution(solutionEnd, solutionPoints, solutionPointsGri
     }
     else{
         let rulesCorrect = true
+
+        let ruleDatas = []
 
         for (let i = 0; i < puzzleData.rules.length; i++){
             const rule = puzzleData.rules[i]
@@ -293,11 +341,19 @@ export function validate_solution(solutionEnd, solutionPoints, solutionPointsGri
                     break
                 }
             }
+            else if (rule.type === "colors"){
+                for (let j = 0; j < rule.data.length; j++){
+                    ruleDatas.push(rule.data[j])
+                }
+            }
         }
+
+        if (!rulesCorrect) return false
 
         let groups = createGroups(solutionPointsGrid, puzzleData)
 
-
+        let correct = checkGroups(groups, ruleDatas)
+        if (!correct) rulesCorrect = false
 
         if (rulesCorrect){
             return true

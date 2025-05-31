@@ -41,6 +41,14 @@ body {
             0% 25%);
 }
 
+.color {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    translate: -50% -50%;
+    border-radius: 15px;
+}
+
 @media (width < 800px) {
     .puzzle-holder {
         scale: 0.6;

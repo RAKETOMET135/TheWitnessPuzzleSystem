@@ -243,6 +243,43 @@ function createHexagons(puzzle, puzzlePoints, size, colors, hexagons){
     return hexagonData
 }
 
+function createTile(puzzle, size, gridPosition){
+    const tile = document.createElement("div")
+    tile.classList.add("puzzle-rule")
+    tile.style.width = `${size * 2}px`
+    tile.style.height = `${size * 2}px`
+    tile.style.left = `${size * 2 + (size * 3) * gridPosition[0]}px`
+    tile.style.top = `${size * 2 + (size * 3) * gridPosition[1]}px`
+    puzzle.append(tile)
+    return tile
+}
+
+function createColors(puzzle, size, colors, colorsData){
+    let colorData = []
+
+    for (let i = 0; i < colorsData.length; i++){
+        const color = colorsData[i]
+
+        const tile = createTile(puzzle, size, [color[0], color[1]])
+        const colorElement = document.createElement("div")
+        colorElement.classList.add("color")
+        colorElement.style.backgroundColor = color[2]
+        colorElement.style.width = `${size * 1.2}px`
+        colorElement.style.height = `${size * 1.2}px`
+        tile.append(colorElement)
+
+        colorData.push({
+            tile: tile,
+            gridPosition: [color[0], color[1]],
+            color: color[2],
+            element: colorElement,
+            colorSensitive: true
+        })
+    }
+
+    return colorData
+}
+
 export function createPuzzle(size, grid, starts, ends, colors, rules){
     const puzzle = document.createElement("div")
     puzzle.classList.add("puzzle-holder")
@@ -268,6 +305,14 @@ export function createPuzzle(size, grid, starts, ends, colors, rules){
         _rules.push({
             data: hexagonData,
             type: "hexagons"
+        })
+    }
+
+    if (rules.colors){
+        const colorsData = createColors(puzzle, pointSize, colors, rules.colors)
+        _rules.push({
+            data: colorsData,
+            type: "colors"
         })
     }
 
