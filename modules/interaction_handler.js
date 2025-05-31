@@ -12,6 +12,7 @@ let drawElementsPoints = []
 let pointPrevAxises = []
 let prevMousePosition = null
 let mainAxis = "x"
+let lastTouch = null
 
 function removeEvents(){
     _events.forEach(_event => {
@@ -168,12 +169,28 @@ function isAxisPoint(axisPoint){
     return isFound
 }
 
+function handleTouch(event){
+    const touch = event.touches[0]
+
+    if (!lastTouch) lastTouch = [touch.clientX, touch.clientY]
+
+    const delta = [touch.clientX - lastTouch[0], touch.clientY - lastTouch[1]]
+
+    lastTouch = [touch.clientX, touch.clientY]
+
+    handleDrawingBoth(touch.clientX, touch.clientY, delta[0], delta[1])
+}
+
 function handleDrawing(event){
+    handleDrawingBoth(event.clientX, event.clientY, event.movementX / 2, event.movementY / 2)
+}
+
+function handleDrawingBoth(clientX, clientY, movementX, movementY){
     if (!solving) return
 
-    if (!prevMousePosition) prevMousePosition = [event.clientX, event.clientY]
+    if (!prevMousePosition) prevMousePosition = [clientX, clientY]
 
-    const mousePosition = [prevMousePosition[0] + event.movementX, prevMousePosition[1] + event.movementY]
+    const mousePosition = [prevMousePosition[0] + movementX, prevMousePosition[1] + movementY]
 
     let diffX = mousePosition[0] - prevMousePosition[0]
     let diffY = mousePosition[1] - prevMousePosition[1]
@@ -416,5 +433,11 @@ export function handlePuzzle(puzzleData){
         element: document,
         handler: handleDrawing,
         type: "mousemove"
+    })
+    document.addEventListener("touchmove", handleTouch)
+    _events.push({
+        element: document,
+        handler: handleTouch,
+        type: "touchmove"
     })
 }

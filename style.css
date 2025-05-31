@@ -23,3 +23,9 @@
 .puzzle-line {
     position: absolute;
 }
+
+@media (width < 800px) {
+    .puzzle-holder {
+        scale: 0.75;
+    }
+}
