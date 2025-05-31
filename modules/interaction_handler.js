@@ -40,6 +40,15 @@ function startClick(puzzleStart, element){
     solving = true
     startClickDebounce = true
 
+    if (usedStart && usedStart !== undefined){
+        usedStart.puzzlePoint.puzzlePoint.style.transition = "none"
+    }
+
+    if (selectedEnd){
+        selectedEnd.endLine.style.transition = "none"
+        selectedEnd.endPoint.style.transition = "none"
+    }
+
     usedStart = puzzleStart
 
     if (correct){
@@ -51,7 +60,7 @@ function startClick(puzzleStart, element){
             drawLine.remove()
         }
 
-        endDrawing()
+        endDrawing() 
 
         selectedEnd = null
     }
@@ -552,6 +561,19 @@ function documentClick(){
                 usedStart.puzzlePoint.puzzlePoint.style.backgroundColor = _puzzleData.colors[3]
                 selectedEnd.endPoint.style.backgroundColor = _puzzleData.colors[3]
                 selectedEnd.endLine.style.backgroundColor = _puzzleData.colors[3]
+            }
+            else {
+                drawElements.forEach(drawElement => {
+                    drawElement.element.style.backgroundColor = _puzzleData.colors[4]
+                })
+
+                drawElementsPoints.forEach(drawElementsPoint => {
+                    drawElementsPoint.element.style.backgroundColor = _puzzleData.colors[4]
+                })
+
+                usedStart.puzzlePoint.puzzlePoint.style.backgroundColor = _puzzleData.colors[4]
+                selectedEnd.endPoint.style.backgroundColor = _puzzleData.colors[4]
+                selectedEnd.endLine.style.backgroundColor = _puzzleData.colors[4]
             }
         }
 
