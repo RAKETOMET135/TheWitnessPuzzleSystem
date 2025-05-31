@@ -13,6 +13,7 @@ let pointPrevAxises = []
 let prevMousePosition = null
 let mainAxis = "x"
 let lastTouch = null
+let selectedEnd = null
 
 function removeEvents(){
     _events.forEach(_event => {
@@ -48,6 +49,7 @@ function startDrawing(pivotPoint){
     drawLine = document.createElement("div")
     drawLine.classList.add("puzzle-line")
     drawLine.style.backgroundColor = _puzzleData.colors[2]
+    drawLine.style.zIndex = "20"
     prevMousePosition = null
     _puzzleData.element.append(drawLine)
 
@@ -58,6 +60,7 @@ function startDrawing(pivotPoint){
     drawLineCircle.style.left = `${pivotPoint[0]}px`
     drawLineCircle.style.top = `${pivotPoint[1]}px`
     drawLineCircle.style.backgroundColor = _puzzleData.colors[2]
+    drawLineCircle.style.zIndex = "20"
     _puzzleData.element.append(drawLineCircle)
 
     _puzzleData.element.requestPointerLock()
@@ -101,6 +104,7 @@ function createPivotPointElement(){
     drawLinePoint.style.height = `${_puzzleData.pointSize}px`
     drawLinePoint.style.left = `${drawLinePivot[0]}px`
     drawLinePoint.style.top = `${drawLinePivot[1]}px`
+    drawLinePoint.style.zIndex = "20"
     _puzzleData.element.append(drawLinePoint)
     drawElementsPoints.push({
         element: drawLinePoint
@@ -169,6 +173,59 @@ function isAxisPoint(axisPoint){
     return isFound
 }
 
+function getEndPoints(pivotPointPosition){
+    let endPoints = []
+
+    for (let i = 0; i < _puzzleData.puzzleEnds.length; i++){
+        const endPoint = _puzzleData.puzzleEnds[i]
+        const position = endPoint.puzzlePoint.position
+
+        if (Math.abs(position[0] - pivotPointPosition[0]) < 2 && Math.abs(position[1] - pivotPointPosition[1]) < 2){
+            endPoints.push(endPoint)
+        }
+    }
+
+    if (endPoints.length <= 0) return null
+
+    return endPoints
+}
+
+function getEndPoint(pivotPointPosition, direction){
+    let _endPoint = null
+
+    for (let i = 0; i < _puzzleData.puzzleEnds.length; i++){
+        const endPoint = _puzzleData.puzzleEnds[i]
+        const position = endPoint.puzzlePoint.position
+        const endDirection = endPoint.end[2]
+
+        if (Math.abs(position[0] - pivotPointPosition[0]) < 2 && Math.abs(position[1] - pivotPointPosition[1]) < 2 && endDirection === direction){
+            _endPoint = endPoint
+
+            break
+        }
+    }
+
+    return _endPoint
+}
+
+function enableEnd(endPoint){
+    endPoint.endPoint.style.backgroundColor = _puzzleData.colors[2]
+    endPoint.endLine.style.backgroundColor = _puzzleData.colors[2]
+    endPoint.endPoint.style.zIndex = "20"
+    endPoint.endLine.style.zIndex = "20"
+    selectedEnd = endPoint
+}
+
+function disableEnd(){
+    if (!selectedEnd) return
+
+    selectedEnd.endPoint.style.backgroundColor = _puzzleData.colors[1]
+    selectedEnd.endLine.style.backgroundColor = _puzzleData.colors[1]
+    selectedEnd.endPoint.style.zIndex = "1"
+    selectedEnd.endLine.style.zIndex = "1"
+    selectedEnd = null
+}
+
 function touchStart(event){
     const touch = event.touches[0]
 
@@ -222,33 +279,48 @@ function handleDrawingBoth(clientX, clientY, movementX, movementY){
     if (drawLineMove[0] > _puzzleData.pointDistance) drawLineMove[0] = _puzzleData.pointDistance
     if (drawLineMove[1] > _puzzleData.pointDistance) drawLineMove[1] = _puzzleData.pointDistance
 
-    //if (Math.abs(drawLineMove[0]) * multiX > Math.abs(drawLineMove[1]) * multiY){
     if (mainAxis === "x"){
         drawLine.style.top = `${drawLinePivot[1]}px`
         drawLine.style.height = `${_puzzleData.pointSize}px`
         drawLineCircle.style.top = `${drawLinePivot[1]}px`
 
-        if (drawLineMove[0] < 0 && drawLinePivot[0] > _puzzleData.pointSize){
+        if (drawLineMove[0] < 0 && drawLinePivot[0] > _puzzleData.pointSize * 2){
             drawLine.style.width = `${Math.abs(drawLineMove[0])}px`
             drawLine.style.left = `${drawLinePivot[0] + _puzzleData.pointSize / 2 - Math.abs(drawLineMove[0])}px`
             drawLineCircle.style.left = `${drawLinePivot[0] - Math.abs(drawLineMove[0])}px`
             direction = -1
+
+            disableEnd()
         }
         else if (drawLineMove[0] < 0){
             drawLineMove = [drawLineMove[0] - diffX, drawLineMove[1]]
             drawLine.style.width = "0px"
             drawLineCircle.style.left = `${drawLinePivot[0]}px`
+
+            let endPoint = getEndPoint(drawLinePivot, "left")
+            if (endPoint){
+                disableEnd()
+                enableEnd(endPoint)
+            }
         }
         
-        if (drawLineMove[0] > 0 && drawLinePivot[0] < _puzzleData.pointSize + (_puzzleData.pointSize * 3) * (_puzzleData.grid[0] - 2)){
+        if (drawLineMove[0] > 0 && drawLinePivot[0] < _puzzleData.pointSize + (_puzzleData.pointSize * 3) * (_puzzleData.grid[0] - 1) - 1){
             drawLine.style.width = `${drawLineMove[0]}px`
             drawLine.style.left = `${drawLinePivot[0] + _puzzleData.pointSize / 2}px`
             drawLineCircle.style.left = `${drawLinePivot[0] + Math.abs(drawLineMove[0])}px`
+
+            disableEnd()
         }
         else if (drawLineMove[0] > 0){
             drawLineMove = [drawLineMove[0] - diffX, drawLineMove[1]]
             drawLine.style.width = "0px"
             drawLineCircle.style.left = `${drawLinePivot[0]}px`
+
+            let endPoint = getEndPoint(drawLinePivot, "right")
+            if (endPoint){
+                disableEnd()
+                enableEnd(endPoint)
+            }
         }
         
         if (drawLineMove[0] < 0 && isAxisPoint([drawLinePivot[0] - _puzzleData.pointDistance, drawLinePivot[1]]) && drawLineMove[0] <= -_puzzleData.pointDistance + _puzzleData.pointSize + margin){
@@ -278,22 +350,38 @@ function handleDrawingBoth(clientX, clientY, movementX, movementY){
             drawLine.style.top = `${drawLinePivot[1] + _puzzleData.pointSize / 2 - Math.abs(drawLineMove[1])}px`
             drawLineCircle.style.top = `${drawLinePivot[1] - Math.abs(drawLineMove[1])}px`
             direction = -1
+
+            disableEnd()
         }
         else if (drawLineMove[1] < 0){
             drawLineMove = [drawLineMove[0], drawLineMove[1] - diffY]
             drawLine.style.height = "0px"
             drawLineCircle.style.top = `${drawLinePivot[1]}px`
+
+            let endPoint = getEndPoint(drawLinePivot, "up")
+            if (endPoint){
+                disableEnd()
+                enableEnd(endPoint)
+            }
         }
         
         if (drawLineMove[1] > 0 && drawLinePivot[1] < _puzzleData.pointSize + (_puzzleData.pointSize * 3) * (_puzzleData.grid[1] - 1)){
             drawLine.style.height = `${drawLineMove[1]}px`
             drawLine.style.top = `${drawLinePivot[1] + _puzzleData.pointSize / 2}px`
             drawLineCircle.style.top = `${drawLinePivot[1] + Math.abs(drawLineMove[1])}px`
+
+            disableEnd()
         }
         else if (drawLineMove[1] > 0){
             drawLineMove = [drawLineMove[0], drawLineMove[1] - diffY]
             drawLine.style.height = "0px"
             drawLineCircle.style.top = `${drawLinePivot[1]}px`
+
+            let endPoint = getEndPoint(drawLinePivot, "down")
+            if (endPoint){
+                disableEnd()
+                enableEnd(endPoint)
+            }
         }
 
         if (drawLineMove[1] < 0 && isAxisPoint([drawLinePivot[0], drawLinePivot[1] - _puzzleData.pointDistance]) && drawLineMove[1] <= -_puzzleData.pointDistance + _puzzleData.pointSize + margin){
@@ -317,7 +405,6 @@ function handleDrawingBoth(clientX, clientY, movementX, movementY){
     prevMousePosition = mousePosition
 
     if (Math.abs(drawLineMove[0]) >= _puzzleData.pointDistance - margin || Math.abs(drawLineMove[1]) >= _puzzleData.pointDistance - margin){
-        //if (Math.abs(drawLineMove[0]) * multiX > Math.abs(drawLineMove[1] * multiY)){
         if (mainAxis === "x"){
             if (Math.abs(drawLineMove[0]) >= _puzzleData.pointDistance - margin){
                 pointReachedX(direction)

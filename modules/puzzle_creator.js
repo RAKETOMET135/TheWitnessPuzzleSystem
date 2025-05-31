@@ -165,7 +165,7 @@ function createPuzzleEnds(puzzle, puzzlePoints, ends, size, endLength, colors){
                     pointTopPosition = position[1] + endLength
 
                     lineLeftPosition = position[0]
-                    lineTopPosition = position[1] + endLength
+                    lineTopPosition = position[1] + endLength - size / 4
                     lineWidth = size
                     lineHeight = endLength
 
