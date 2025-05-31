@@ -49,6 +49,21 @@ body {
     border-radius: 15px;
 }
 
+.star-1 {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    translate: -50% -50%;
+    rotate: 45deg;
+}
+.star-2 {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    translate: -50% -50%;
+    rotate: 0deg;
+}
+
 @media (width < 800px) {
     .puzzle-holder {
         scale: 0.6;

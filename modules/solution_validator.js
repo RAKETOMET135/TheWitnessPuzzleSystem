@@ -279,6 +279,7 @@ function checkGroups(groups, ruleDatas){
         let groupCorrect = true
         let checkColor = false
         let toCheckColor = null
+        let stars = []
 
         let datas = []
 
@@ -294,14 +295,34 @@ function checkGroups(groups, ruleDatas){
                 tileData = data
             }
 
-            if (tileData && tileData.colorSensitive){
+            if (!tileData) continue
+
+            if (tileData.colorSensitive){
                 checkColor = true
                 toCheckColor = tileData.color
             }
 
-            if (tileData){
-                datas.push(tileData)
+            if (tileData.star){
+                let starGroupExists = false
+
+                for (let j = 0; j < stars.length; j++){
+                    const starGroup = stars[j]
+
+                    if (starGroup.color !== tileData.starColor) continue
+
+                    starGroupExists = true
+                    starGroup.stars.push(tileData)
+                }
+
+                if (!starGroupExists){
+                    stars.push({
+                        color: tileData.starColor,
+                        stars: [tileData]
+                    })
+                }
             }
+
+            datas.push(tileData)
         }
 
         for (let i = 0; i < datas.length; i++){
@@ -310,6 +331,22 @@ function checkGroups(groups, ruleDatas){
             if (checkColor && data.color){
                 if (data.color !== toCheckColor) groupCorrect = false
             }
+
+            if (data.color){
+                for (let j = 0; j < stars.length; j++){
+                    const starGroup = stars[j]
+
+                    if (starGroup.color !== data.color) continue
+
+                    starGroup.stars.push(data)
+                }
+            }
+        }
+
+        for (let i = 0; i < stars.length; i++){
+            const starGroup = stars[i]
+
+            if (starGroup.stars.length !== 2) groupCorrect = false
         }
 
         if (!groupCorrect) correct = false
@@ -341,7 +378,7 @@ export function validate_solution(solutionEnd, solutionPoints, solutionPointsGri
                     break
                 }
             }
-            else if (rule.type === "colors"){
+            else if (rule.type === "colors" || rule.type === "stars"){
                 for (let j = 0; j < rule.data.length; j++){
                     ruleDatas.push(rule.data[j])
                 }

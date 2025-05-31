@@ -254,7 +254,7 @@ function createTile(puzzle, size, gridPosition){
     return tile
 }
 
-function createColors(puzzle, size, colors, colorsData){
+function createColors(puzzle, size, colorsData){
     let colorData = []
 
     for (let i = 0; i < colorsData.length; i++){
@@ -278,6 +278,39 @@ function createColors(puzzle, size, colors, colorsData){
     }
 
     return colorData
+}
+
+function createStars(puzzle, size, stars){
+    let starData = []
+
+    for (let i = 0; i < stars.length; i++){
+        const star = stars[i]
+
+        const tile = createTile(puzzle, size, [star[0], star[1]])
+        const starElement1 = document.createElement("div")
+        starElement1.classList.add("star-1")
+        starElement1.style.backgroundColor = star[2]
+        starElement1.style.width = `${size * 1}px`
+        starElement1.style.height = `${size * 1}px`
+        tile.append(starElement1)
+        const starElement2 = document.createElement("div")
+        starElement2.classList.add("star-2")
+        starElement2.style.backgroundColor = star[2]
+        starElement2.style.width = `${size * 1}px`
+        starElement2.style.height = `${size * 1}px`
+        tile.append(starElement2)
+
+        starData.push({
+            tile: tile,
+            gridPosition: [star[0], star[1]],
+            starColor: star[2],
+            element: starElement1,
+            element2: starElement2,
+            star: true
+        })
+    }
+
+    return starData
 }
 
 export function createPuzzle(size, grid, starts, ends, colors, rules){
@@ -309,10 +342,18 @@ export function createPuzzle(size, grid, starts, ends, colors, rules){
     }
 
     if (rules.colors){
-        const colorsData = createColors(puzzle, pointSize, colors, rules.colors)
+        const colorsData = createColors(puzzle, pointSize, rules.colors)
         _rules.push({
             data: colorsData,
             type: "colors"
+        })
+    }
+
+    if (rules.stars){
+        const starsData = createStars(puzzle, pointSize, rules.stars)
+        _rules.push({
+            data: starsData,
+            type: "stars"
         })
     }
 
