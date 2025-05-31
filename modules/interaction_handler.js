@@ -233,6 +233,8 @@ function touchStart(event){
 }
 
 function handleTouch(event){
+    event.preventDefault()
+
     const touch = event.touches[0]
 
     if (!lastTouch) lastTouch = [touch.clientX, touch.clientY]
@@ -527,7 +529,7 @@ export function handlePuzzle(puzzleData){
         handler: handleDrawing,
         type: "mousemove"
     })
-    document.addEventListener("touchmove", handleTouch)
+    document.addEventListener("touchmove", handleTouch, { passive: false })
     _events.push({
         element: document,
         handler: handleTouch,
