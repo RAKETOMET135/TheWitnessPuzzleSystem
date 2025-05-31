@@ -169,6 +169,12 @@ function isAxisPoint(axisPoint){
     return isFound
 }
 
+function touchStart(event){
+    const touch = event.touches[0]
+
+    lastTouch = [touch.clientX, touch.clientY]
+}
+
 function handleTouch(event){
     const touch = event.touches[0]
 
@@ -439,5 +445,11 @@ export function handlePuzzle(puzzleData){
         element: document,
         handler: handleTouch,
         type: "touchmove"
+    })
+    document.addEventListener("touchstart", touchStart)
+    _events.push({
+        element: document,
+        handler: touchStart,
+        type: "touchstart"
     })
 }
