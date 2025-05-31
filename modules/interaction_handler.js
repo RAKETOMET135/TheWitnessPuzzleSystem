@@ -316,14 +316,14 @@ function handleDrawingBoth(clientX, clientY, movementX, movementY){
             if (Math.abs(drawLineMove[0]) >= _puzzleData.pointDistance - margin){
                 pointReachedX(direction)
 
-                handleDrawing(event)
+                handleDrawingBoth(clientX, clientY, movementX, movementY)
             }
         }
         else{
             if (Math.abs(drawLineMove[1]) >= _puzzleData.pointDistance - margin){
                 pointReachedY(direction)
 
-                handleDrawing(event)
+                handleDrawingBoth(clientX, clientY, movementX, movementY)
             }
         }
     }
@@ -336,28 +336,28 @@ function handleDrawingBoth(clientX, clientY, movementX, movementY){
 
             drawLineMove = [_puzzleData.pointDistance - 1 - margin, drawLineMove[1]]
 
-            handleDrawing(event)
+            handleDrawingBoth(clientX, clientY, movementX, movementY)
         }
         else if (prevPointAxis[0] > drawLinePivot[0] && direction === 1 && Math.abs(drawLineMove[0]) > Math.abs(drawLineMove[1])){
             removePrevPoint(prevPointAxis)
 
             drawLineMove = [-_puzzleData.pointDistance + 1 + margin, drawLineMove[1]]
 
-            handleDrawing(event)
+            handleDrawingBoth(clientX, clientY, movementX, movementY)
         }
         else if (prevPointAxis[1] < drawLinePivot[1] && direction === -1 && Math.abs(drawLineMove[0]) < Math.abs(drawLineMove[1])){
             removePrevPoint(prevPointAxis)
 
             drawLineMove = [drawLineMove[0], _puzzleData.pointDistance - 1 - margin]
 
-            handleDrawing(event)
+            handleDrawingBoth(clientX, clientY, movementX, movementY)
         }
         else if (prevPointAxis[1] > drawLinePivot[1] && direction === 1 && Math.abs(drawLineMove[0]) < Math.abs(drawLineMove[1])){
             removePrevPoint(prevPointAxis)
 
             drawLineMove = [drawLineMove[0], -_puzzleData.pointDistance + 1 + margin]
 
-            handleDrawing(event)
+            handleDrawingBoth(clientX, clientY, movementX, movementY)
         }
     }
 }
