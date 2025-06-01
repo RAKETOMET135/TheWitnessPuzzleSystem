@@ -244,10 +244,18 @@ function getEndPoint(pivotPointPosition, direction){
         const position = endPoint.puzzlePoint.position
         const endDirection = endPoint.end[2]
 
-        if (Math.abs(position[0] - pivotPointPosition[0]) < 2 && Math.abs(position[1] - pivotPointPosition[1]) < 2 && endDirection === direction){
-            _endPoint = endPoint
+        let isPosition = Math.abs(position[0] - pivotPointPosition[0]) < 2 && Math.abs(position[1] - pivotPointPosition[1]) < 2
 
-            break
+        if (isPosition){
+            if (endDirection === direction || endDirection === "up-right" && direction === "right" || endDirection === "up-right" && direction === "up"
+                || endDirection === "down-right" && direction === "right" || endDirection === "down-right" && direction === "down"
+                || endDirection === "up-left" && direction === "left" || endDirection === "up-left" && direction === "up"
+                || endDirection === "down-left" && direction === "left" || endDirection === "down-left" && direction === "down"
+            ){
+                _endPoint = endPoint
+
+                break
+            }
         }
     }
 

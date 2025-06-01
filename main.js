@@ -8,7 +8,7 @@ Puzzle creation info
 1. size [x, y]
 2. gridSize [x, y] <-- int
 3. starts [[x, y]]
-4. ends [[x, y, direction]] <-- direction ("up", "down", "left", "right")
+4. ends [[x, y, direction]] <-- direction ("up", "down", "left", "right", + combinations("up-right", "down-right", "up-left", "down-left"))
 5. colors [puzzleBackground, puzzleElements, line, correctLine, incorrectLine, hexagons]
 6. line breaks [[x, y, direction]] <-- position of left/top point [x, y] and then direction ("right", "down")
 7. line removal [[x, y, direction]] <-- position of left/top point [x, y] and then direction ("right", "down")
@@ -16,7 +16,7 @@ Puzzle creation info
 */
 
 
-const _puzzleData = createPuzzle([500, 500], [4, 4], [[0, 3], [2, 2]], [[3, 0, "up"], [3, 1, "right"], [0, 1, "left"], [1, 3, "down"]], 
+const _puzzleData = createPuzzle([500, 500], [4, 4], [[2, 2]], [[0, 3, "down-left"], [3, 1, "right"], [0, 1, "left"], [1, 3, "down"]], 
     ["rgb(100, 100, 100)", "rgb(66, 66, 66)", "rgb(255, 255, 255)", "rgb(50, 255, 50)", "rgb(255, 50, 50)", "rgb(33, 33, 33)", "rgb(250, 200, 0)"], 
     [[2, 2, "down"], [2, 0, "right"]],
     [[2, 3, "right"]],

@@ -182,6 +182,57 @@ function createPuzzleEnds(puzzle, puzzlePoints, ends, size, endLength, colors){
                     lineHeight = size
 
                     break
+                case "up-right":
+                    pointLeftPosition = position[0] + endLength - size / 32
+                    pointTopPosition = position[1] - endLength - size / 32
+
+                    lineLeftPosition = position[0] + endLength - size / 4
+                    lineTopPosition = position[1] - endLength + size / 2.6
+                    lineWidth = endLength
+                    lineHeight = size
+                    line.style.rotate = "-48.5deg"
+                    line.style.transform = "scaleX(1.7)"
+
+                    break
+                case "down-right":
+                    pointLeftPosition = position[0] + endLength - size / 32
+                    pointTopPosition = position[1] + endLength - size / 32
+
+                    lineLeftPosition = position[0] + endLength - size / 2.3
+                    lineTopPosition = position[1] + endLength - size / 3.5
+                    lineWidth = size
+                    lineHeight = endLength
+
+                    line.style.rotate = "-44.5deg"
+                    line.style.transform = "scaleY(1.55)"
+
+                    break
+                case "up-left":
+                    pointLeftPosition = position[0] - endLength - size / 32
+                    pointTopPosition = position[1] - endLength - size / 32
+
+                    lineLeftPosition = position[0] + endLength / 2 - size / 1.5
+                    lineTopPosition = position[1] + endLength / 2 - size / 2
+                    lineWidth = size
+                    lineHeight = endLength
+
+                    line.style.rotate = "-44.5deg"
+                    line.style.transform = "scaleY(1.55)"
+
+                    break
+                case "down-left":
+                    pointLeftPosition = position[0] - endLength - size / 32
+                    pointTopPosition = position[1] + endLength + size / 32
+
+                    lineLeftPosition = position[0] - endLength + size / 3.5
+                    lineTopPosition = position[1] + endLength - size / 8.45
+                    lineWidth = size
+                    lineHeight = endLength
+
+                    line.style.rotate = "-44.5deg"
+                    line.style.transform = "scaleY(1.5)"
+
+                    break
                 default:
                     pointLeftPosition = position[0] - endLength
                     pointTopPosition = position[1]
@@ -222,6 +273,8 @@ function createPuzzleBreaks(puzzle, size, breaks, colors){
     for (let i = 0; i < breaks.length; i++){
         const puzzleBreak = breaks[i]
 
+        const puzzleBreakElement = document.createElement("div")
+
         let xAdjust = 0
         let xAdjustGrid = 0
         let yAdjust = 0
@@ -229,15 +282,16 @@ function createPuzzleBreaks(puzzle, size, breaks, colors){
 
         if (puzzleBreak[2] === "right"){
             xAdjust = size * 1.5
+            puzzleBreakElement.style.transform = "scaleY(1.1)"
         }
         else if (puzzleBreak[2] === "down"){
             yAdjust = size * 1.5
+            puzzleBreakElement.style.transform = "scaleX(1.1)"
         }
 
         const leftPosition = size + (size * 3) * puzzleBreak[0] + xAdjust
         const topPosition = size + (size * 3) * puzzleBreak[1] + yAdjust
 
-        const puzzleBreakElement = document.createElement("div")
         puzzleBreakElement.classList.add("puzzle-break")
         puzzleBreakElement.style.width = `${size}px`
         puzzleBreakElement.style.height = `${size}px`
@@ -331,14 +385,28 @@ function getNearbyLines(puzzlePoint, puzzleLines){
     return nearbyPuzzleLines
 }
 
-function fixSingleLinePoints(puzzleLines, puzzlePoints, colors){
+function fixSingleLinePoints(puzzleLines, puzzlePoints, colors, puzzleEnds){
     for (let i = 0; i < puzzlePoints.length; i++){
         const puzzlePoint = puzzlePoints[i]
 
         let nearbyPuzzleLines = getNearbyLines(puzzlePoint, puzzleLines)
 
         if (nearbyPuzzleLines.length === 1){
-            puzzlePoint.puzzlePoint.style.borderRadius = "0"
+            let hasEnd = false
+
+            for (let j = 0; j < puzzleEnds.length; j++){
+                const puzzleEnd = puzzleEnds[j]
+
+                if (puzzleEnd.puzzlePoint.gridPosition[0] !== puzzlePoint.gridPosition[0] || puzzleEnd.puzzlePoint.gridPosition[1] !== puzzlePoint.gridPosition[1]) continue
+
+                hasEnd = true
+
+                break
+            }
+
+            if (!hasEnd){
+                puzzlePoint.puzzlePoint.style.borderRadius = "0"
+            }
         }   
         else if (nearbyPuzzleLines.length === 0){
             puzzlePoint.puzzlePoint.style.backgroundColor = colors[0]
@@ -517,7 +585,7 @@ export function createPuzzle(size, grid, starts, ends, colors, breaks, lineRemov
     const puzzleBreaks = createPuzzleBreaks(puzzle, pointSize, breaks, colors)
     const puzzleLineRemovals = createPuzzleLineRemovals(puzzle, pointSize, lineRemovals, colors, puzzleLines)
 
-    fixSingleLinePoints(puzzleLines, puzzlePoints, colors)
+    fixSingleLinePoints(puzzleLines, puzzlePoints, colors, puzzleEnds)
 
     let _rules = []
 
