@@ -51,7 +51,8 @@ function createPuzzleLines(puzzle, puzzlePoints, size, grid, colors){
                 puzzleLine: horizontalLine,
                 position: [leftPosition, topPosition],
                 gridPosition: gridPosition,
-                direction: "horizontal"
+                direction: "horizontal",
+                removed: false
             })
         }
 
@@ -72,7 +73,8 @@ function createPuzzleLines(puzzle, puzzlePoints, size, grid, colors){
                 puzzleLine: verticalLine,
                 position: [leftPosition, topPosition],
                 gridPosition: gridPosition,
-                direction: "vertical"
+                direction: "vertical",
+                removed: false
             })
         }
     })
@@ -256,6 +258,95 @@ function createPuzzleBreaks(puzzle, size, breaks, colors){
     return puzzleBreaks
 }
 
+function createPuzzleLineRemovals(puzzle, size, lineRemovals, colors, puzzleLines){
+    let puzzleLineRemovals = []
+
+    for (let i = 0; i < lineRemovals.length; i++){
+        const lineRemoval = lineRemovals[i]
+
+        for (let j = 0; j < puzzleLines.length; j++){
+            const puzzleLine = puzzleLines[j]
+            const gridPosition = puzzleLine.gridPosition
+
+            if (gridPosition[0] !== lineRemoval[0] || gridPosition[1] !== lineRemoval[1]) continue
+
+            if (puzzleLine.direction === "horizontal" && lineRemoval[2] === "right"){
+                puzzleLine.puzzleLine.classList.add("puzzle-break")
+                puzzleLine.puzzleLine.style.zIndex = "-1"
+                puzzleLine.puzzleLine.style.backgroundColor = colors[0]
+                puzzleLine.removed = true
+
+                puzzleLineRemovals.push({
+                    puzzleLine: puzzleLine,
+                    position: puzzleLine.position,
+                    gridPosition: [lineRemoval[0], lineRemoval[1]],
+                    direction: gridPosition[2]
+                })
+            }
+            else if (puzzleLine.direction === "vertical" && lineRemoval[2] === "down"){
+                puzzleLine.puzzleLine.classList.add("puzzle-break")
+                puzzleLine.puzzleLine.style.zIndex = "-1"
+                puzzleLine.puzzleLine.style.backgroundColor = colors[0]
+                puzzleLine.removed = true
+
+                puzzleLineRemovals.push({
+                    puzzleLine: puzzleLine,
+                    position: puzzleLine.position,
+                    gridPosition: [lineRemoval[0], lineRemoval[1]],
+                    direction: gridPosition[2]
+                })
+            }
+        }
+    }
+
+    return puzzleLineRemovals
+}
+
+function getNearbyLines(puzzlePoint, puzzleLines){
+    let nearbyPuzzleLines = []
+
+    const gridPosition = puzzlePoint.gridPosition
+
+    for (let i = 0; i < puzzleLines.length; i++){
+        const puzzleLine = puzzleLines[i]
+        const lineGridPosition = puzzleLine.gridPosition
+
+        if (lineGridPosition[0] === gridPosition[0] && lineGridPosition[1] === gridPosition[1]){
+            if (!puzzleLine.removed){
+                nearbyPuzzleLines.push(puzzleLine)
+            }
+        }
+        else if (lineGridPosition[0] + 1 === gridPosition[0] && lineGridPosition[1] === gridPosition[1]){
+            if (!puzzleLine.removed && puzzleLine.direction === "horizontal"){
+                nearbyPuzzleLines.push(puzzleLine)
+            }
+        }
+        else if (lineGridPosition[0] === gridPosition[0] && lineGridPosition[1] + 1 === gridPosition[1]){
+            if (!puzzleLine.removed && puzzleLine.direction === "vertical"){
+                nearbyPuzzleLines.push(puzzleLine)
+            }
+        }
+    }
+
+    return nearbyPuzzleLines
+}
+
+function fixSingleLinePoints(puzzleLines, puzzlePoints, colors){
+    for (let i = 0; i < puzzlePoints.length; i++){
+        const puzzlePoint = puzzlePoints[i]
+
+        let nearbyPuzzleLines = getNearbyLines(puzzlePoint, puzzleLines)
+
+        if (nearbyPuzzleLines.length === 1){
+            puzzlePoint.puzzlePoint.style.borderRadius = "0"
+        }   
+        else if (nearbyPuzzleLines.length === 0){
+            puzzlePoint.puzzlePoint.style.backgroundColor = colors[0]
+            puzzlePoint.puzzlePoint.classList.add("puzzle-break")
+        }
+    }
+}
+
 function createHexagons(puzzle, puzzlePoints, size, colors, hexagons){
     let hexagonData = []
 
@@ -406,7 +497,7 @@ function createTriangles(puzzle, size, triangles, colors){
     return trianglesData
 }
 
-export function createPuzzle(size, grid, starts, ends, colors, breaks, rules){
+export function createPuzzle(size, grid, starts, ends, colors, breaks, lineRemovals, rules){
     const puzzle = document.createElement("div")
     puzzle.classList.add("puzzle-holder")
     puzzle.style.width = `${size[0]}px`
@@ -424,6 +515,9 @@ export function createPuzzle(size, grid, starts, ends, colors, breaks, rules){
     const puzzleStarts = createPuzzleStarts(puzzle, puzzlePoints, starts, startSize, pointSize, colors)
     const puzzleEnds = createPuzzleEnds(puzzle, puzzlePoints, ends, pointSize, endLength, colors)
     const puzzleBreaks = createPuzzleBreaks(puzzle, pointSize, breaks, colors)
+    const puzzleLineRemovals = createPuzzleLineRemovals(puzzle, pointSize, lineRemovals, colors, puzzleLines)
+
+    fixSingleLinePoints(puzzleLines, puzzlePoints, colors)
 
     let _rules = []
 
@@ -466,6 +560,7 @@ export function createPuzzle(size, grid, starts, ends, colors, breaks, rules){
         puzzleStarts: puzzleStarts,
         puzzleEnds: puzzleEnds,
         puzzleBreaks: puzzleBreaks,
+        puzzleLineRemovals: puzzleLineRemovals,
         size: size,
         grid: grid,
         starts: starts,

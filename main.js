@@ -11,13 +11,15 @@ Puzzle creation info
 4. ends [[x, y, direction]] <-- direction ("up", "down", "left", "right")
 5. colors [puzzleBackground, puzzleElements, line, correctLine, incorrectLine, hexagons]
 6. line breaks [[x, y, direction]] <-- position of left/top point [x, y] and then direction ("right", "down")
-7. rules object <-- hexagons [[x, y]], colors [[x, y, color]], stars [[x, y, color]], triangles [[x, y, count]]
+7. line removal [[x, y, direction]] <-- position of left/top point [x, y] and then direction ("right", "down")
+8. rules object <-- hexagons [[x, y]], colors [[x, y, color]], stars [[x, y, color]], triangles [[x, y, count]]
 */
 
 
 const _puzzleData = createPuzzle([500, 500], [4, 4], [[0, 3], [2, 2]], [[3, 0, "up"], [3, 1, "right"], [0, 1, "left"], [1, 3, "down"]], 
     ["rgb(100, 100, 100)", "rgb(66, 66, 66)", "rgb(255, 255, 255)", "rgb(50, 255, 50)", "rgb(255, 50, 50)", "rgb(33, 33, 33)", "rgb(250, 200, 0)"], 
     [[2, 2, "down"], [2, 0, "right"]],
+    [[2, 3, "right"]],
     {
         //hexagons: [[0, 0], [2.5, 2], [2, 2.5]],
         colors: [

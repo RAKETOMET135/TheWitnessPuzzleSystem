@@ -18,6 +18,7 @@ let selectedEnd = null
 let usedStart = null
 let correct = false
 let closeBreakPoints = null
+let closeLineRemovals = null
 
 function removeEvents(){
     _events.forEach(_event => {
@@ -83,6 +84,7 @@ function startDrawing(pivotPoint){
 
     drawLinePivot = pivotPoint
     closeBreakPoints = getNearbyBreakPoints(pivotPoint)
+    closeLineRemovals = getNearbyLineRemovals(pivotPoint)
     drawLineMove = [0, 0]
     drawLine = document.createElement("div")
     drawLine.classList.add("puzzle-line")
@@ -156,6 +158,7 @@ function pointReachedX(direction){
 
     drawLinePivot = [drawLinePivot[0] + _puzzleData.pointDistance * Math.sign(drawLineMove[0]), drawLinePivot[1]]
     closeBreakPoints = getNearbyBreakPoints(drawLinePivot)
+    closeLineRemovals = getNearbyLineRemovals(drawLinePivot)
     drawLineMove = [0, 0]
     prevMousePosition = null
     createLineDuplicate("x", prev, direction)
@@ -169,6 +172,7 @@ function pointReachedY(direction){
 
     drawLinePivot = [drawLinePivot[0], drawLinePivot[1] + _puzzleData.pointDistance * Math.sign(drawLineMove[1])]
     closeBreakPoints = getNearbyBreakPoints(drawLinePivot)
+    closeLineRemovals = getNearbyLineRemovals(drawLinePivot)
     drawLineMove = [0, 0]
     prevMousePosition = null
     createLineDuplicate("y", prev, direction)
@@ -194,6 +198,7 @@ function removePrevPoint(prevPointAxis){
 
     drawLinePivot = prevPointAxis
     closeBreakPoints = getNearbyBreakPoints(drawLinePivot)
+    closeLineRemovals = getNearbyLineRemovals(drawLinePivot)
 }
 
 function isAxisPoint(axisPoint){
@@ -300,6 +305,39 @@ function getNearbyBreakPoints(point){
     return nearbyBreakPoints
 }
 
+function getNearbyLineRemovals(point){
+    let nearbyLineRemovals = {
+        left: null,
+        right: null,
+        top: null,
+        bottom: null
+    }
+
+    for (let i = 0; i < _puzzleData.puzzleLineRemovals.length; i++){
+        const lineRemoval = _puzzleData.puzzleLineRemovals[i]
+        const position = lineRemoval.position
+
+        if (Math.abs(position[0] - point[0]) < 2){
+            if (position[1] > point[1] && position[1] < point[1] + _puzzleData.pointDistance){
+                nearbyLineRemovals.bottom = lineRemoval
+            }
+            else if (position[1] < point[1] && position[1] > point[1] - _puzzleData.pointDistance){
+                nearbyLineRemovals.top = lineRemoval
+            }
+        }
+        else if (Math.abs(position[1] - point[1]) < 2){
+            if (position[0] > point[0] && position[0] < point[0] + _puzzleData.pointDistance) {
+                nearbyLineRemovals.right = lineRemoval
+            }
+            else if (position[0] < point[0] && position[0] > point[0] - _puzzleData.pointDistance) {
+                nearbyLineRemovals.left = lineRemoval
+            }
+        }
+    }
+
+    return nearbyLineRemovals
+}
+
 function touchStart(event){
     const touch = event.touches[0]
 
@@ -360,7 +398,7 @@ function handleDrawingBoth(clientX, clientY, movementX, movementY){
         drawLine.style.height = `${_puzzleData.pointSize}px`
         drawLineCircle.style.top = `${drawLinePivot[1]}px`
 
-        if (drawLineMove[0] < 0 && drawLinePivot[0] > _puzzleData.pointSize * 2){
+        if (drawLineMove[0] < 0 && drawLinePivot[0] > _puzzleData.pointSize * 2 && !closeLineRemovals.left){
             if (closeBreakPoints.left && drawLineMove[0] < -_puzzleData.pointSize / 2){
                 drawLineMove[0] = -_puzzleData.pointSize / 2
             }
@@ -384,7 +422,7 @@ function handleDrawingBoth(clientX, clientY, movementX, movementY){
             }
         }
         
-        if (drawLineMove[0] > 0 && drawLinePivot[0] < _puzzleData.pointSize + (_puzzleData.pointSize * 3) * (_puzzleData.grid[0] - 1) - 1){
+        if (drawLineMove[0] > 0 && drawLinePivot[0] < _puzzleData.pointSize + (_puzzleData.pointSize * 3) * (_puzzleData.grid[0] - 1) - 1 && !closeLineRemovals.right){
             if (closeBreakPoints.right && drawLineMove[0] > _puzzleData.pointSize / 2){
                 drawLineMove[0] = _puzzleData.pointSize / 2
             }
@@ -429,7 +467,7 @@ function handleDrawingBoth(clientX, clientY, movementX, movementY){
         drawLine.style.width = `${_puzzleData.pointSize}px`
         drawLineCircle.style.left = `${drawLinePivot[0]}px`
 
-        if (drawLineMove[1] < 0 && drawLinePivot[1] > _puzzleData.pointSize * 2){
+        if (drawLineMove[1] < 0 && drawLinePivot[1] > _puzzleData.pointSize * 2 && !closeLineRemovals.top){
             if (closeBreakPoints.top && drawLineMove[1] < -_puzzleData.pointSize / 2){
                 drawLineMove[1] = -_puzzleData.pointSize / 2
             }
@@ -453,7 +491,7 @@ function handleDrawingBoth(clientX, clientY, movementX, movementY){
             }
         }
         
-        if (drawLineMove[1] > 0 && drawLinePivot[1] < _puzzleData.pointSize + (_puzzleData.pointSize * 3) * (_puzzleData.grid[1] - 1)){
+        if (drawLineMove[1] > 0 && drawLinePivot[1] < _puzzleData.pointSize + (_puzzleData.pointSize * 3) * (_puzzleData.grid[1] - 1) && !closeLineRemovals.bottom){
             if (closeBreakPoints.bottom && drawLineMove[1] > _puzzleData.pointSize / 2){
                 drawLineMove[1] = _puzzleData.pointSize / 2
             }
