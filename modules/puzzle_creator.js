@@ -313,6 +313,57 @@ function createStars(puzzle, size, stars){
     return starData
 }
 
+function createTriangles(puzzle, size, triangles, colors){
+    let trianglesData = []
+
+    for (let i = 0; i < triangles.length; i++){
+        const triangle = triangles[i]
+        let triangleElements = []
+
+        const tile = createTile(puzzle, size, [triangle[0], triangle[1]])
+        const triangleElement = document.createElement("div")
+        triangleElement.classList.add("triangle")
+        triangleElement.classList.add("puzzle-rule")
+        triangleElement.style.backgroundColor = colors[6]
+        triangleElement.style.width = `${size / 2}px`
+        triangleElement.style.height = `${size / 2}px`
+        triangleElement.classList.add("triangle-center")
+
+        if (triangle[2] === 2){
+            triangleElement.style.transform = "translate(-60%, 0)"
+
+            const triangleElement2 = triangleElement.cloneNode()
+            triangleElement2.style.transform = "translate(60%, 0)"
+            tile.append(triangleElement2)
+            triangleElements.push(triangleElement2)
+        }
+        else if (triangle[2] === 3){
+            const triangleElement2 = triangleElement.cloneNode()
+            triangleElement2.style.transform = "translate(120%, 0)"
+            tile.append(triangleElement2)
+            triangleElements.push(triangleElement2)
+
+            const triangleElement3 = triangleElement.cloneNode()
+            triangleElement3.style.transform = "translate(-120%, 0)"
+            tile.append(triangleElement3)
+            triangleElements.push(triangleElement3)
+        }
+
+        tile.append(triangleElement)
+        triangleElements.push(triangleElement)
+
+        trianglesData.push({
+            tile: tile,
+            gridPosition: [triangle[0], triangle[1]],
+            triangleElements: triangleElements,
+            triangle: true,
+            triangleCount: triangle[2]
+        })
+    }
+
+    return trianglesData
+}
+
 export function createPuzzle(size, grid, starts, ends, colors, rules){
     const puzzle = document.createElement("div")
     puzzle.classList.add("puzzle-holder")
@@ -354,6 +405,14 @@ export function createPuzzle(size, grid, starts, ends, colors, rules){
         _rules.push({
             data: starsData,
             type: "stars"
+        })
+    }
+
+    if (rules.triangles){
+        const trianglesData = createTriangles(puzzle, pointSize, rules.triangles, colors)
+        _rules.push({
+            data: trianglesData,
+            type: "triangles"
         })
     }
 

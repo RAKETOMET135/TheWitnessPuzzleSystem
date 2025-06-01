@@ -205,6 +205,11 @@ function createGroups(solutionPointsGrid, puzzleData){
             let leftFilled = isConnected(topLeftPoint, bottomLeftPoint, solutionPointsGrid)
             let rightFilled = isConnected(topRightPoint, bottomRightPoint, solutionPointsGrid)
 
+            let _topFilled = topFilled
+            let _bottomFilled = bottomFilled
+            let _leftFilled = leftFilled
+            let _rightFilled = rightFilled
+
             if (y === 0) topFilled = true
             if (y === puzzleData.grid[1] - 2) bottomFilled = true
             if (x === 0) leftFilled = true
@@ -216,7 +221,11 @@ function createGroups(solutionPointsGrid, puzzleData){
                 right: rightFilled,
                 top: topFilled,
                 bottom: bottomFilled,
-                gridPosition: [x, y]
+                gridPosition: [x, y],
+                _left: _leftFilled,
+                _right: _rightFilled,
+                _top: _topFilled,
+                _bottom: _bottomFilled
             })
         }
     }
@@ -322,6 +331,18 @@ function checkGroups(groups, ruleDatas){
                 }
             }
 
+            if (tileData.triangle){
+                let tileFilledCount = 0
+                if (tile._left) tileFilledCount++
+                if (tile._right) tileFilledCount++
+                if (tile._top) tileFilledCount++
+                if (tile._bottom) tileFilledCount++
+
+                if (tileData.triangleCount !== tileFilledCount){
+                    groupCorrect = false
+                }
+            }
+
             datas.push(tileData)
         }
 
@@ -378,7 +399,7 @@ export function validate_solution(solutionEnd, solutionPoints, solutionPointsGri
                     break
                 }
             }
-            else if (rule.type === "colors" || rule.type === "stars"){
+            else if (rule.type === "colors" || rule.type === "stars" || rule.type === "triangles"){
                 for (let j = 0; j < rule.data.length; j++){
                     ruleDatas.push(rule.data[j])
                 }

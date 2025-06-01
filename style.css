@@ -64,6 +64,16 @@ body {
     rotate: 0deg;
 }
 
+.triangle {
+    clip-path: polygon(50% 15%, 0% 100%, 100% 100%);
+}
+.triangle-center {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    translate: -50% -50%;
+}
+
 @media (width < 800px) {
     .puzzle-holder {
         scale: 0.6;
