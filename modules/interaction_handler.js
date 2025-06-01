@@ -17,6 +17,7 @@ let lastTouch = null
 let selectedEnd = null
 let usedStart = null
 let correct = false
+let closeBreakPoints = null
 
 function removeEvents(){
     _events.forEach(_event => {
@@ -28,7 +29,7 @@ function removeEvents(){
 
 function changeElementsColorToDefault(){
     for (let element of _puzzleData.element.children){
-        if (element.classList.contains("puzzle-rule")) continue
+        if (element.classList.contains("puzzle-rule") || element.classList.contains("puzzle-break")) continue
 
         element.style.backgroundColor = _puzzleData.colors[1]
     }
@@ -81,6 +82,7 @@ function startDrawing(pivotPoint){
     }
 
     drawLinePivot = pivotPoint
+    closeBreakPoints = getNearbyBreakPoints(pivotPoint)
     drawLineMove = [0, 0]
     drawLine = document.createElement("div")
     drawLine.classList.add("puzzle-line")
@@ -153,6 +155,7 @@ function pointReachedX(direction){
     pointPrevAxises.push(Array.from(drawLinePivot))
 
     drawLinePivot = [drawLinePivot[0] + _puzzleData.pointDistance * Math.sign(drawLineMove[0]), drawLinePivot[1]]
+    closeBreakPoints = getNearbyBreakPoints(drawLinePivot)
     drawLineMove = [0, 0]
     prevMousePosition = null
     createLineDuplicate("x", prev, direction)
@@ -165,6 +168,7 @@ function pointReachedY(direction){
     pointPrevAxises.push(Array.from(drawLinePivot))
 
     drawLinePivot = [drawLinePivot[0], drawLinePivot[1] + _puzzleData.pointDistance * Math.sign(drawLineMove[1])]
+    closeBreakPoints = getNearbyBreakPoints(drawLinePivot)
     drawLineMove = [0, 0]
     prevMousePosition = null
     createLineDuplicate("y", prev, direction)
@@ -189,6 +193,7 @@ function removePrevPoint(prevPointAxis){
     drawElements.splice(drawElements.length - 1, 1)
 
     drawLinePivot = prevPointAxis
+    closeBreakPoints = getNearbyBreakPoints(drawLinePivot)
 }
 
 function isAxisPoint(axisPoint){
@@ -262,6 +267,39 @@ function disableEnd(){
     selectedEnd = null
 }
 
+function getNearbyBreakPoints(point){
+    let nearbyBreakPoints = {
+        left: null,
+        right: null,
+        top: null,
+        bottom: null
+    }
+
+    for (let i = 0; i < _puzzleData.puzzleBreaks.length; i++){
+        const puzzleBreak = _puzzleData.puzzleBreaks[i]
+        const position = puzzleBreak.position
+
+        if (Math.abs(position[0] - point[0]) < 2){
+            if (position[1] > point[1] && position[1] < point[1] + _puzzleData.pointDistance){
+                nearbyBreakPoints.bottom = puzzleBreak
+            }
+            else if (position[1] < point[1] && position[1] > point[1] - _puzzleData.pointDistance){
+                nearbyBreakPoints.top = puzzleBreak
+            }
+        }
+        else if (Math.abs(position[1] - point[1]) < 2){
+            if (position[0] > point[0] && position[0] < point[0] + _puzzleData.pointDistance) {
+                nearbyBreakPoints.right = puzzleBreak
+            }
+            else if (position[0] < point[0] && position[0] > point[0] - _puzzleData.pointDistance) {
+                nearbyBreakPoints.left = puzzleBreak
+            }
+        }
+    }
+
+    return nearbyBreakPoints
+}
+
 function touchStart(event){
     const touch = event.touches[0]
 
@@ -323,6 +361,10 @@ function handleDrawingBoth(clientX, clientY, movementX, movementY){
         drawLineCircle.style.top = `${drawLinePivot[1]}px`
 
         if (drawLineMove[0] < 0 && drawLinePivot[0] > _puzzleData.pointSize * 2){
+            if (closeBreakPoints.left && drawLineMove[0] < -_puzzleData.pointSize / 2){
+                drawLineMove[0] = -_puzzleData.pointSize / 2
+            }
+
             drawLine.style.width = `${Math.abs(drawLineMove[0])}px`
             drawLine.style.left = `${drawLinePivot[0] + _puzzleData.pointSize / 2 - Math.abs(drawLineMove[0])}px`
             drawLineCircle.style.left = `${drawLinePivot[0] - Math.abs(drawLineMove[0])}px`
@@ -343,6 +385,10 @@ function handleDrawingBoth(clientX, clientY, movementX, movementY){
         }
         
         if (drawLineMove[0] > 0 && drawLinePivot[0] < _puzzleData.pointSize + (_puzzleData.pointSize * 3) * (_puzzleData.grid[0] - 1) - 1){
+            if (closeBreakPoints.right && drawLineMove[0] > _puzzleData.pointSize / 2){
+                drawLineMove[0] = _puzzleData.pointSize / 2
+            }
+
             drawLine.style.width = `${drawLineMove[0]}px`
             drawLine.style.left = `${drawLinePivot[0] + _puzzleData.pointSize / 2}px`
             drawLineCircle.style.left = `${drawLinePivot[0] + Math.abs(drawLineMove[0])}px`
@@ -384,6 +430,10 @@ function handleDrawingBoth(clientX, clientY, movementX, movementY){
         drawLineCircle.style.left = `${drawLinePivot[0]}px`
 
         if (drawLineMove[1] < 0 && drawLinePivot[1] > _puzzleData.pointSize * 2){
+            if (closeBreakPoints.top && drawLineMove[1] < -_puzzleData.pointSize / 2){
+                drawLineMove[1] = -_puzzleData.pointSize / 2
+            }
+
             drawLine.style.height = `${Math.abs(drawLineMove[1])}px`
             drawLine.style.top = `${drawLinePivot[1] + _puzzleData.pointSize / 2 - Math.abs(drawLineMove[1])}px`
             drawLineCircle.style.top = `${drawLinePivot[1] - Math.abs(drawLineMove[1])}px`
@@ -404,6 +454,10 @@ function handleDrawingBoth(clientX, clientY, movementX, movementY){
         }
         
         if (drawLineMove[1] > 0 && drawLinePivot[1] < _puzzleData.pointSize + (_puzzleData.pointSize * 3) * (_puzzleData.grid[1] - 1)){
+            if (closeBreakPoints.bottom && drawLineMove[1] > _puzzleData.pointSize / 2){
+                drawLineMove[1] = _puzzleData.pointSize / 2
+            }
+
             drawLine.style.height = `${drawLineMove[1]}px`
             drawLine.style.top = `${drawLinePivot[1] + _puzzleData.pointSize / 2}px`
             drawLineCircle.style.top = `${drawLinePivot[1] + Math.abs(drawLineMove[1])}px`

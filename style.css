@@ -28,6 +28,11 @@ body {
     position: absolute;
 }
 
+.puzzle-break {
+    position: absolute;
+    z-index: 2;
+}
+
 .puzzle-rule {
     position: absolute;
 }

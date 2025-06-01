@@ -214,6 +214,48 @@ function createPuzzleEnds(puzzle, puzzlePoints, ends, size, endLength, colors){
     return puzzleEnds
 }
 
+function createPuzzleBreaks(puzzle, size, breaks, colors){
+    let puzzleBreaks = []
+
+    for (let i = 0; i < breaks.length; i++){
+        const puzzleBreak = breaks[i]
+
+        let xAdjust = 0
+        let xAdjustGrid = 0
+        let yAdjust = 0
+        let yAdjustGrid = 0
+
+        if (puzzleBreak[2] === "right"){
+            xAdjust = size * 1.5
+        }
+        else if (puzzleBreak[2] === "down"){
+            yAdjust = size * 1.5
+        }
+
+        const leftPosition = size + (size * 3) * puzzleBreak[0] + xAdjust
+        const topPosition = size + (size * 3) * puzzleBreak[1] + yAdjust
+
+        const puzzleBreakElement = document.createElement("div")
+        puzzleBreakElement.classList.add("puzzle-break")
+        puzzleBreakElement.style.width = `${size}px`
+        puzzleBreakElement.style.height = `${size}px`
+        puzzleBreakElement.style.left = `${leftPosition}px`
+        puzzleBreakElement.style.top = `${topPosition}px`
+        puzzleBreakElement.style.backgroundColor = colors[0]
+        puzzle.append(puzzleBreakElement)
+        
+        puzzleBreaks.push({
+            element: puzzleBreakElement,
+            position: [leftPosition, topPosition],
+            gridPosition: [puzzleBreak[0], puzzleBreak[1]],
+            direction: puzzleBreak[2],
+            adjustedGridPosition: [puzzleBreak[0] + xAdjustGrid, puzzleBreak[1] + yAdjustGrid]
+        })
+    }
+
+    return puzzleBreaks
+}
+
 function createHexagons(puzzle, puzzlePoints, size, colors, hexagons){
     let hexagonData = []
 
@@ -364,7 +406,7 @@ function createTriangles(puzzle, size, triangles, colors){
     return trianglesData
 }
 
-export function createPuzzle(size, grid, starts, ends, colors, rules){
+export function createPuzzle(size, grid, starts, ends, colors, breaks, rules){
     const puzzle = document.createElement("div")
     puzzle.classList.add("puzzle-holder")
     puzzle.style.width = `${size[0]}px`
@@ -381,6 +423,7 @@ export function createPuzzle(size, grid, starts, ends, colors, rules){
     const puzzleLines = createPuzzleLines(puzzle, puzzlePoints, pointSize, grid, colors)
     const puzzleStarts = createPuzzleStarts(puzzle, puzzlePoints, starts, startSize, pointSize, colors)
     const puzzleEnds = createPuzzleEnds(puzzle, puzzlePoints, ends, pointSize, endLength, colors)
+    const puzzleBreaks = createPuzzleBreaks(puzzle, pointSize, breaks, colors)
 
     let _rules = []
 
@@ -422,6 +465,7 @@ export function createPuzzle(size, grid, starts, ends, colors, rules){
         puzzleLines: puzzleLines,
         puzzleStarts: puzzleStarts,
         puzzleEnds: puzzleEnds,
+        puzzleBreaks: puzzleBreaks,
         size: size,
         grid: grid,
         starts: starts,
