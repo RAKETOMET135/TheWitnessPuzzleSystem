@@ -1,6 +1,7 @@
 import { createPuzzle } from "./modules/puzzle_creator.js"
 import { handlePuzzle } from "./modules/interaction_handler.js"
 import { validate_solution } from "./modules/solution_validator.js"
+import { Block } from "./structure/block.js"
 
 /*
 Puzzle creation info
@@ -12,12 +13,14 @@ Puzzle creation info
 5. colors [puzzleBackground, puzzleElements, line, correctLine, incorrectLine, hexagons]
 6. line breaks [[x, y, direction]] <-- position of left/top point [x, y] and then direction ("right", "down")
 7. line removal [[x, y, direction]] <-- position of left/top point [x, y] and then direction ("right", "down")
-8. rules object <-- hexagons [[x, y]], colors [[x, y, color]], stars [[x, y, color]], triangles [[x, y, count]]
+8. rules object <-- hexagons [[x, y]], colors [[x, y, color]], stars [[x, y, color]], triangles [[x, y, count]], blocks [[x, y, blockType]]
 */
 
 
 const _puzzleData = createPuzzle([500, 500], [4, 4], [[2, 2]], [[0, 3, "down-left"], [3, 1, "right"], [0, 1, "left"], [1, 3, "down"]], 
-    ["rgb(100, 100, 100)", "rgb(66, 66, 66)", "rgb(255, 255, 255)", "rgb(50, 255, 50)", "rgb(255, 50, 50)", "rgb(33, 33, 33)", "rgb(250, 200, 0)"], 
+    ["rgb(100, 100, 100)", "rgb(66, 66, 66)", "rgb(255, 255, 255)", "rgb(50, 255, 50)", "rgb(255, 50, 50)", "rgb(33, 33, 33)", "rgb(250, 200, 0)",
+        "rgb(255, 220, 0)"
+    ], 
     [[2, 2, "down"], [2, 0, "right"]],
     [[2, 3, "right"]],
     {
@@ -31,6 +34,9 @@ const _puzzleData = createPuzzle([500, 500], [4, 4], [[2, 2]], [[0, 3, "down-lef
         ],
         triangles: [
             [2, 2, 1]
+        ],
+        blocks: [
+            [2, 1, new Block([[0, 0], [0, 1], [1, 0]])]
         ]
     })
 document.body.append(_puzzleData.element)

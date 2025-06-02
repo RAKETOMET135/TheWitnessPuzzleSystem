@@ -1,3 +1,5 @@
+import { Block } from "../structure/block.js"
+
 function createPuzzlePoints(puzzle, size, grid, colors){
     let puzzlePoints = []
 
@@ -565,6 +567,69 @@ function createTriangles(puzzle, size, triangles, colors){
     return trianglesData
 }
 
+function createBlocks(puzzle, size, blocks, colors){
+    let blocksData = []
+
+    let partSize = size / 2.5
+
+    function resizePart(partElement){
+        const miniElement = document.createElement("div")
+        miniElement.classList.add("puzzle-rule")
+        miniElement.style.backgroundColor = colors[7]
+        miniElement.style.width = `${partSize / 1.4}px`
+        miniElement.style.height = `${partSize / 1.4}px`
+        partElement.append(miniElement)
+    }
+
+    for (let i = 0; i < blocks.length; i++){
+        const block = blocks[i]
+        let blockElements = []
+
+        const tile = createTile(puzzle, size, [block[0], block[1]])
+        
+        let parts = block[2].getBlock(0)
+        let minX = 99999999
+        let maxX = -99999999
+        let minY = 99999999
+        let maxY = -99999999
+
+        parts.forEach(part => {
+            if (part[0] < minX) minX = part[0]
+            if (part[0] > maxX) maxX = part[0]
+            if (part[1] < minY) minY = part[1]
+            if (part[1] > maxY) maxY = part[1]
+        })
+
+        let xN = Math.abs(minX - maxX)
+        let yN = Math.abs(minY - maxY)
+        let leftMargin = ((size * 2) - (xN * (partSize))) / 2 - ((partSize) / 2)
+        let topMargin = ((size * 2) - (yN * (partSize))) / 2 - ((partSize) / 2)
+
+        parts.forEach(part => {
+            let leftPosition = leftMargin + (partSize) * (part[0] - minX)
+            let topPosition = 0 - (partSize) * (part[1] - minY) + (partSize * maxY) + topMargin
+
+            const partElement = document.createElement("div")
+            partElement.classList.add("puzzle-rule")
+            partElement.style.width = `${partSize}px`
+            partElement.style.height = `${partSize}px`
+            partElement.style.left = `${leftPosition}px`
+            partElement.style.top = `${topPosition}px`
+            //partElement.style.backgroundColor = "rgb(0, 0, 0)"
+            partElement.style.display = "flex"
+            partElement.style.alignItems = "center"
+            partElement.style.justifyContent = "center"
+            partElement.style.boxSizing = "border-box"
+            partElement.style.margin = "0"
+            partElement.style.padding = "0"
+            resizePart(partElement)
+            tile.append(partElement)
+        })
+    }
+
+    return blocksData
+}
+
 export function createPuzzle(size, grid, starts, ends, colors, breaks, lineRemovals, rules){
     const puzzle = document.createElement("div")
     puzzle.classList.add("puzzle-holder")
@@ -618,6 +683,14 @@ export function createPuzzle(size, grid, starts, ends, colors, breaks, lineRemov
         _rules.push({
             data: trianglesData,
             type: "triangles"
+        })
+    }
+
+    if (rules.blocks){
+        const blocksData = createBlocks(puzzle, pointSize, rules.blocks, colors)
+        _rules.push({
+            data: blocksData,
+            type: "blocks"
         })
     }
 
