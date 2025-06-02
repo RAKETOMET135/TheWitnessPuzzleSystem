@@ -615,7 +615,6 @@ function createBlocks(puzzle, size, blocks, colors){
             partElement.style.height = `${partSize}px`
             partElement.style.left = `${leftPosition}px`
             partElement.style.top = `${topPosition}px`
-            //partElement.style.backgroundColor = "rgb(0, 0, 0)"
             partElement.style.display = "flex"
             partElement.style.alignItems = "center"
             partElement.style.justifyContent = "center"
@@ -624,6 +623,16 @@ function createBlocks(puzzle, size, blocks, colors){
             partElement.style.padding = "0"
             resizePart(partElement)
             tile.append(partElement)
+
+            blockElements.push(partElement)
+        })
+
+        blocksData.push({
+            tile: tile,
+            gridPosition: [block[0], block[1]],
+            blockElements: blockElements,
+            block: true,
+            blockData: block[2]
         })
     }
 
