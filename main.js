@@ -17,26 +17,29 @@ Puzzle creation info
 */
 
 
-const _puzzleData = createPuzzle([500, 500], [4, 4], [[2, 2]], [[0, 3, "down-left"], [3, 1, "right"], [0, 1, "left"], [1, 3, "down"]], 
+const _puzzleData = createPuzzle([500, 500], [5, 5], [[4, 4]], [[0, 4, "down-left"], [4, 1, "right"], [0, 0, "left"], [1, 4, "down"]], 
     ["rgb(100, 100, 100)", "rgb(66, 66, 66)", "rgb(255, 255, 255)", "rgb(50, 255, 50)", "rgb(255, 50, 50)", "rgb(33, 33, 33)", "rgb(250, 200, 0)",
         "rgb(255, 220, 0)"
     ], 
-    [[2, 2, "down"], [2, 0, "right"]],
-    [[2, 3, "right"]],
+    [[2, 0, "right"]],
+    [[3, 0, "right"]],
     {
         //hexagons: [[0, 0], [2.5, 2], [2, 2.5]],
-        colors: [
-            [0, 0, "rgb(255, 255, 255)"],
-            [1, 0, "rgb(0, 0, 0)"]
-        ],
+        //colors: [
+        //   [0, 0, "rgb(255, 255, 255)"],
+        //    [1, 0, "rgb(0, 0, 0)"]
+        //],
         //stars: [
         //    [0, 2, "rgb(255, 255, 255)"]
         //],
-        triangles: [
-            [2, 2, 1]
-        ],
+        //triangles: [
+        //    [2, 2, 1]
+        //],
         blocks: [
-            [0, 1, new Block([[0, 0], [0, -1], [0, 1]])]
+            [1, 0, new Block([[0, 0], [0, -1], [-1, 0], [-1, -1]])],
+            [0, 0, new Block([[0, 0], [0, 1]])],
+            [0, 1, new Block([[0, 0], [0, 1], [0, 2], [0, 3]])],
+            [1, 1, new Block([[0, 0], [0, 1], [1, 0]])]
         ]
     })
 document.body.append(_puzzleData.element)
