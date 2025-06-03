@@ -29,14 +29,14 @@ const _puzzleData = createPuzzle([500, 500], [4, 4], [[2, 2]], [[0, 3, "down-lef
             [0, 0, "rgb(255, 255, 255)"],
             [1, 0, "rgb(0, 0, 0)"]
         ],
-        stars: [
-            [0, 2, "rgb(255, 255, 255)"]
-        ],
+        //stars: [
+        //    [0, 2, "rgb(255, 255, 255)"]
+        //],
         triangles: [
             [2, 2, 1]
         ],
         blocks: [
-            [2, 1, new Block([[0, 0], [0, 1], [1, 0]])]
+            [0, 1, new Block([[0, 0], [0, -1], [0, 1]])]
         ]
     })
 document.body.append(_puzzleData.element)

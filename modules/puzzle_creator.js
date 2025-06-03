@@ -607,7 +607,8 @@ function createBlocks(puzzle, size, blocks, colors){
 
         parts.forEach(part => {
             let leftPosition = leftMargin + (partSize) * (part[0] - minX)
-            let topPosition = 0 - (partSize) * (part[1] - minY) + (partSize * maxY) + topMargin
+            //let topPosition = 0 - (partSize) * (part[1] - minY) + (partSize * maxY)
+            let topPosition = topMargin + (partSize) * (part[1] - minY)
 
             const partElement = document.createElement("div")
             partElement.classList.add("puzzle-rule")
