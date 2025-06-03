@@ -1,7 +1,14 @@
 export class Block{
-    constructor(blocks){
+    constructor(blocks, rotateable){
         this.root = [0, 0]
         this.blocks = blocks
+
+        if (!rotateable){
+            this.rotateable = false
+        }
+        else{
+            this.rotateable = rotateable
+        }
     }
 
     _getPartRotatedCoords(part, rotation){

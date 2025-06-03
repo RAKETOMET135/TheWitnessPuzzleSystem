@@ -284,43 +284,53 @@ function createGroups(solutionPointsGrid, puzzleData){
 function getPossibleBlockSolutions(tileData, group){
     let possibleSolutions = []
 
-    let blockParts = tileData.blockData.getBlock(0)
+    let blockParts = [tileData.blockData.getBlock(0)]
+    if (tileData.blockData.rotateable){
+        blockParts.push(tileData.blockData.getBlock(1))
+        blockParts.push(tileData.blockData.getBlock(2))
+        blockParts.push(tileData.blockData.getBlock(3))
+    }
 
     group.forEach(tile => {
         const gridPosition = tile.gridPosition
-        let allPartsPossible = true
-        let solutionPoints = []
 
         for (let i = 0; i < blockParts.length; i++){
-            const part = blockParts[i]
-            let rTilePosition = [gridPosition[0] + part[0], gridPosition[1] + part[1]]
-            let possible = false
+            const blockPart = blockParts[i]
 
-            for (let j = 0; j < group.length; j++){
-                const _tile = group[j]
-                const _gridPosition = _tile.gridPosition
+            let allPartsPossible = true
+            let solutionPoints = []
 
-                if (_gridPosition[0] !== rTilePosition[0] || _gridPosition[1] !== rTilePosition[1]) continue
+            for (let j = 0; j < blockPart.length; j++) {
+                const part = blockPart[j]
+                let rTilePosition = [gridPosition[0] + part[0], gridPosition[1] + part[1]]
+                let possible = false
 
-                possible = true
+                for (let k = 0; k < group.length; k++) {
+                    const _tile = group[k]
+                    const _gridPosition = _tile.gridPosition
 
-                break
+                    if (_gridPosition[0] !== rTilePosition[0] || _gridPosition[1] !== rTilePosition[1]) continue
+
+                    possible = true
+
+                    break
+                }
+
+                if (!possible) {
+                    allPartsPossible = false
+
+                    break
+                }
+
+                solutionPoints.push(rTilePosition)
             }
 
-            if (!possible){
-                allPartsPossible = false
-
-                break
+            if (allPartsPossible){
+                possibleSolutions.push({
+                    tile: tile,
+                    solutionPoints: solutionPoints
+                })
             }
-
-            solutionPoints.push(rTilePosition)
-        }
-
-        if (allPartsPossible){
-            possibleSolutions.push({
-                tile: tile,
-                solutionPoints: solutionPoints
-            })
         }
     })
 

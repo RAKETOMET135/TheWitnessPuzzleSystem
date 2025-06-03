@@ -607,7 +607,6 @@ function createBlocks(puzzle, size, blocks, colors){
 
         parts.forEach(part => {
             let leftPosition = leftMargin + (partSize) * (part[0] - minX)
-            //let topPosition = 0 - (partSize) * (part[1] - minY) + (partSize * maxY)
             let topPosition = topMargin + (partSize) * (part[1] - minY)
 
             const partElement = document.createElement("div")
@@ -627,6 +626,10 @@ function createBlocks(puzzle, size, blocks, colors){
 
             blockElements.push(partElement)
         })
+
+        if (block[2].rotateable){
+            tile.style.rotate = "-22.5deg"
+        }
 
         blocksData.push({
             tile: tile,
