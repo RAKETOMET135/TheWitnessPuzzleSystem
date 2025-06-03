@@ -1,7 +1,8 @@
 export class Block{
-    constructor(blocks, rotateable){
+    constructor(blocks, rotateable = false, optionalColor = null){
         this.root = [0, 0]
         this.blocks = blocks
+        this.optionalColor = optionalColor
 
         if (!rotateable){
             this.rotateable = false

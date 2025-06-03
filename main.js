@@ -25,13 +25,12 @@ const _puzzleData = createPuzzle([500, 500], [5, 5], [[4, 4]], [[0, 4, "down-lef
     [[3, 0, "right"]],
     {
         //hexagons: [[0, 0], [2.5, 2], [2, 2.5]],
-        //colors: [
-        //   [0, 0, "rgb(255, 255, 255)"],
-        //    [1, 0, "rgb(0, 0, 0)"]
-        //],
-        //stars: [
-        //    [0, 2, "rgb(255, 255, 255)"]
-        //],
+        colors: [
+            [0, 3, "rgb(255, 0, 0)"]
+        ],
+        stars: [
+            [0, 2, "rgb(255, 0, 0)"]
+        ],
         //triangles: [
         //    [2, 2, 1]
         //],
@@ -39,7 +38,7 @@ const _puzzleData = createPuzzle([500, 500], [5, 5], [[4, 4]], [[0, 4, "down-lef
             [1, 0, new Block([[0, 0], [0, -1], [-1, 0], [-1, -1]])],
             [0, 0, new Block([[0, 0], [0, 1]])],
             [0, 1, new Block([[0, 0], [0, 1], [0, 2], [0, 3]], true)],
-            [1, 1, new Block([[0, 0], [0, 1], [1, 0]])]
+            [1, 1, new Block([[0, 0], [0, 1], [1, 0]], false, "rgb(255, 0, 0)")]
         ]
     })
 document.body.append(_puzzleData.element)

@@ -467,8 +467,8 @@ function createColors(puzzle, size, colorsData){
         const colorElement = document.createElement("div")
         colorElement.classList.add("color")
         colorElement.style.backgroundColor = color[2]
-        colorElement.style.width = `${size * 1.2}px`
-        colorElement.style.height = `${size * 1.2}px`
+        colorElement.style.width = `${size * 1}px`
+        colorElement.style.height = `${size * 1}px`
         tile.append(colorElement)
 
         colorData.push({
@@ -493,14 +493,14 @@ function createStars(puzzle, size, stars){
         const starElement1 = document.createElement("div")
         starElement1.classList.add("star-1")
         starElement1.style.backgroundColor = star[2]
-        starElement1.style.width = `${size * 1}px`
-        starElement1.style.height = `${size * 1}px`
+        starElement1.style.width = `${size * 0.75}px`
+        starElement1.style.height = `${size * 0.75}px`
         tile.append(starElement1)
         const starElement2 = document.createElement("div")
         starElement2.classList.add("star-2")
         starElement2.style.backgroundColor = star[2]
-        starElement2.style.width = `${size * 1}px`
-        starElement2.style.height = `${size * 1}px`
+        starElement2.style.width = `${size * 0.75}px`
+        starElement2.style.height = `${size * 0.75}px`
         tile.append(starElement2)
 
         starData.push({
@@ -572,10 +572,17 @@ function createBlocks(puzzle, size, blocks, colors){
 
     let partSize = size / 2.5
 
-    function resizePart(partElement){
+    function resizePart(partElement, blockData){
         const miniElement = document.createElement("div")
         miniElement.classList.add("puzzle-rule")
-        miniElement.style.backgroundColor = colors[7]
+
+        if (blockData.optionalColor){
+            miniElement.style.backgroundColor = blockData.optionalColor
+        }
+        else{
+            miniElement.style.backgroundColor = colors[7]
+        }
+
         miniElement.style.width = `${partSize / 1.4}px`
         miniElement.style.height = `${partSize / 1.4}px`
         partElement.append(miniElement)
@@ -621,7 +628,7 @@ function createBlocks(puzzle, size, blocks, colors){
             partElement.style.boxSizing = "border-box"
             partElement.style.margin = "0"
             partElement.style.padding = "0"
-            resizePart(partElement)
+            resizePart(partElement, block[2])
             tile.append(partElement)
 
             blockElements.push(partElement)
@@ -636,7 +643,8 @@ function createBlocks(puzzle, size, blocks, colors){
             gridPosition: [block[0], block[1]],
             blockElements: blockElements,
             block: true,
-            blockData: block[2]
+            blockData: block[2],
+            blockColor: block[2].optionalColor
         })
     }
 

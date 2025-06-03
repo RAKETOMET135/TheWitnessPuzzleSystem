@@ -485,6 +485,16 @@ function checkGroups(groups, ruleDatas){
                     starGroup.stars.push(data)
                 }
             }
+
+            if (data.blockColor){
+                for (let j = 0; j < stars.length; j++){
+                    const starGroup = stars[j]
+
+                    if (starGroup.color !== data.blockColor) continue
+
+                    starGroup.stars.push(data)
+                }
+            }
         }
 
         for (let i = 0; i < stars.length; i++){
