@@ -651,6 +651,82 @@ function createBlocks(puzzle, size, blocks, colors){
     return blocksData
 }
 
+function createRemoveBlocks(puzzle, size, removeBlocks, colors){
+    let removeBlocksData = []
+
+    let partSize = size / 2.5
+
+    function resizePart(partElement){
+        const miniElement = document.createElement("div")
+        miniElement.classList.add("puzzle-rule")
+        miniElement.style.width = `${partSize / 2}px`
+        miniElement.style.height = `${partSize / 2}px`
+        miniElement.style.border = `${colors[8]} solid ${partSize / 4}px`
+        partElement.append(miniElement)
+    }
+
+    for (let i = 0; i < removeBlocks.length; i++){
+        const removeBlock = removeBlocks[i]
+        let removeBlockElements = []
+
+        const tile = createTile(puzzle, size, [removeBlock[0], removeBlock[1]])
+        
+        let parts = removeBlock[2].getBlock(0)
+        let minX = 99999999
+        let maxX = -99999999
+        let minY = 99999999
+        let maxY = -99999999
+
+        parts.forEach(part => {
+            if (part[0] < minX) minX = part[0]
+            if (part[0] > maxX) maxX = part[0]
+            if (part[1] < minY) minY = part[1]
+            if (part[1] > maxY) maxY = part[1]
+        })
+
+        let xN = Math.abs(minX - maxX)
+        let yN = Math.abs(minY - maxY)
+        let leftMargin = ((size * 2) - (xN * (partSize))) / 2 - ((partSize) / 2)
+        let topMargin = ((size * 2) - (yN * (partSize))) / 2 - ((partSize) / 2)
+
+        parts.forEach(part => {
+            let leftPosition = leftMargin + (partSize) * (part[0] - minX)
+            let topPosition = topMargin + (partSize) * (part[1] - minY)
+
+            const partElement = document.createElement("div")
+            partElement.classList.add("puzzle-rule")
+            partElement.style.width = `${partSize}px`
+            partElement.style.height = `${partSize}px`
+            partElement.style.left = `${leftPosition}px`
+            partElement.style.top = `${topPosition}px`
+            partElement.style.display = "flex"
+            partElement.style.alignItems = "center"
+            partElement.style.justifyContent = "center"
+            partElement.style.boxSizing = "border-box"
+            partElement.style.margin = "0"
+            partElement.style.padding = "0"
+            resizePart(partElement, removeBlock[2])
+            tile.append(partElement)
+
+            removeBlockElements.push(partElement)
+        })
+
+        if (removeBlock[2].rotateable){
+            tile.style.rotate = "-22.5deg"
+        }
+
+        removeBlocksData.push({
+            tile: tile,
+            gridPosition: [removeBlock[0], removeBlock[1]],
+            removeBlockElements: removeBlockElements,
+            removeBlock: true,
+            removeBlockData: removeBlock[2]
+        })
+    }
+
+    return removeBlocksData
+}
+
 export function createPuzzle(size, grid, starts, ends, colors, breaks, lineRemovals, rules){
     const puzzle = document.createElement("div")
     puzzle.classList.add("puzzle-holder")
@@ -712,6 +788,14 @@ export function createPuzzle(size, grid, starts, ends, colors, breaks, lineRemov
         _rules.push({
             data: blocksData,
             type: "blocks"
+        })
+    }
+
+    if (rules.removeBlocks){
+        const removeBlocksData = createRemoveBlocks(puzzle, pointSize, rules.removeBlocks, colors)
+        _rules.push({
+            data: removeBlocksData,
+            type: "removeBlocks"
         })
     }
 

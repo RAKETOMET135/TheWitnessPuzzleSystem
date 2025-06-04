@@ -10,16 +10,16 @@ Puzzle creation info
 2. gridSize [x, y] <-- int
 3. starts [[x, y]]
 4. ends [[x, y, direction]] <-- direction ("up", "down", "left", "right", + combinations("up-right", "down-right", "up-left", "down-left"))
-5. colors [puzzleBackground, puzzleElements, line, correctLine, incorrectLine, hexagons]
+5. colors [puzzleBackground, puzzleElements, line, correctLine, incorrectLine, hexagons, triangles, blocks, removeBlocks]
 6. line breaks [[x, y, direction]] <-- position of left/top point [x, y] and then direction ("right", "down")
 7. line removal [[x, y, direction]] <-- position of left/top point [x, y] and then direction ("right", "down")
-8. rules object <-- hexagons [[x, y]], colors [[x, y, color]], stars [[x, y, color]], triangles [[x, y, count]], blocks [[x, y, blockType]]
+8. rules object <-- hexagons [[x, y]], colors [[x, y, color]], stars [[x, y, color]], triangles [[x, y, count]], blocks [[x, y, blockType]], removeBlocks [[x, y, blockType]]
 */
 
 
 const _puzzleData = createPuzzle([500, 500], [5, 5], [[4, 4]], [[0, 4, "down-left"], [4, 1, "right"], [0, 0, "left"], [1, 4, "down"]], 
     ["rgb(100, 100, 100)", "rgb(66, 66, 66)", "rgb(255, 255, 255)", "rgb(50, 255, 50)", "rgb(255, 50, 50)", "rgb(33, 33, 33)", "rgb(250, 200, 0)",
-        "rgb(255, 220, 0)"
+        "rgb(255, 220, 0)", "rgb(44, 44, 255)"
     ], 
     [[2, 0, "right"]],
     [[3, 0, "right"]],
@@ -39,6 +39,9 @@ const _puzzleData = createPuzzle([500, 500], [5, 5], [[4, 4]], [[0, 4, "down-lef
             [0, 0, new Block([[0, 0], [0, 1]])],
             [0, 1, new Block([[0, 0], [0, 1], [0, 2], [0, 3]], true)],
             [1, 1, new Block([[0, 0], [0, 1], [1, 0]], false, "rgb(255, 0, 0)")]
+        ],
+        removeBlocks: [
+            [2, 1, new Block([[0, 0], [1, 0]])]
         ]
     })
 document.body.append(_puzzleData.element)
