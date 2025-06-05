@@ -16,7 +16,9 @@ Puzzle creation info
 8. rules object <-- hexagons [[x, y]], colors [[x, y, color]], stars [[x, y, color]], triangles [[x, y, count]], blocks [[x, y, blockType]], removeBlocks [[x, y, blockType]]
 */
 
+//IMPORTANT: 3 blocks in a group should work fine with removeBlocks, but more then that can cause lag on solution submit (due to every block making possible solutions exponentionaly higher)
 
+/*
 const _puzzleData = createPuzzle([500, 500], [5, 5], [[4, 4]], [[0, 4, "down-left"], [4, 1, "right"], [0, 0, "left"], [1, 4, "down"]], 
     ["rgb(100, 100, 100)", "rgb(66, 66, 66)", "rgb(255, 255, 255)", "rgb(50, 255, 50)", "rgb(255, 50, 50)", "rgb(33, 33, 33)", "rgb(250, 200, 0)",
         "rgb(255, 220, 0)", "rgb(44, 44, 255)"
@@ -44,6 +46,23 @@ const _puzzleData = createPuzzle([500, 500], [5, 5], [[4, 4]], [[0, 4, "down-lef
             [2, 1, new Block([[0, 0], [1, 0]])]
         ]
     })
+*/
+
+const _puzzleData = createPuzzle([500, 500], [4, 4], [[0, 3]], [[3, 0, "up"]],
+    ["rgb(100, 100, 100)", "rgb(66, 66, 66)", "rgb(255, 255, 255)", "rgb(50, 255, 50)", "rgb(255, 50, 50)", "rgb(33, 33, 33)", "rgb(250, 200, 0)",
+        "rgb(255, 220, 0)", "rgb(44, 44, 255)"
+    ],
+    [], [],
+    {
+        blocks: [
+            [0, 0, new Block([[0, 0], [0, 1], [0, 2], [1, 0], [2, 0], [1, 1], [1, 2], [2, 1], [2, 2]])]
+        ],
+        removeBlocks: [
+            [0, 1, new Block([[0, 0], [1, 0], [0, 1]], true)]
+        ]
+    }
+)
+
 document.body.append(_puzzleData.element)
 
 handlePuzzle(_puzzleData, validate_solution)
