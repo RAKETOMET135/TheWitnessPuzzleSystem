@@ -633,7 +633,7 @@ function checkGroups(groups, ruleDatas){
                 if (hasBlocks) groupCorrect = false
             }
         }
-        else{
+        else if (blockCount > 0){
             let blockSolutionsRemove = []
             let blockSolutionsRemoveCounts = []
             let allSolutionVariants = []
@@ -817,6 +817,7 @@ function checkGroups(groups, ruleDatas){
         }
         
         if (blockCount - removeBlockCount !== group.length && hasBlocks) groupCorrect = false
+        if (hasRemoveBlocks && blockCount <= 0) groupCorrect = false
 
         if (!groupCorrect) correct = false
     })
