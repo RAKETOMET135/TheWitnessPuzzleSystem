@@ -940,6 +940,7 @@ export function createPuzzle(size, grid, starts, ends, colors, breaks, lineRemov
         symmetryHelper = puzzle.cloneNode()
         symmetryHelper.style.backgroundColor = "transparent"
         symmetryHelper.style.pointerEvents = "none"
+        symmetryHelper.classList.remove("puzzle-holder")
         symmetryHelper.classList.add("puzzle-rule")
         symmetryHelper.style.zIndex = "30"
         puzzle.append(symmetryHelper)
