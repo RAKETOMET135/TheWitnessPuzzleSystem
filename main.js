@@ -15,7 +15,8 @@ Puzzle creation info
 5. colors [puzzleBackground, puzzleElements, line, correctLine, incorrectLine, hexagons, triangles, blocks, removeBlocks]
 6. line breaks [[x, y, direction]] <-- position of left/top point [x, y] and then direction ("right", "down")
 7. line removal [[x, y, direction]] <-- position of left/top point [x, y] and then direction ("right", "down")
-8. rules object <-- hexagons [[x, y]], colors [[x, y, color]], stars [[x, y, color]], triangles [[x, y, count]], blocks [[x, y, blockType]], removeBlocks [[x, y, blockType], symmetry type] <-- type ("vertical", "horizontal", "both")
+8. rules object <-- hexagons [[x, y]], colors [[x, y, color]], stars [[x, y, color]], triangles [[x, y, count]], blocks [[x, y, blockType]], removeBlocks [[x, y, blockType], 
+    symmetry type <-- type ("vertical", "horizontal", "both"), symmetry hexagons [colors, [[x, y, colorId]]]
 */
 
 //IMPORTANT: 3 blocks in a group should work fine with removeBlocks, but more then that can cause lag on solution submit (due to every block making possible solutions exponentionaly higher)
@@ -68,12 +69,18 @@ const _puzzleData = createPuzzle([500, 500], [4, 4], [[0, 3]], [[3, 0, "up"]],
 )
 */
 
-const _puzzleData = createPuzzle([500, 500], [5, 5], [[0, 4]], [[2, 0, "up"]],
+const _puzzleData = createPuzzle([500, 500], [5, 5], [[0, 4], [1, 4]], [[2, 0, "up"]],
     ["rgb(100, 100, 100)", "rgb(66, 66, 66)", "rgb(255, 255, 255)", "rgb(50, 255, 50)", "rgb(255, 50, 50)", "rgb(33, 33, 33)", "rgb(250, 200, 0)",
         "rgb(255, 220, 0)", "rgb(44, 44, 255)"
     ],
     [[0, 0, "right"], [4, 2, "down"]], [[0, 1, "down"], [3, 3, "down"]], {
         symmetry: "both",
+        symmetryHexagons: [
+            ["rgb(99, 235, 253)", "rgb(238, 255, 0)"],
+            [
+                [1, 1, 0]
+            ]
+        ],
         colors: [
             [3, 1, "rgb(255, 255, 255)"],
             [3, 2, "rgb(0, 0, 0)"]

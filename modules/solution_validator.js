@@ -825,16 +825,45 @@ function checkGroups(groups, ruleDatas){
     return correct
 }
 
+function getHexagonGroups(hexagonsData){
+    let group0 = []
+    let group1 = []
+
+    for (let i = 0; i < hexagonsData.length; i++){
+        const hexagon = hexagonsData[i]
+        const colorId = hexagon.hexagon[2]
+
+        if (colorId === 0){
+            group0.push(hexagon)
+        } 
+        else {
+            group1.push(hexagon)
+        }
+    }
+
+    let groups = [group0, group1]
+
+    return groups
+}
+
 export function validate_solution(solutionEnd, solutionPoints, solutionPointsGrid, solutionStart, puzzleData, solutionPointsGridSymmetry){ 
     solutionPointsGrid.push(solutionEnd.puzzlePoint.gridPosition)
 
+    let points0 = []
+    let points1 = []
+
     if (solutionPointsGridSymmetry){
+        for (let i = 0; i < solutionPointsGrid.length; i++){
+            points0.push(solutionPointsGrid[i])
+        }
+
         solutionPointsGrid.push([-99999999, -99999999])
 
         for (let i = 0; i < solutionPointsGridSymmetry.length; i++){
             const solutionPointGridSymmetry = solutionPointsGridSymmetry[i]
 
             solutionPointsGrid.push(solutionPointGridSymmetry)
+            points1.push(solutionPointGridSymmetry)
         }
     }
 
@@ -853,6 +882,18 @@ export function validate_solution(solutionEnd, solutionPoints, solutionPointsGri
                 let correct = checkHexagons(solutionPointsGrid, rule.data, puzzleData)
 
                 if (!correct){
+                    rulesCorrect = false
+
+                    break
+                }
+            }
+            else if (rule.type === "hexagonsColors"){
+                let hexagonGroups = getHexagonGroups(rule.data)
+
+                let correct0 = checkHexagons(points0, hexagonGroups[0], puzzleData)
+                let correct1 = checkHexagons(points1, hexagonGroups[1], puzzleData)
+
+                if (!correct0 || !correct1){
                     rulesCorrect = false
 
                     break

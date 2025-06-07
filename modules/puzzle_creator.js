@@ -446,6 +446,35 @@ function createHexagons(puzzle, puzzlePoints, size, colors, hexagons){
     return hexagonData
 }
 
+function createHexagonsColors(puzzle, size, colors, hexagons){
+    let hexagonData = []
+
+    hexagons.forEach(hexagon => {
+        const leftPosition = size + (size * 3) * hexagon[0]
+        const topPosition = size + (size * 3) * hexagon[1]
+
+        const hexagonElement = document.createElement("div")
+        hexagonElement.classList.add("hexagon")
+        hexagonElement.classList.add("puzzle-rule")
+        hexagonElement.style.width = `${size - size / 8}px`
+        hexagonElement.style.height = `${size}px`
+        hexagonElement.style.left = `${leftPosition + size / 16}px`
+        hexagonElement.style.top = `${topPosition}px`
+        hexagonElement.style.backgroundColor = colors[hexagon[2]]
+        hexagonElement.style.rotate = "90deg"
+        hexagonElement.style.scale = "0.9"
+
+        puzzle.append(hexagonElement)
+        hexagonData.push({
+            hexagon: hexagon,
+            element: hexagonElement,
+            position: [leftPosition, topPosition]
+        })
+    })
+
+    return hexagonData
+}
+
 function createTile(puzzle, size, gridPosition){
     const tile = document.createElement("div")
     tile.classList.add("puzzle-rule")
@@ -926,6 +955,7 @@ export function createPuzzle(size, grid, starts, ends, colors, breaks, lineRemov
     let isSymmetry = false
     let symmetry = rules.symmetry
     let symmetryHelper = null
+    let symmetryColors = null
     if (rules.symmetry){
         let adjustData = adjustForSymmetry(rules.symmetry, puzzle, puzzlePoints, puzzleStarts, startSize, pointSize, colors, grid, puzzleEnds, endLength)
         puzzleStarts = adjustData[0]
@@ -944,6 +974,17 @@ export function createPuzzle(size, grid, starts, ends, colors, breaks, lineRemov
         symmetryHelper.classList.add("puzzle-rule")
         symmetryHelper.style.zIndex = "30"
         puzzle.append(symmetryHelper)
+
+        if (rules.symmetryHexagons){
+            let coloredHexagonsData = createHexagonsColors(puzzle, pointSize, rules.symmetryHexagons[0], rules.symmetryHexagons[1])
+            _rules.push({
+                data: coloredHexagonsData,
+                type: "hexagonsColors"
+            })
+
+            symmetryColors = rules.symmetryHexagons[0]
+            colors[2] = symmetryColors[0]
+        }
     }
 
     return {
@@ -964,6 +1005,7 @@ export function createPuzzle(size, grid, starts, ends, colors, breaks, lineRemov
         rules: _rules,
         isSymmetry: isSymmetry,
         symmetry: symmetry,
-        symmetryHelper: symmetryHelper
+        symmetryHelper: symmetryHelper,
+        symmetryColors: symmetryColors
     }
 }

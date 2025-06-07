@@ -145,7 +145,7 @@ function startClick(puzzleStart, element){
     document.body.style.cursor = "none"
 
     if (isSymmetry){
-        usedStartSymmetry.puzzlePoint.puzzlePoint.style.backgroundColor = _puzzleData.colors[2]
+        createDuplicatedLineSymmetry()
     }
 
     startDrawing(puzzleStart.puzzlePoint.position)
@@ -980,10 +980,24 @@ function createDuplicatedLineSymmetry(){
     for (let i = 0; i < _puzzleData.element.children.length; i++){
         const child = _puzzleData.element.children[i]
 
+        let colors = [""]
+        if (_puzzleData.symmetryColors){
+            colors = _puzzleData.symmetryColors
+        }
+
+        if (child.classList.contains("puzzle-rule")) continue
+
         if (child.style.backgroundColor === _puzzleData.colors[2] || child.style.backgroundColor === _puzzleData.colors[3] ||
-            child.style.backgroundColor === _puzzleData.colors[4]
+            child.style.backgroundColor === _puzzleData.colors[4] || child.style.backgroundColor === colors[0]
         ){
             const clone =  child.cloneNode()
+
+            if (correct){
+                clone.style.backgroundColor = _puzzleData.colors[3]
+            }
+            else{
+                clone.style.backgroundColor = colors[1]
+            }
 
             _puzzleData.symmetryHelper.append(clone)
         }
