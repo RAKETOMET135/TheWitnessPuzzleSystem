@@ -724,7 +724,13 @@ function handleDrawingBoth(clientX, clientY, movementX, movementY){
     let margin = 2
 
     if (!isSymmetry){
-        closeLineRemovals = {
+        closeLineRemovalsSymmetry = {
+            top: null,
+            bottom: null,
+            left: null,
+            right: null
+        }
+        closeBreakPointsSymmetry = {
             top: null,
             bottom: null,
             left: null,
@@ -959,12 +965,16 @@ function handleDrawingBoth(clientX, clientY, movementX, movementY){
 }
 
 function removePrevDuplicatedSymmetryLine(){
+    if (!isSymmetry) return
+
     while (_puzzleData.symmetryHelper.children.length > 0){
         _puzzleData.symmetryHelper.firstChild.remove()
     }
 }
 
 function createDuplicatedLineSymmetry(){
+    if (!isSymmetry) return
+
     removePrevDuplicatedSymmetryLine()
 
     for (let i = 0; i < _puzzleData.element.children.length; i++){
