@@ -727,6 +727,130 @@ function createRemoveBlocks(puzzle, size, removeBlocks, colors){
     return removeBlocksData
 }
 
+function adjustForSymmetry(symmetryType, puzzle, puzzlePoints, starts, size, pointSize, colors, grid, ends, endLength){
+    let puzzleStarts = []
+    let puzzleEnds = []
+
+    let diff = size - pointSize
+
+    starts.forEach(start => {
+        let gridPosition = start.gridPosition
+        let startPosition = [gridPosition[0], gridPosition[1]]
+
+        switch (symmetryType){
+            case "vertical":
+                startPosition = [grid[0] - 1 - gridPosition[0], gridPosition[1]]
+
+                break
+            case "horizontal":
+                startPosition = [gridPosition[0], grid[1] - 1 - gridPosition[1]]
+
+                break
+            default:
+                startPosition = [grid[0] - 1 - gridPosition[0], grid[1] - 1 - gridPosition[1]]
+        }
+
+        for (let i = 0; i < puzzlePoints.length; i++){
+            const puzzlePoint = puzzlePoints[i]
+            const element = puzzlePoint.puzzlePoint
+            const position = puzzlePoint.position
+            const _gridPosition = puzzlePoint.gridPosition
+
+            if (_gridPosition[0] !== startPosition[0] || _gridPosition[1] !== startPosition[1]) continue
+
+            const leftPosition = position[0] - diff / 2
+            const topPosition = position[1] - diff / 2
+
+            element.style.width = `${size}px`
+            element.style.height = `${size}px`
+            element.style.left = `${leftPosition}px`
+            element.style.top = `${topPosition}px`
+            element.style.zIndex = "10"
+
+            puzzleStarts.push({
+                puzzlePoint: puzzlePoint,
+                gridPosition: _gridPosition,
+                defaultColor: colors[1],
+                selectColor: colors[2],
+                linked: start.gridPosition   
+            })
+
+            puzzleStarts.push({
+                puzzlePoint: start.puzzlePoint,
+                gridPosition: start.gridPosition,
+                defaultColor: colors[1],
+                selectColor: colors[2],
+                linked: _gridPosition   
+            })
+
+            break
+        }
+    })
+
+    let toCreateEndData = []
+
+    function getEndDirection(direction){
+        if (symmetryType === "vertical"){
+            if (direction === "up" || direction === "down") return direction
+            if (direction === "right") return "left"
+            if (direction === "left") return "right"
+            if (direction === "up-right") return "up-left"
+            if (direction === "up-left") return "up-right"
+            if (direction === "down-right") return "down-left"
+            if (direction === "down-left") return "down-right"
+        }
+        else if (symmetryType === "horizontal"){
+            if (direction === "right" || direction === "left") return direction
+            if (direction === "up") return "down"
+            if (direction === "down") return "up"
+            if (direction === "up-right") return "down-right"
+            if (direction === "up-left") return "down-left"
+            if (direction === "down-left") return "up-left"
+            if (direction === "down-right") return "up-right"
+        }
+        else{
+            if (direction === "right") return "left"
+            if (direction === "left") return "right"
+            if (direction === "up") return "down"
+            if (direction === "down") return "up"
+            if (direction === "up-right") return "down-left"
+            if (direction === "up-left") return "down-right"
+            if (direction === "down-right") return "up-left"
+            if (direction === "down-left") return "up-right"
+        }
+    }
+
+    ends.forEach(end => {
+        let gridPosition = end.puzzlePoint.gridPosition
+        let endPosition = [gridPosition[0], gridPosition[1]]
+
+        switch (symmetryType){
+            case "vertical":
+                endPosition = [grid[0] - 1 - gridPosition[0], gridPosition[1]]
+
+                break
+            case "horizontal":
+                endPosition = [gridPosition[0], grid[1] - 1 - gridPosition[1]]
+
+                break
+            default:
+                endPosition = [grid[0] - 1 - gridPosition[0], grid[1] - 1 - gridPosition[1]]
+        }
+
+        toCreateEndData.push([gridPosition[0], gridPosition[1], end.end[2]])
+        toCreateEndData.push([endPosition[0], endPosition[1], getEndDirection(end.end[2])])
+
+        end.endPoint.remove()
+        end.endLine.remove()
+    })
+
+    puzzleEnds = createPuzzleEnds(puzzle, puzzlePoints, toCreateEndData, pointSize, endLength, colors)
+
+    let adjustData = [puzzleStarts, puzzleEnds]
+
+    return adjustData
+}
+
 export function createPuzzle(size, grid, starts, ends, colors, breaks, lineRemovals, rules){
     const puzzle = document.createElement("div")
     puzzle.classList.add("puzzle-holder")
@@ -742,8 +866,8 @@ export function createPuzzle(size, grid, starts, ends, colors, breaks, lineRemov
 
     const puzzlePoints = createPuzzlePoints(puzzle, pointSize, grid, colors)
     const puzzleLines = createPuzzleLines(puzzle, puzzlePoints, pointSize, grid, colors)
-    const puzzleStarts = createPuzzleStarts(puzzle, puzzlePoints, starts, startSize, pointSize, colors)
-    const puzzleEnds = createPuzzleEnds(puzzle, puzzlePoints, ends, pointSize, endLength, colors)
+    let puzzleStarts = createPuzzleStarts(puzzle, puzzlePoints, starts, startSize, pointSize, colors)
+    let puzzleEnds = createPuzzleEnds(puzzle, puzzlePoints, ends, pointSize, endLength, colors)
     const puzzleBreaks = createPuzzleBreaks(puzzle, pointSize, breaks, colors)
     const puzzleLineRemovals = createPuzzleLineRemovals(puzzle, pointSize, lineRemovals, colors, puzzleLines)
 
@@ -799,6 +923,28 @@ export function createPuzzle(size, grid, starts, ends, colors, breaks, lineRemov
         })
     }
 
+    let isSymmetry = false
+    let symmetry = rules.symmetry
+    let symmetryHelper = null
+    if (rules.symmetry){
+        let adjustData = adjustForSymmetry(rules.symmetry, puzzle, puzzlePoints, puzzleStarts, startSize, pointSize, colors, grid, puzzleEnds, endLength)
+        puzzleStarts = adjustData[0]
+        puzzleEnds = adjustData[1]
+
+        _rules.push({
+            data: rules.symmetry,
+            type: "symmetry"
+        })
+
+        isSymmetry = true
+        symmetryHelper = puzzle.cloneNode()
+        symmetryHelper.style.backgroundColor = "transparent"
+        symmetryHelper.style.pointerEvents = "none"
+        symmetryHelper.classList.add("puzzle-rule")
+        symmetryHelper.style.zIndex = "30"
+        puzzle.append(symmetryHelper)
+    }
+
     return {
         element: puzzle,
         puzzlePoints: puzzlePoints,
@@ -814,6 +960,9 @@ export function createPuzzle(size, grid, starts, ends, colors, breaks, lineRemov
         colors: colors,
         pointSize: pointSize,
         pointDistance: pointSize * 3,
-        rules: _rules
+        rules: _rules,
+        isSymmetry: isSymmetry,
+        symmetry: symmetry,
+        symmetryHelper: symmetryHelper
     }
 }

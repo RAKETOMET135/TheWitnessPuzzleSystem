@@ -825,8 +825,18 @@ function checkGroups(groups, ruleDatas){
     return correct
 }
 
-export function validate_solution(solutionEnd, solutionPoints, solutionPointsGrid, solutionStart, puzzleData){ 
+export function validate_solution(solutionEnd, solutionPoints, solutionPointsGrid, solutionStart, puzzleData, solutionPointsGridSymmetry){ 
     solutionPointsGrid.push(solutionEnd.puzzlePoint.gridPosition)
+
+    if (solutionPointsGridSymmetry){
+        solutionPointsGrid.push([-99999999, -99999999])
+
+        for (let i = 0; i < solutionPointsGridSymmetry.length; i++){
+            const solutionPointGridSymmetry = solutionPointsGridSymmetry[i]
+
+            solutionPointsGrid.push(solutionPointGridSymmetry)
+        }
+    }
 
     if (puzzleData.rules.length <= 0){
         return true

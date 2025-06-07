@@ -3,6 +3,8 @@ import { handlePuzzle } from "./modules/interaction_handler.js"
 import { validate_solution } from "./modules/solution_validator.js"
 import { Block } from "./structure/block.js"
 
+//fix start becomming square when removal line
+
 /*
 Puzzle creation info
 
@@ -13,7 +15,7 @@ Puzzle creation info
 5. colors [puzzleBackground, puzzleElements, line, correctLine, incorrectLine, hexagons, triangles, blocks, removeBlocks]
 6. line breaks [[x, y, direction]] <-- position of left/top point [x, y] and then direction ("right", "down")
 7. line removal [[x, y, direction]] <-- position of left/top point [x, y] and then direction ("right", "down")
-8. rules object <-- hexagons [[x, y]], colors [[x, y, color]], stars [[x, y, color]], triangles [[x, y, count]], blocks [[x, y, blockType]], removeBlocks [[x, y, blockType]]
+8. rules object <-- hexagons [[x, y]], colors [[x, y, color]], stars [[x, y, color]], triangles [[x, y, count]], blocks [[x, y, blockType]], removeBlocks [[x, y, blockType], symmetry type] <-- type ("vertical", "horizontal", "both")
 */
 
 //IMPORTANT: 3 blocks in a group should work fine with removeBlocks, but more then that can cause lag on solution submit (due to every block making possible solutions exponentionaly higher)
@@ -48,6 +50,7 @@ const _puzzleData = createPuzzle([500, 500], [5, 5], [[4, 4]], [[0, 4, "down-lef
     })
 */
 
+/*
 const _puzzleData = createPuzzle([500, 500], [4, 4], [[0, 3]], [[3, 0, "up"]],
     ["rgb(100, 100, 100)", "rgb(66, 66, 66)", "rgb(255, 255, 255)", "rgb(50, 255, 50)", "rgb(255, 50, 50)", "rgb(33, 33, 33)", "rgb(250, 200, 0)",
         "rgb(255, 220, 0)", "rgb(44, 44, 255)"
@@ -58,7 +61,22 @@ const _puzzleData = createPuzzle([500, 500], [4, 4], [[0, 3]], [[3, 0, "up"]],
             [0, 0, new Block([[0, 0], [0, 1], [0, 2], [1, 0], [2, 0], [1, 1], [1, 2], [2, 1], [2, 2]])]
         ],
         removeBlocks: [
-            [0, 1, new Block([[0, 0], [1, 0], [0, 1]], true)]
+            [0, 1, new Block([[0, 0], [1, 0], [0, 1]], true)],
+            [0, 2, new Block([[0, 0], [0, 1]])]
+        ]
+    }
+)
+*/
+
+const _puzzleData = createPuzzle([500, 500], [5, 5], [[0, 4]], [[2, 0, "up"]],
+    ["rgb(100, 100, 100)", "rgb(66, 66, 66)", "rgb(255, 255, 255)", "rgb(50, 255, 50)", "rgb(255, 50, 50)", "rgb(33, 33, 33)", "rgb(250, 200, 0)",
+        "rgb(255, 220, 0)", "rgb(44, 44, 255)"
+    ],
+    [[0, 0, "right"], [4, 2, "down"]], [[0, 1, "down"], [3, 3, "down"]], {
+        symmetry: "both",
+        colors: [
+            [3, 1, "rgb(255, 255, 255)"],
+            [3, 2, "rgb(0, 0, 0)"]
         ]
     }
 )
