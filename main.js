@@ -16,7 +16,7 @@ Puzzle creation info
 6. line breaks [[x, y, direction]] <-- position of left/top point [x, y] and then direction ("right", "down")
 7. line removal [[x, y, direction]] <-- position of left/top point [x, y] and then direction ("right", "down")
 8. rules object <-- hexagons [[x, y]], colors [[x, y, color]], stars [[x, y, color]], triangles [[x, y, count]], blocks [[x, y, blockType]], removeBlocks [[x, y, blockType], 
-    symmetry type <-- type ("vertical", "horizontal", "both"), symmetry hexagons [colors, [[x, y, colorId]]]
+    symmetry type <-- type ("vertical", "horizontal", "both"), symmetry hexagons [colors, [[x, y, colorId]]], eliminationMarks [[x, y, color]]
 */
 
 //IMPORTANT: 3 blocks in a group should work fine with removeBlocks, but more then that can cause lag on solution submit (due to every block making possible solutions exponentionaly higher)
@@ -84,6 +84,9 @@ const _puzzleData = createPuzzle([500, 500], [5, 5], [[0, 4], [1, 4]], [[2, 0, "
         colors: [
             [3, 1, "rgb(255, 255, 255)"],
             [3, 2, "rgb(0, 0, 0)"]
+        ],
+        eliminationMarks: [
+            [2, 1, "rgb(255, 255, 255)"]
         ]
     }
 )

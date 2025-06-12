@@ -545,6 +545,55 @@ function createStars(puzzle, size, stars){
     return starData
 }
 
+function createEliminationMarks(puzzle, size, eliminationMarks){
+    let eliminationMarksData = []
+
+    for (let i = 0; i < eliminationMarks.length; i++){
+        const eliminationMark = eliminationMarks[i]
+
+        const tile = createTile(puzzle, size, [eliminationMark[0], eliminationMark[1]])
+
+        const eliminationMarkElementTop = document.createElement("div")
+        eliminationMarkElementTop.classList.add("puzzle-rule")
+        eliminationMarkElementTop.classList.add("elimination-mark-part")
+        eliminationMarkElementTop.style.backgroundColor = eliminationMark[2]
+        eliminationMarkElementTop.style.width = `${size * 0.75 / 1.55}px`
+        eliminationMarkElementTop.style.height = `${size * 0.75 / 3}px`
+        eliminationMarkElementTop.style.transform = "rotate(-90deg)"
+        tile.append(eliminationMarkElementTop)
+
+        const eliminationMarkElementRight = document.createElement("div")
+        eliminationMarkElementRight.classList.add("puzzle-rule")
+        eliminationMarkElementRight.classList.add("elimination-mark-part")
+        eliminationMarkElementRight.style.backgroundColor = eliminationMark[2]
+        eliminationMarkElementRight.style.width = `${size * 0.75 / 1.55}px`
+        eliminationMarkElementRight.style.height = `${size * 0.75 / 3}px`
+        eliminationMarkElementRight.style.transform = "rotate(30deg)"
+        tile.append(eliminationMarkElementRight)
+
+        const eliminationMarkElementLeft = document.createElement("div")
+        eliminationMarkElementLeft.classList.add("puzzle-rule")
+        eliminationMarkElementLeft.classList.add("elimination-mark-part")
+        eliminationMarkElementLeft.style.backgroundColor = eliminationMark[2]
+        eliminationMarkElementLeft.style.width = `${size * 0.75 / 1.55}px`
+        eliminationMarkElementLeft.style.height = `${size * 0.75 / 3}px`
+        eliminationMarkElementLeft.style.transform = "rotate(150deg)"
+        tile.append(eliminationMarkElementLeft)
+
+        eliminationMarksData.push({
+            tile: tile,
+            gridPosition: [eliminationMark[0], eliminationMark[1]],
+            eliminationMarkColor: eliminationMark[2],
+            elementTop: eliminationMarkElementTop,
+            elementRight: eliminationMarkElementRight,
+            elementLeft: eliminationMarkElementLeft,
+            eliminationMark: true
+        })
+    }
+
+    return eliminationMarksData
+}
+
 function createTriangles(puzzle, size, triangles, colors){
     let trianglesData = []
 
@@ -949,6 +998,14 @@ export function createPuzzle(size, grid, starts, ends, colors, breaks, lineRemov
         _rules.push({
             data: removeBlocksData,
             type: "removeBlocks"
+        })
+    }
+
+    if (rules.eliminationMarks){
+        const eliminationMarksData = createEliminationMarks(puzzle, pointSize, rules.eliminationMarks)
+        _rules.push({
+            data: eliminationMarksData,
+            type: "eliminationMarks"
         })
     }
 

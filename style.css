@@ -79,6 +79,14 @@ body {
     translate: -50% -50%;
 }
 
+.elimination-mark-part {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform-origin: 0% 50%;
+    translate: 0 -50%;
+}
+
 @media (width < 800px) {
     .puzzle-holder {
         scale: 0.6;
