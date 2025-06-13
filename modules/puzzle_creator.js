@@ -439,7 +439,8 @@ function createHexagons(puzzle, puzzlePoints, size, colors, hexagons){
         hexagonData.push({
             hexagon: hexagon,
             element: hexagonElement,
-            position: [leftPosition, topPosition]
+            position: [leftPosition, topPosition],
+            gridPosition: [hexagon[0], hexagon[1]]
         })
     })
 

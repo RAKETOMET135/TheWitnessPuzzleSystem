@@ -79,7 +79,7 @@ function checkHexagons(solutionPointsGrid, ruleData, puzzleData){
         correct = true
     }
 
-    return correct
+    return [correct, correctHexagons]
 }
 
 function isConnected(point0, point1, solutionPoints){
@@ -483,29 +483,436 @@ function checkBlockSolution(solutionPoints, otherSolutions, usedSolutionPoints){
     return correct
 }
 
-function checkGroups(groups, ruleDatas){
+function checkGroup(group, ruleDatas){
+    let groupCorrect = true
+    let checkColor = false
+    let toCheckColor = null
+    let stars = []
+    let blockSolutions = []
+    let hasBlocks = false
+    let hasRemoveBlocks = false
+    let removeBlockCount = 0
+    let removeBlocks = []
+    let blocks = []
+    let blockCount = 0
+    let eliminationMarksCount = 0
+    let eliminationMarks = []
+
+    let datas = []
+
+    for (let i = 0; i < group.length; i++) {
+        const tile = group[i]
+        let tileData = null
+
+        for (let j = 0; j < ruleDatas.length; j++) {
+            const data = ruleDatas[j]
+
+            if (data.gridPosition[0] !== tile.gridPosition[0] || data.gridPosition[1] !== tile.gridPosition[1]) continue
+
+            tileData = data
+        }
+
+        if (!tileData) continue
+
+        if (tileData.colorSensitive) {
+            checkColor = true
+            toCheckColor = tileData.color
+        }
+
+        if (tileData.star) {
+            let starGroupExists = false
+
+            for (let j = 0; j < stars.length; j++) {
+                const starGroup = stars[j]
+
+                if (starGroup.color !== tileData.starColor) continue
+
+                starGroupExists = true
+                starGroup.stars.push(tileData)
+            }
+
+            if (!starGroupExists) {
+                stars.push({
+                    color: tileData.starColor,
+                    stars: [tileData]
+                })
+            }
+        }
+
+        if (tileData.triangle) {
+            let tileFilledCount = 0
+            if (tile._left) tileFilledCount++
+            if (tile._right) tileFilledCount++
+            if (tile._top) tileFilledCount++
+            if (tile._bottom) tileFilledCount++
+
+            if (tileData.triangleCount !== tileFilledCount) {
+                groupCorrect = false
+            }
+        }
+
+        if (tileData.block) {
+            let possibleSolutions = getPossibleBlockSolutions(tileData, group)
+            hasBlocks = true
+            blockCount += tileData.blockData.getBlock(0).length
+            blocks.push(tileData)
+            blockSolutions.push(possibleSolutions)
+        }
+
+        if (tileData.removeBlock) {
+            hasRemoveBlocks = true
+            removeBlocks.push(tileData)
+            removeBlockCount += tileData.removeBlockData.getBlock(0).length
+        }
+
+        if (tileData.eliminationMark) {
+            eliminationMarksCount++
+            eliminationMarks.push(tileData)
+        }
+
+        datas.push(tileData)
+    }
+
+    for (let i = 0; i < datas.length; i++) {
+        const data = datas[i]
+
+        if (checkColor && data.color) {
+            if (data.color !== toCheckColor) groupCorrect = false
+        }
+
+        if (data.color) {
+            for (let j = 0; j < stars.length; j++) {
+                const starGroup = stars[j]
+
+                if (starGroup.color !== data.color) continue
+
+                starGroup.stars.push(data)
+            }
+        }
+
+        if (data.blockColor) {
+            for (let j = 0; j < stars.length; j++) {
+                const starGroup = stars[j]
+
+                if (starGroup.color !== data.blockColor) continue
+
+                starGroup.stars.push(data)
+            }
+        }
+
+        if (data.eliminationMarkColor) {
+            for (let j = 0; j < stars.length; j++) {
+                const starGroup = stars[j]
+
+                if (starGroup.color !== data.eliminationMarkColor) continue
+
+                starGroup.stars.push(data)
+            }
+        }
+    }
+
+    for (let i = 0; i < stars.length; i++) {
+        const starGroup = stars[i]
+
+        if (starGroup.stars.length !== 2) groupCorrect = false
+    }
+
+    if (!hasRemoveBlocks) {
+        if (blockSolutions.length > 0) {
+            let oneCorrect = false
+
+            for (let i = 0; i < blockSolutions[0].length; i++) {
+                const solutionPoints = blockSolutions[0][i].solutionPoints
+                let cBlockSolutions = []
+                let usedSolutionPoints = solutionPoints
+
+                if (blockSolutions.length === 1) {
+                    oneCorrect = true
+
+                    break
+                }
+
+                for (let j = 1; j < blockSolutions.length; j++) {
+                    cBlockSolutions.push(blockSolutions[j])
+                }
+
+                let correct = checkBlockSolution(solutionPoints, cBlockSolutions, usedSolutionPoints)
+
+                if (correct) oneCorrect = true
+            }
+
+            if (!oneCorrect) groupCorrect = false
+        }
+        else {
+            if (hasBlocks) groupCorrect = false
+        }
+    }
+    else if (blockCount > 0) {
+        let blockSolutionsRemove = []
+        let blockSolutionsRemoveCounts = []
+        let allSolutionVariants = []
+
+        blocks.forEach(block => {
+            let allBlockSolution = getBlockSolutionVariants(block, group)
+            let allBlockSolutionVariants = allBlockSolution[0]
+            let allBlockSolutionVariantsCounts = allBlockSolution[1]
+
+            blockSolutionsRemove.push(allBlockSolutionVariants)
+            blockSolutionsRemoveCounts.push(allBlockSolutionVariantsCounts)
+        })
+
+        __blockSolutionsRemove = blockSolutionsRemove
+        __blockSolutionsRemoveCounts = blockSolutionsRemoveCounts
+        __allSolutionVariants = allSolutionVariants
+        __areaSize = group.length
+        __removeCount = removeBlockCount
+        __blockCount = blockCount
+
+        for (let i = 0; i < blockSolutionsRemove[0].length; i++) {
+            const blockRootSolution = blockSolutionsRemove[0][i]
+            let solutionVariantBase = []
+
+            blockRootSolution.forEach(rootSolution => {
+                solutionVariantBase.push(rootSolution)
+            })
+
+            createSolutionVariant(solutionVariantBase, 1, blockSolutionsRemoveCounts[0][i])
+        }
+
+        let adjustedAllSolutionVariants = []
+
+        for (let i = 0; i < allSolutionVariants.length; i++) {
+            const solutionVariant = allSolutionVariants[i]
+            const adjustedSolutionVariant = []
+            let notAddedPoints = []
+
+            for (let j = 0; j < solutionVariant.length; j++) {
+                if (!tileExists(group, solutionVariant[j])) {
+                    adjustedSolutionVariant.push(solutionVariant[j])
+
+                    continue
+                }
+
+                for (let k = 0; k < solutionVariant.length; k++) {
+                    if (k === j) continue
+
+                    if (solutionVariant[k][0] !== solutionVariant[j][0] || solutionVariant[k][1] !== solutionVariant[j][1]) continue
+
+                    let wasNotAdded = false
+
+                    for (let l = 0; l < notAddedPoints.length; l++) {
+                        if (notAddedPoints[l][0] !== solutionVariant[j][0] || notAddedPoints[l][1] !== solutionVariant[j][1]) continue
+
+                        wasNotAdded = true
+
+                        break
+                    }
+
+                    if (wasNotAdded) {
+                        adjustedSolutionVariant.push(solutionVariant[j])
+                    }
+                    else {
+                        notAddedPoints.push(solutionVariant[j])
+                    }
+
+                    break
+                }
+            }
+
+            if (adjustedSolutionVariant.length === removeBlockCount) {
+                adjustedAllSolutionVariants.push(adjustedSolutionVariant)
+            }
+        }
+
+        function getAllRemoveBlockSolutions(tileData, solutionVariant) {
+            let allPossibleSolutions = []
+
+            let blockParts = [tileData.removeBlockData.getBlock(0)]
+            if (tileData.removeBlockData.rotateable) {
+                blockParts.push(tileData.removeBlockData.getBlock(1))
+                blockParts.push(tileData.removeBlockData.getBlock(2))
+                blockParts.push(tileData.removeBlockData.getBlock(3))
+            }
+
+            solutionVariant.forEach(tile => {
+                for (let i = 0; i < blockParts.length; i++) {
+                    const blockPart = blockParts[i]
+
+                    let allPartsPossible = true
+                    let solutionPoints = []
+
+                    for (let j = 0; j < blockPart.length; j++) {
+                        const part = blockPart[j]
+                        let rTilePosition = [tile[0] + part[0], tile[1] + part[1]]
+                        let possible = false
+
+                        for (let k = 0; k < solutionVariant.length; k++) {
+                            const _tile = solutionVariant[k]
+
+                            if (_tile[0] !== rTilePosition[0] || _tile[1] !== rTilePosition[1]) continue
+
+                            possible = true
+
+                            break
+                        }
+
+                        if (!possible) {
+                            allPartsPossible = false
+
+                            break
+                        }
+
+                        solutionPoints.push(rTilePosition)
+                    }
+
+                    if (allPartsPossible) {
+                        allPossibleSolutions.push({
+                            tile: tile,
+                            solutionPoints: solutionPoints
+                        })
+                    }
+                }
+            })
+
+            return allPossibleSolutions
+        }
+
+        let atleastOneCorrect = false
+
+        for (let i = 0; i < adjustedAllSolutionVariants.length; i++) {
+            const solutionVariant = adjustedAllSolutionVariants[i]
+            let allBlockSolutions = []
+            let canExist = true
+
+            for (let j = 0; j < removeBlocks.length; j++) {
+                const removeBlock = removeBlocks[j]
+
+                let sols = getAllRemoveBlockSolutions(removeBlock, solutionVariant)
+
+                if (sols.length <= 0) {
+                    canExist = false
+
+                    break
+                }
+
+                allBlockSolutions.push(sols)
+            }
+
+            if (!canExist) continue
+
+            let oneCorrect = false
+
+            for (let i = 0; i < allBlockSolutions[0].length; i++) {
+                const solutionPoints = allBlockSolutions[0][i].solutionPoints
+                let cBlockSolutions = []
+                let usedSolutionPoints = solutionPoints
+
+                if (allBlockSolutions.length === 1) {
+                    oneCorrect = true
+
+                    break
+                }
+
+                for (let j = 1; j < allBlockSolutions.length; j++) {
+                    cBlockSolutions.push(allBlockSolutions[j])
+                }
+
+                let correct = checkBlockSolution(solutionPoints, cBlockSolutions, usedSolutionPoints)
+
+                if (correct) oneCorrect = true
+            }
+
+            if (!oneCorrect) continue
+
+            atleastOneCorrect = true
+        }
+
+        if (!atleastOneCorrect) groupCorrect = false
+    }
+
+    if (blockCount - removeBlockCount !== group.length && hasBlocks) groupCorrect = false
+    if (hasRemoveBlocks && blockCount <= 0) groupCorrect = false
+
+    if (eliminationMarksCount === datas.length && eliminationMarksCount > 0){
+        groupCorrect = false
+    }
+
+    return groupCorrect
+}
+
+let __eliminationMarks = []
+let __groupData = []
+function eliminationMarkCheck(group, variant, i){
+    let correct = false
+
+    if (__eliminationMarks.length - 1 < i) return checkGroup(group, variant)
+
+    let curEliminationMark = __eliminationMarks[i]
+    let hasThisEliminationMark = false
+
+    for (let j = 0; j < variant.length; j++){
+        const tileData = variant[j]
+
+        if (tileData !== curEliminationMark) continue
+
+        hasThisEliminationMark = true
+    }
+
+    if (!hasThisEliminationMark) return eliminationMarkCheck(group, variant, i + 1)
+
+    for (let j = 0; j < variant.length; j++){
+        const tileData = variant[j]
+
+        if (tileData === curEliminationMark) continue
+
+        let modVariant = []
+
+        for (let k = 0; k < variant.length; k++){
+            const _tileData = variant[k]
+
+            if (_tileData === curEliminationMark || _tileData === tileData) continue
+
+            modVariant.push(_tileData)
+        }
+
+        let modVariantCorrect = eliminationMarkCheck(group, modVariant, i + 1)
+
+        if (!modVariantCorrect) continue
+
+        correct = true
+    }
+
+    return correct
+}
+
+function checkGroups(groups, ruleDatas, results){
     let correct = true
 
     groups.forEach(group => {
+        let groupData = []
+        let eliminationMarks = []
         let groupCorrect = true
-        let checkColor = false
-        let toCheckColor = null
-        let stars = []
-        let blockSolutions = []
-        let hasBlocks = false
-        let hasRemoveBlocks = false
-        let removeBlockCount = 0
-        let removeBlocks = []
-        let blocks = []
-        let blockCount = 0
 
-        let datas = []
+        let result = null
+        for (let i = 0; i < results.length; i++){
+            const groupResult = results[i]
+
+            if (groupResult.group !== group) continue
+
+            result = groupResult
+            break
+        }
+
+        let rem = 0
+        if (result){
+            rem = result.rem
+        }
 
         for (let i = 0; i < group.length; i++){
             const tile = group[i]
             let tileData = null
 
-            for (let j = 0; j < ruleDatas.length; j++){
+            for (let j = 0; j < ruleDatas.length; j++) {
                 const data = ruleDatas[j]
 
                 if (data.gridPosition[0] !== tile.gridPosition[0] || data.gridPosition[1] !== tile.gridPosition[1]) continue
@@ -515,309 +922,61 @@ function checkGroups(groups, ruleDatas){
 
             if (!tileData) continue
 
-            if (tileData.colorSensitive){
-                checkColor = true
-                toCheckColor = tileData.color
-            }
-
-            if (tileData.star){
-                let starGroupExists = false
-
-                for (let j = 0; j < stars.length; j++){
-                    const starGroup = stars[j]
-
-                    if (starGroup.color !== tileData.starColor) continue
-
-                    starGroupExists = true
-                    starGroup.stars.push(tileData)
-                }
-
-                if (!starGroupExists){
-                    stars.push({
-                        color: tileData.starColor,
-                        stars: [tileData]
-                    })
-                }
-            }
-
-            if (tileData.triangle){
-                let tileFilledCount = 0
-                if (tile._left) tileFilledCount++
-                if (tile._right) tileFilledCount++
-                if (tile._top) tileFilledCount++
-                if (tile._bottom) tileFilledCount++
-
-                if (tileData.triangleCount !== tileFilledCount){
-                    groupCorrect = false
-                }
-            }
-
-            if (tileData.block){
-                let possibleSolutions = getPossibleBlockSolutions(tileData, group)
-                hasBlocks = true
-                blockCount += tileData.blockData.getBlock(0).length
-                blocks.push(tileData)
-                blockSolutions.push(possibleSolutions)
-            }
-
-            if (tileData.removeBlock){
-                hasRemoveBlocks = true
-                removeBlocks.push(tileData)
-                removeBlockCount += tileData.removeBlockData.getBlock(0).length
-            }
-
-            datas.push(tileData)
-        }
-
-        for (let i = 0; i < datas.length; i++){
-            const data = datas[i]
-
-            if (checkColor && data.color){
-                if (data.color !== toCheckColor) groupCorrect = false
-            }
-
-            if (data.color){
-                for (let j = 0; j < stars.length; j++){
-                    const starGroup = stars[j]
-
-                    if (starGroup.color !== data.color) continue
-
-                    starGroup.stars.push(data)
-                }
-            }
-
-            if (data.blockColor){
-                for (let j = 0; j < stars.length; j++){
-                    const starGroup = stars[j]
-
-                    if (starGroup.color !== data.blockColor) continue
-
-                    starGroup.stars.push(data)
-                }
-            }
-        }
-
-        for (let i = 0; i < stars.length; i++){
-            const starGroup = stars[i]
-
-            if (starGroup.stars.length !== 2) groupCorrect = false
-        }
-
-        if (!hasRemoveBlocks){
-            if (blockSolutions.length > 0) {
-                let oneCorrect = false
-
-                for (let i = 0; i < blockSolutions[0].length; i++) {
-                    const solutionPoints = blockSolutions[0][i].solutionPoints
-                    let cBlockSolutions = []
-                    let usedSolutionPoints = solutionPoints
-
-                    if (blockSolutions.length === 1) {
-                        oneCorrect = true
-
-                        break
-                    }
-
-                    for (let j = 1; j < blockSolutions.length; j++) {
-                        cBlockSolutions.push(blockSolutions[j])
-                    }
-
-                    let correct = checkBlockSolution(solutionPoints, cBlockSolutions, usedSolutionPoints)
-
-                    if (correct) oneCorrect = true
-                }
-
-                if (!oneCorrect) groupCorrect = false
-            }
-            else {
-                if (hasBlocks) groupCorrect = false
-            }
-        }
-        else if (blockCount > 0){
-            let blockSolutionsRemove = []
-            let blockSolutionsRemoveCounts = []
-            let allSolutionVariants = []
-
-            blocks.forEach(block => {
-                let allBlockSolution = getBlockSolutionVariants(block, group)
-                let allBlockSolutionVariants = allBlockSolution[0]
-                let allBlockSolutionVariantsCounts = allBlockSolution[1]
-
-                blockSolutionsRemove.push(allBlockSolutionVariants)
-                blockSolutionsRemoveCounts.push(allBlockSolutionVariantsCounts)
-            })
-
-            __blockSolutionsRemove = blockSolutionsRemove
-            __blockSolutionsRemoveCounts = blockSolutionsRemoveCounts
-            __allSolutionVariants = allSolutionVariants
-            __areaSize = group.length
-            __removeCount = removeBlockCount
-            __blockCount = blockCount
-
-            for (let i = 0; i < blockSolutionsRemove[0].length; i++){
-                const blockRootSolution = blockSolutionsRemove[0][i]
-                let solutionVariantBase = []
-
-                blockRootSolution.forEach(rootSolution => {
-                    solutionVariantBase.push(rootSolution)
-                })
-                
-                createSolutionVariant(solutionVariantBase, 1, blockSolutionsRemoveCounts[0][i])
-            }
-
-            let adjustedAllSolutionVariants = []
-
-            for (let i = 0; i < allSolutionVariants.length; i++){
-                const solutionVariant = allSolutionVariants[i]
-                const adjustedSolutionVariant = []
-                let notAddedPoints = []
-
-                for (let j = 0; j < solutionVariant.length; j++){
-                    if (!tileExists(group, solutionVariant[j])){
-                        adjustedSolutionVariant.push(solutionVariant[j])
+            if (tileData.eliminationMark){
+                if (result){
+                    if (rem > 0){
+                        rem--
 
                         continue
                     }
-
-                    for (let k = 0; k < solutionVariant.length; k++){
-                        if (k === j) continue
-
-                        if (solutionVariant[k][0] !== solutionVariant[j][0] || solutionVariant[k][1] !== solutionVariant[j][1]) continue
-
-                        let wasNotAdded = false
-
-                        for (let l = 0; l < notAddedPoints.length; l++){
-                            if (notAddedPoints[l][0] !== solutionVariant[j][0] || notAddedPoints[l][1] !== solutionVariant[j][1]) continue
-
-                            wasNotAdded = true
-
-                            break
-                        }
-
-                        if (wasNotAdded){
-                            adjustedSolutionVariant.push(solutionVariant[j])
-                        }
-                        else{
-                            notAddedPoints.push(solutionVariant[j])
-                        }
-
-                        break
+                    else{
+                        eliminationMarks.push(tileData)
+                        groupData.push(tileData)
                     }
                 }
-
-                if (adjustedSolutionVariant.length === removeBlockCount){
-                    adjustedAllSolutionVariants.push(adjustedSolutionVariant)
+                else{
+                    eliminationMarks.push(tileData)
+                    groupData.push(tileData)
                 }
             }
-            
-            function getAllRemoveBlockSolutions(tileData, solutionVariant){
-                let allPossibleSolutions = []
-
-                let blockParts = [tileData.removeBlockData.getBlock(0)]
-                if (tileData.removeBlockData.rotateable) {
-                    blockParts.push(tileData.removeBlockData.getBlock(1))
-                    blockParts.push(tileData.removeBlockData.getBlock(2))
-                    blockParts.push(tileData.removeBlockData.getBlock(3))
-                }
-
-                solutionVariant.forEach(tile => {
-                    for (let i = 0; i < blockParts.length; i++) {
-                        const blockPart = blockParts[i]
-
-                        let allPartsPossible = true
-                        let solutionPoints = []
-
-                        for (let j = 0; j < blockPart.length; j++) {
-                            const part = blockPart[j]
-                            let rTilePosition = [tile[0] + part[0], tile[1] + part[1]]
-                            let possible = false
-
-                            for (let k = 0; k < solutionVariant.length; k++) {
-                                const _tile = solutionVariant[k]
-
-                                if (_tile[0] !== rTilePosition[0] || _tile[1] !== rTilePosition[1]) continue
-
-                                possible = true
-
-                                break
-                            }
-
-                            if (!possible) {
-                                allPartsPossible = false
-
-                                break
-                            }
-
-                            solutionPoints.push(rTilePosition)
-                        }
-
-                        if (allPartsPossible) {
-                            allPossibleSolutions.push({
-                                tile: tile,
-                                solutionPoints: solutionPoints
-                            })
-                        }
-                    }
-                })
-
-                return allPossibleSolutions
+            else{
+                groupData.push(tileData)
             }
-
-            let atleastOneCorrect = false
-
-            for (let i = 0; i < adjustedAllSolutionVariants.length; i++){
-                const solutionVariant = adjustedAllSolutionVariants[i]
-                let allBlockSolutions = []
-                let canExist = true
-
-                for (let j = 0; j < removeBlocks.length; j++){
-                    const removeBlock = removeBlocks[j]
-
-                    let sols = getAllRemoveBlockSolutions(removeBlock, solutionVariant)
-
-                    if (sols.length <= 0){
-                        canExist = false
-
-                        break
-                    }
-
-                    allBlockSolutions.push(sols)
-                }
-
-                if (!canExist) continue
-
-                let oneCorrect = false
-
-                for (let i = 0; i < allBlockSolutions[0].length; i++) {
-                    const solutionPoints = allBlockSolutions[0][i].solutionPoints
-                    let cBlockSolutions = []
-                    let usedSolutionPoints = solutionPoints
-
-                    if (allBlockSolutions.length === 1) {
-                        oneCorrect = true
-
-                        break
-                    }
-
-                    for (let j = 1; j < allBlockSolutions.length; j++) {
-                        cBlockSolutions.push(allBlockSolutions[j])
-                    }
-
-                    let correct = checkBlockSolution(solutionPoints, cBlockSolutions, usedSolutionPoints)
-
-                    if (correct) oneCorrect = true
-                }
-
-                if (!oneCorrect) continue
-                
-                atleastOneCorrect = true
-            }
-            
-            if (!atleastOneCorrect) groupCorrect = false
         }
-        
-        if (blockCount - removeBlockCount !== group.length && hasBlocks) groupCorrect = false
-        if (hasRemoveBlocks && blockCount <= 0) groupCorrect = false
+
+        if (eliminationMarks.length > 0){
+            let oneVariantCorrect = false
+
+            __eliminationMarks = eliminationMarks
+            __groupData = groupData
+
+            for (let i = 0; i < groupData.length; i++){
+                const tileData = groupData[i]
+
+                if (tileData === eliminationMarks[0]) continue
+
+                let variant = []
+
+                for (let j = 0; j < groupData.length; j++){
+                    const _tileData = groupData[j]
+
+                    if (_tileData === eliminationMarks[0] || _tileData === tileData) continue
+
+                    variant.push(_tileData)
+                }
+
+                let variantCorrect = eliminationMarkCheck(group, variant, 1)
+
+                if (!variantCorrect) continue
+    
+                oneVariantCorrect = true
+            }
+
+            if (!oneVariantCorrect) correct = false
+        }
+        else{
+            groupCorrect = checkGroup(group, groupData)
+        }
 
         if (!groupCorrect) correct = false
     })
@@ -846,6 +1005,136 @@ function getHexagonGroups(hexagonsData){
     return groups
 }
 
+function isHexagonInGroup(group, hexagon){
+    let inGroup = false
+    const position = hexagon.gridPosition
+
+    for (let i = 0; i < group.length; i++){
+        const tile = group[i]
+        const points = tile.points
+
+        for (let j = 0; j < points.length; j++){
+            const point = points[j]
+
+            if (point[0] !== position[0] || point[1] !== position[1]) continue
+
+            inGroup = true
+
+            break
+        }
+
+
+        let intX = Number.isInteger(position[0])
+        let intY = Number.isInteger(position[1])
+
+        if (intX){
+            if (position[0] === points[0][0] || position[0] === points[1][0]){
+                if (position[1] > points[0][1] && position[1] < points[2][1]){
+                    inGroup = true
+                }
+            }
+        }
+        else if (intY){
+            if (position[1] === points[0][1] || position[1] === points[2][1]){
+                if (position[0] > points[0][0] && position[0] < points[1][0]){
+                    inGroup = true
+                }
+            }
+        }
+
+        if (inGroup) break
+    }
+
+    return inGroup
+}
+
+function getHexagonsInGroup(group, hexagons){
+    let groupHexagons = []
+
+    for (let i = 0; i < hexagons.length; i++){
+        const hexagon = hexagons[i]
+
+        let inGroup = isHexagonInGroup(group, hexagon)
+
+        if (!inGroup) continue
+
+        groupHexagons.push(hexagon)
+    }
+
+    return groupHexagons
+}
+
+function getIncorrectHexagons(hexagons, correctHexagons){
+    let incorrectHexagons = []
+
+    for (let i = 0; i < hexagons.length; i++){
+        const hexagon = hexagons[i]
+
+        let correct = false
+
+        for (let j = 0; j < correctHexagons.length; j++){
+            const correctHexagon = correctHexagons[j]
+
+            if (correctHexagon !== hexagon) continue
+
+            correct = true
+
+            break
+        }
+
+        if (correct) continue
+
+        incorrectHexagons.push(hexagon)
+    }
+
+    return incorrectHexagons
+}
+
+function getEliminationMarksInGroup(group, ruleDatas){
+    let eliminationMarks = []
+
+    for (let i = 0; i < group.length; i++){
+        const tile = group[i]
+        const tileGridPosition = tile.gridPosition
+
+        for (let j = 0; j < ruleDatas.length; j++){
+            const eliminationMark = ruleDatas[j]
+            const gridPosition = eliminationMark.gridPosition
+
+            if (gridPosition[0] !== tileGridPosition[0] || gridPosition[1] !== tileGridPosition[1]) continue
+            if (!eliminationMark.eliminationMark) continue
+
+            eliminationMarks.push(eliminationMark)
+
+            break
+        }
+    }
+
+    return eliminationMarks
+}
+
+function checkHexagonsEliminationMark(groups, ruleDatas, correctHexagons, hexagons){
+    let incorrectHexagons = getIncorrectHexagons(hexagons, correctHexagons)
+    let result = []
+
+    for (let i = 0; i < groups.length; i++){
+        const group = groups[i]
+
+        let groupHexagons = getHexagonsInGroup(group, incorrectHexagons)
+        let eliminationMarks = getEliminationMarksInGroup(group, ruleDatas)
+
+        let groupResult = {
+            result: eliminationMarks.length - groupHexagons.length,
+            group: group,
+            rem: groupHexagons.length
+        }
+
+        result.push(groupResult)
+    }
+
+    return result
+}
+
 export function validate_solution(solutionEnd, solutionPoints, solutionPointsGrid, solutionStart, puzzleData, solutionPointsGridSymmetry){ 
     solutionPointsGrid.push(solutionEnd.puzzlePoint.gridPosition)
 
@@ -872,6 +1161,9 @@ export function validate_solution(solutionEnd, solutionPoints, solutionPointsGri
     }
     else{
         let rulesCorrect = true
+        let hexagonsCorrect = true
+        let hexagonsCorrectData = []
+        let hexagonsData = []
 
         let ruleDatas = []
 
@@ -879,12 +1171,12 @@ export function validate_solution(solutionEnd, solutionPoints, solutionPointsGri
             const rule = puzzleData.rules[i]
 
             if (rule.type === "hexagons"){
-                let correct = checkHexagons(solutionPointsGrid, rule.data, puzzleData)
+                let correctData = checkHexagons(solutionPointsGrid, rule.data, puzzleData)
 
-                if (!correct){
-                    rulesCorrect = false
-
-                    break
+                if (!correctData[0]){
+                    hexagonsCorrect = false
+                    hexagonsCorrectData = correctData[1]
+                    hexagonsData = rule.data
                 }
             }
             else if (rule.type === "hexagonsColors"){
@@ -899,7 +1191,9 @@ export function validate_solution(solutionEnd, solutionPoints, solutionPointsGri
                     break
                 }
             }
-            else if (rule.type === "colors" || rule.type === "stars" || rule.type === "triangles" || rule.type === "blocks" || rule.type === "removeBlocks"){
+            else if (rule.type === "colors" || rule.type === "stars" || rule.type === "triangles" || rule.type === "blocks" || rule.type === "removeBlocks"
+                || rule.type === "eliminationMarks"
+            ){
                 for (let j = 0; j < rule.data.length; j++){
                     ruleDatas.push(rule.data[j])
                 }
@@ -910,7 +1204,26 @@ export function validate_solution(solutionEnd, solutionPoints, solutionPointsGri
 
         let groups = createGroups(solutionPointsGrid, puzzleData)
 
-        let correct = checkGroups(groups, ruleDatas)
+        let results = []
+        if (!hexagonsCorrect){
+            let result = checkHexagonsEliminationMark(groups, ruleDatas, hexagonsCorrectData, hexagonsData)
+
+            for (let i = 0; i < result.length; i++){
+                const groupResult = result[i]
+
+                if (groupResult.result < 0){
+                    rulesCorrect = false
+
+                    break
+                }
+            }
+
+            results = result
+        }
+
+        if (!rulesCorrect) return false
+
+        let correct = checkGroups(groups, ruleDatas, results)
         if (!correct) rulesCorrect = false
 
         if (rulesCorrect){
