@@ -860,6 +860,8 @@ function eliminationMarkCheck(group, variant, i){
 
     if (!hasThisEliminationMark) return eliminationMarkCheck(group, variant, i + 1)
 
+    if (checkGroup(group, variant)) return false
+
     for (let j = 0; j < variant.length; j++){
         const tileData = variant[j]
 
@@ -973,6 +975,10 @@ function checkGroups(groups, ruleDatas, results){
             }
 
             if (!oneVariantCorrect) correct = false
+
+            if (checkGroup(group, groupData)){
+                correct = false
+            }
         }
         else{
             groupCorrect = checkGroup(group, groupData)
