@@ -1,3 +1,5 @@
+let __eliminationOpacity = 0.35
+
 function checkHexagons(solutionPointsGrid, ruleData, puzzleData){
     let correct = false
     let correctHexagons = []
@@ -842,10 +844,17 @@ function checkGroup(group, ruleDatas){
 
 let __eliminationMarks = []
 let __groupData = []
+let __finalVariant = []
 function eliminationMarkCheck(group, variant, i){
     let correct = false
 
-    if (__eliminationMarks.length - 1 < i) return checkGroup(group, variant)
+    if (__eliminationMarks.length - 1 < i){
+        let check = checkGroup(group, variant)
+
+        __finalVariant = variant
+
+        return check
+    }
 
     let curEliminationMark = __eliminationMarks[i]
     let hasThisEliminationMark = false
@@ -887,7 +896,7 @@ function eliminationMarkCheck(group, variant, i){
     return correct
 }
 
-function checkGroups(groups, ruleDatas, results){
+function checkGroups(groups, ruleDatas, results, rulesToEliminate){
     let correct = true
 
     groups.forEach(group => {
@@ -951,6 +960,7 @@ function checkGroups(groups, ruleDatas, results){
 
             __eliminationMarks = eliminationMarks
             __groupData = groupData
+            __finalVariant = []
 
             for (let i = 0; i < groupData.length; i++){
                 const tileData = groupData[i]
@@ -972,6 +982,26 @@ function checkGroups(groups, ruleDatas, results){
                 if (!variantCorrect) continue
     
                 oneVariantCorrect = true
+            }
+
+            for (let i = 0; i < groupData.length; i++){
+                const tileData = groupData[i]
+
+                let wasUsed = false
+
+                for (let j = 0; j < __finalVariant.length; j++){
+                    const finalTileData = __finalVariant[j]
+
+                    if (finalTileData !== tileData) continue
+
+                    wasUsed = true
+
+                    break
+                }
+
+                if (wasUsed) continue
+
+                rulesToEliminate.push(tileData)
             }
 
             if (!oneVariantCorrect) correct = false
@@ -1119,7 +1149,7 @@ function getEliminationMarksInGroup(group, ruleDatas){
     return eliminationMarks
 }
 
-function checkHexagonsEliminationMark(groups, ruleDatas, correctHexagons, hexagons){
+function checkHexagonsEliminationMark(groups, ruleDatas, correctHexagons, hexagons, rulesToEliminate){
     let incorrectHexagons = getIncorrectHexagons(hexagons, correctHexagons)
     let result = []
 
@@ -1133,6 +1163,10 @@ function checkHexagonsEliminationMark(groups, ruleDatas, correctHexagons, hexago
             result: eliminationMarks.length - groupHexagons.length,
             group: group,
             rem: groupHexagons.length
+        }
+
+        for (let incorrectHexagon of incorrectHexagons){
+            rulesToEliminate.push(incorrectHexagon)
         }
 
         result.push(groupResult)
@@ -1162,6 +1196,8 @@ export function validate_solution(solutionEnd, solutionPoints, solutionPointsGri
         }
     }
 
+    let rulesToEliminate = []
+
     if (puzzleData.rules.length <= 0){
         return true
     }
@@ -1181,20 +1217,35 @@ export function validate_solution(solutionEnd, solutionPoints, solutionPointsGri
 
                 if (!correctData[0]){
                     hexagonsCorrect = false
-                    hexagonsCorrectData = correctData[1]
-                    hexagonsData = rule.data
+
+                    for (let correctHexagon of correctData[1]){
+                        hexagonsCorrectData.push(correctHexagon)
+                    }
+                    
+                    for (let hexagon of rule.data){
+                        hexagonsData.push(hexagon)
+                    }
                 }
             }
             else if (rule.type === "hexagonsColors"){
                 let hexagonGroups = getHexagonGroups(rule.data)
 
-                let correct0 = checkHexagons(points0, hexagonGroups[0], puzzleData)
-                let correct1 = checkHexagons(points1, hexagonGroups[1], puzzleData)
+                let correctData0 = checkHexagons(points0, hexagonGroups[0], puzzleData)
+                let correctData1 = checkHexagons(points1, hexagonGroups[1], puzzleData)
 
-                if (!correct0 || !correct1){
-                    rulesCorrect = false
+                if (!correctData0[0] || !correctData1[0]){
+                    hexagonsCorrect = false
+                    
+                    for (let correctHexagon of correctData0[1]){
+                        hexagonsCorrectData.push(correctHexagon)
+                    }
+                    for (let correctHexagon of correctData1[1]){
+                        hexagonsCorrectData.push(correctHexagon)
+                    }
 
-                    break
+                    for (let hexagon of rule.data){
+                        hexagonsData.push(hexagon)
+                    }
                 }
             }
             else if (rule.type === "colors" || rule.type === "stars" || rule.type === "triangles" || rule.type === "blocks" || rule.type === "removeBlocks"
@@ -1202,6 +1253,12 @@ export function validate_solution(solutionEnd, solutionPoints, solutionPointsGri
             ){
                 for (let j = 0; j < rule.data.length; j++){
                     ruleDatas.push(rule.data[j])
+                }
+
+                if (rule.type === "eliminationMarks"){
+                    for (let dataPart of rule.data){
+                        rulesToEliminate.push(dataPart)
+                    }
                 }
             }
         }
@@ -1212,7 +1269,7 @@ export function validate_solution(solutionEnd, solutionPoints, solutionPointsGri
 
         let results = []
         if (!hexagonsCorrect){
-            let result = checkHexagonsEliminationMark(groups, ruleDatas, hexagonsCorrectData, hexagonsData)
+            let result = checkHexagonsEliminationMark(groups, ruleDatas, hexagonsCorrectData, hexagonsData, rulesToEliminate)
 
             for (let i = 0; i < result.length; i++){
                 const groupResult = result[i]
@@ -1229,10 +1286,20 @@ export function validate_solution(solutionEnd, solutionPoints, solutionPointsGri
 
         if (!rulesCorrect) return false
 
-        let correct = checkGroups(groups, ruleDatas, results)
+        let correct = checkGroups(groups, ruleDatas, results, rulesToEliminate)
         if (!correct) rulesCorrect = false
 
         if (rulesCorrect){
+            for (let rule of rulesToEliminate){
+                if (rule.element && !rule.tile){
+                    rule.element.style.opacity = `${__eliminationOpacity}`
+                }
+
+                if (rule.tile){
+                    rule.tile.style.opacity = `${__eliminationOpacity}`
+                }
+            }
+
             return true
         }
     }

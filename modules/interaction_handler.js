@@ -48,6 +48,14 @@ function changeElementsColorToDefault(){
     }
 }
 
+function changeElementsOpacityToDefault(){
+    const puzzleRules = document.querySelectorAll(".puzzle-rule")
+
+    for (const puzzleRule of puzzleRules){
+        puzzleRule.style.opacity = "1"
+    }
+}
+
 function getLinkedStart(linked){
     for (let i = 0; i < _puzzleData.puzzleStarts.length; i++){
         const puzzleStart = _puzzleData.puzzleStarts[i]
@@ -116,6 +124,8 @@ function startClick(puzzleStart, element){
     if (isSymmetry){
         usedStartSymmetry = getLinkedStart(puzzleStart.linked)
     }
+
+    changeElementsOpacityToDefault()
 
     if (correct){
         correct = false
