@@ -1247,6 +1247,15 @@ export function validate_solution(solutionEnd, solutionPoints, solutionPointsGri
                         hexagonsData.push(hexagon)
                     }
                 }
+
+                let otherCheckData0 = checkHexagons(points1, hexagonGroups[0], puzzleData)
+                let otherCheckData1 = checkHexagons(points0, hexagonGroups[1], puzzleData)
+
+                if (otherCheckData0[1].length > 0 || otherCheckData1[1] > 0){
+                    rulesCorrect = false
+
+                    break
+                }
             }
             else if (rule.type === "colors" || rule.type === "stars" || rule.type === "triangles" || rule.type === "blocks" || rule.type === "removeBlocks"
                 || rule.type === "eliminationMarks"

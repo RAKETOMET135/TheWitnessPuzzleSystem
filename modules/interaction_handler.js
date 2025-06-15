@@ -52,7 +52,9 @@ function changeElementsOpacityToDefault(){
     const puzzleRules = document.querySelectorAll(".puzzle-rule")
 
     for (const puzzleRule of puzzleRules){
-        puzzleRule.style.opacity = "1"
+        if (!puzzleRule.classList.contains("symmetry-helper")){
+            puzzleRule.style.opacity = "1"
+        }
     }
 }
 
@@ -1121,10 +1123,6 @@ function documentClick(){
                 usedStart.puzzlePoint.puzzlePoint.style.backgroundColor = _puzzleData.colors[3]
                 selectedEnd.endPoint.style.backgroundColor = _puzzleData.colors[3]
                 selectedEnd.endLine.style.backgroundColor = _puzzleData.colors[3]
-
-                if (isSymmetry){
-                    usedStartSymmetry.puzzlePoint.puzzlePoint.style.backgroundColor = _puzzleData.colors[3]
-                }
             }
             else {
                 drawElements.forEach(drawElement => {

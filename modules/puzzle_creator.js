@@ -931,6 +931,12 @@ function adjustForSymmetry(symmetryType, puzzle, puzzlePoints, starts, size, poi
     return adjustData
 }
 
+function fixStartRoundness(puzzleStarts){
+    for (let puzzleStart of puzzleStarts){
+        puzzleStart.puzzlePoint.puzzlePoint.style.borderRadius = "100000px"
+    }
+}
+
 export function createPuzzle(size, grid, starts, ends, colors, breaks, lineRemovals, rules){
     const puzzle = document.createElement("div")
     puzzle.classList.add("puzzle-holder")
@@ -952,6 +958,7 @@ export function createPuzzle(size, grid, starts, ends, colors, breaks, lineRemov
     const puzzleLineRemovals = createPuzzleLineRemovals(puzzle, pointSize, lineRemovals, colors, puzzleLines)
 
     fixSingleLinePoints(puzzleLines, puzzlePoints, colors, puzzleEnds)
+    fixStartRoundness(puzzleStarts)
 
     let _rules = []
 
@@ -1015,6 +1022,7 @@ export function createPuzzle(size, grid, starts, ends, colors, breaks, lineRemov
     let symmetry = rules.symmetry
     let symmetryHelper = null
     let symmetryColors = null
+    let symmetryOpacity = 1
     if (rules.symmetry){
         let adjustData = adjustForSymmetry(rules.symmetry, puzzle, puzzlePoints, puzzleStarts, startSize, pointSize, colors, grid, puzzleEnds, endLength)
         puzzleStarts = adjustData[0]
@@ -1031,6 +1039,7 @@ export function createPuzzle(size, grid, starts, ends, colors, breaks, lineRemov
         symmetryHelper.style.pointerEvents = "none"
         symmetryHelper.classList.remove("puzzle-holder")
         symmetryHelper.classList.add("puzzle-rule")
+        symmetryHelper.classList.add("symmetry-helper")
         symmetryHelper.style.zIndex = "30"
         puzzle.append(symmetryHelper)
 
@@ -1044,6 +1053,13 @@ export function createPuzzle(size, grid, starts, ends, colors, breaks, lineRemov
             symmetryColors = rules.symmetryHexagons[0]
             colors[2] = symmetryColors[0]
         }
+
+        // 0 == false -> true
+        if (rules.symmetryOpacity || rules.symmetryOpacity === 0){
+            symmetryOpacity = rules.symmetryOpacity
+        }
+
+        symmetryHelper.style.opacity = `${symmetryOpacity}`
     }
 
     return {
@@ -1065,6 +1081,7 @@ export function createPuzzle(size, grid, starts, ends, colors, breaks, lineRemov
         isSymmetry: isSymmetry,
         symmetry: symmetry,
         symmetryHelper: symmetryHelper,
-        symmetryColors: symmetryColors
+        symmetryColors: symmetryColors,
+        symmetryOpacity: symmetryOpacity
     }
 }
