@@ -1,6 +1,7 @@
 let _puzzleData = null
 let _events = []
 let _solutionFunction = null
+let _onCorrectFunction = null
 
 let solving = false
 let startClickDebounce = false
@@ -1123,6 +1124,10 @@ function documentClick(){
                 usedStart.puzzlePoint.puzzlePoint.style.backgroundColor = _puzzleData.colors[3]
                 selectedEnd.endPoint.style.backgroundColor = _puzzleData.colors[3]
                 selectedEnd.endLine.style.backgroundColor = _puzzleData.colors[3]
+
+                if (_onCorrectFunction){
+                    _onCorrectFunction()
+                }
             }
             else {
                 drawElements.forEach(drawElement => {
@@ -1160,13 +1165,14 @@ function documentClick(){
     }
 }
 
-export function handlePuzzle(puzzleData, solutionFunction){
+export function handlePuzzle(puzzleData, solutionFunction, onCorrectFunction){
     if (_puzzleData){
         removeEvents()
     }
 
     _puzzleData = puzzleData
     _solutionFunction = solutionFunction
+    _onCorrectFunction = onCorrectFunction
 
     for (let i = 0; i < puzzleData.puzzleStarts.length; i++){
         const puzzleStart = puzzleData.puzzleStarts[i]

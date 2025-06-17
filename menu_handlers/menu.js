@@ -21,6 +21,8 @@ let selectionPages = null
 let levelColors = ["rgb(100, 100, 100)", "rgb(66, 66, 66)", "rgb(255, 255, 255)", "rgb(50, 255, 50)", "rgb(255, 50, 50)", "rgb(33, 33, 33)", "rgb(250, 200, 0)",
         "rgb(255, 220, 0)", "rgb(44, 44, 255)"]
 let puzzleSize = [500, 500]
+let currentLevel = null
+let currentLevelIndex = 0
 
 const levelsHolder = document.querySelector("#levels-holder")
 const levelsHeader = document.querySelector("#levels-header")
@@ -30,6 +32,8 @@ const levelSelectorName = document.querySelector("#level-selector-name")
 const levelSelectorSections = document.querySelector("#level-selector-sections")
 const pagesCount = document.querySelector("#pages-count")
 const levelHolder = document.querySelector("#level")
+const levelReturn = document.querySelector("#level-header-return")
+const levelHeaderName = document.querySelector("#level-header-name")
 
 function loadAllLevels(){
     let filesLoaded = 0
@@ -134,6 +138,9 @@ function onLevelSelectionScroll(){
 }
 
 function loadLevel(level, levelIndex){
+    currentLevel = level
+    currentLevelIndex = levelIndex
+
     levelHolder.style.visibility = "visible"
 
     for (const levelData of level.levels){
@@ -185,11 +192,61 @@ function loadLevel(level, levelIndex){
 
         levelHolder.append(puzzleData.element)
 
-        handlePuzzle(puzzleData, validate_solution)
+        handlePuzzle(puzzleData, validate_solution, onCorrectLevelSolution)
+
+        levelHeaderName.innerText = `level ${levelIndex + 1}`
+        levelHeaderName.style.color = level.levelNameColor
 
         break
     }
+}
+
+function onCorrectLevelSolution(){
+    if (!currentLevel || !currentLevelIndex && currentLevelIndex !== 0) return
     
+    const levelsData = puzzleData.levelsData
+
+    for (const levelData of levelsData){
+        if (levelData.levelName !== currentLevel.levelName) continue
+
+        let hasSolution = false
+
+        for (const levelIndex of levelData.levelsSolved){
+            if (levelIndex !== currentLevelIndex) continue
+
+            hasSolution = true
+        }
+
+        if (!hasSolution){
+            levelData.levelsSolved.push(currentLevelIndex)
+        }
+
+        break
+    }
+
+    loadLevelSelection(currentLevel)
+
+    while (levelsHolder.children.length > 0){
+        levelsHolder.firstChild.remove()
+    }
+
+    for (const level of levels){
+        createLevelSelect(level)
+    }
+
+    if (currentLevelIndex < currentLevel.levels.length - 1){
+        loadLevel(currentLevel, currentLevelIndex + 1)
+    }
+    else {
+        exitLevel()
+    }
+}
+
+function exitLevel(){
+    levelHolder.style.visibility = "hidden"
+
+    currentLevel = null
+    currentLevelIndex = null
 }
 
 function isLevelCompleted(level, levelIndex){
@@ -352,6 +409,7 @@ function setup(){
     }, 300000)
     levelSelectorReturn.addEventListener("click", closeLevelSelector)
     levelSelectorSections.addEventListener("scroll", onLevelSelectionScroll)
+    levelReturn.addEventListener("click", exitLevel)
 
     setLevelSelectorState(false)
 

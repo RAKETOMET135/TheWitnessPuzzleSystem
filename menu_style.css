@@ -94,12 +94,12 @@
     width: 100%;
     height: 100%;
 }
-#header {
+#header, #level-header {
     position: absolute;
     width: 100%;
     height: 50px;
 }
-#level-selector-return {
+#level-selector-return, #level-header-return {
     height: 90%;
     aspect-ratio: 1/1;
     margin-left: 5px;
@@ -114,10 +114,10 @@
     align-items: center;
     justify-content: center;
 }
-#level-selector-return > p {
+#level-selector-return > p, #level-header-return > p {
     font-size: 2rem;
 }
-#level-selector-name {
+#level-selector-name, #level-header-name {
     color: white;
     font-family: "Funnel Display", sans-serif;
     font-size: 1.5rem;
