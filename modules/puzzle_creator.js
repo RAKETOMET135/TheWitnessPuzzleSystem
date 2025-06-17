@@ -1043,7 +1043,7 @@ export function createPuzzle(size, grid, starts, ends, colors, breaks, lineRemov
         symmetryHelper.style.zIndex = "30"
         puzzle.append(symmetryHelper)
 
-        if (rules.symmetryHexagons){
+        if (rules.symmetryHexagons && rules.symmetryHexagons.length > 0){
             let coloredHexagonsData = createHexagonsColors(puzzle, pointSize, rules.symmetryHexagons[0], rules.symmetryHexagons[1])
             _rules.push({
                 data: coloredHexagonsData,

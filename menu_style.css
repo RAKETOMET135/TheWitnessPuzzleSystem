@@ -197,6 +197,15 @@
     margin: 5px;
 }
 
+#level {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+}
+
 @media (width < 800px) {
     #levels {
         width: 100%;
