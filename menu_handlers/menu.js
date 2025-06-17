@@ -5,16 +5,22 @@ const levels = [
         levelName: "Intro",
         levelNameColor: "rgb(255, 0, 0)",
         levelDesc: "Introduction puzzles",
-        levels: []
+        levels: [5, 8, 5, 4, 8, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
     }
 ]
 let puzzleData = {
     levelsData: []
 }
+let selectionPageCircles = null
+let selectionPages = null
 
 const levelsHolder = document.querySelector("#levels-holder")
 const levelsHeader = document.querySelector("#levels-header")
 const levelSelector = document.querySelector("#level-selector")
+const levelSelectorReturn = document.querySelector("#level-selector-return")
+const levelSelectorName = document.querySelector("#level-selector-name")
+const levelSelectorSections = document.querySelector("#level-selector-sections")
+const pagesCount = document.querySelector("#pages-count")
 
 function getLevelPuzzleData(level){
     for (const puzzleLevelData of puzzleData.levelsData){
@@ -43,6 +49,10 @@ function createLevelSelect(level){
     const levelData = document.createElement("p")
     levelData.innerText = `${getLevelPuzzleData(level).levelsSolved.length} / ${level.levels.length}`
     levelSelect.append(levelData)
+
+    levelSelect.addEventListener("click", () => {
+        openLevelSelector(level)
+    })
 }
 
 function setLevelSelectorState(state){
@@ -56,6 +66,126 @@ function setLevelSelectorState(state){
         levelsHolder.style.visibility = "visible"
         levelsHeader.style.visibility = "visible"
     }
+}
+
+function onLevelSelectionScroll(){
+    if (!selectionPageCircles || !selectionPages) return
+
+    const pageComputedStyle = window.getComputedStyle(selectionPages[0].element)
+    let pageWidth = parseFloat(pageComputedStyle.width.slice(0, pageComputedStyle.width.length - 2))
+    
+    let scrollLeft = levelSelectorSections.scrollLeft + pageWidth / 3
+    let scrolledPage = 0
+
+    for (let i = 0; i < selectionPages.length; i++){
+        let pageLeft = pageWidth * i
+        let nextPageLeft = pageWidth * (i + 1)
+
+        if (scrollLeft > pageLeft && scrollLeft < nextPageLeft){
+            scrolledPage = i
+
+            break
+        }
+    }
+    
+    for (const circle of selectionPageCircles){
+        if (circle.pageNumber === scrolledPage){
+            circle.element.style.backgroundColor = "rgb(255, 255, 255)"
+        }
+        else{
+            circle.element.style.backgroundColor = "rgb(162, 162, 162)"
+        }
+    }
+    
+}
+
+function loadLevelSelection(level){
+    while (levelSelectorSections.children.length > 0){
+        levelSelectorSections.firstChild.remove()
+    }
+    while (pagesCount.children.length > 0){
+        pagesCount.firstChild.remove()
+    }
+
+    const levels = level.levels
+    let pages = Math.ceil(levels.length / 30)
+    let createdLevels = 0
+
+    let levelButtonColors = ["rgb(51, 51, 245)", "rgb(226, 226, 4)", "rgb(215, 93, 0)", "rgb(0, 255, 255)", "rgb(212, 3, 3)", "rgb(0, 208, 0)"]
+    let levelButtonBackgrounds = ["rgb(45, 45, 216)", "rgb(197, 197, 2)", "rgb(190, 85, 5)", "rgb(4, 213, 213)", "rgb(168, 6, 6)", "rgb(2, 159, 2)"]
+    let levelButtonColorIndex = 0
+
+    let pageCircles = []
+    let pagesArray = []
+
+    for (let i = 0; i < pages; i++){
+        const page = document.createElement("div")
+        levelSelectorSections.append(page)
+        page.style.left = `${100 * i}%`
+
+        const pageContent = document.createElement("div")
+        page.append(pageContent)
+
+        const pageHeader = document.createElement("h1")
+        pageContent.append(pageHeader)
+
+        const pageLevelsHolder = document.createElement("div")
+        pageContent.append(pageLevelsHolder)
+
+        let levelsOnPage = 30
+        if (createdLevels + levelsOnPage > levels.length) levelsOnPage = levels.length - createdLevels
+
+        pageHeader.innerText = `${createdLevels} - ${createdLevels + levelsOnPage}`
+
+        for (let j = 0; j < levelsOnPage; j++){
+            let createdLevelIndex = createdLevels
+            const levelData = levels[createdLevelIndex]
+
+            const levelButton = document.createElement("button")
+            levelButton.innerText = `${createdLevelIndex + 1}`
+            pageLevelsHolder.append(levelButton)
+            
+            let borderColor = levelButtonColors[levelButtonColorIndex]
+            let buttonBackground = levelButtonBackgrounds[levelButtonColorIndex]
+            levelButtonColorIndex++
+            if (levelButtonColorIndex > levelButtonColors.length -1) levelButtonColorIndex = 0
+
+            levelButton.style.borderColor = borderColor
+            levelButton.style.backgroundColor = buttonBackground
+
+            createdLevels++
+        }
+
+        const pageCircle = document.createElement("div")
+        pagesCount.append(pageCircle)
+
+        pageCircles.push({
+            element: pageCircle,
+            pageNumber: i
+        })
+        pagesArray.push({
+            element: page,
+            pageNumber: i
+        })
+    }
+
+    selectionPageCircles = pageCircles
+    selectionPages = pagesArray
+
+    onLevelSelectionScroll()
+}
+
+function openLevelSelector(level){
+    setLevelSelectorState(true)
+
+    levelSelectorName.innerText = level.levelName
+    levelSelectorName.style.color = level.levelNameColor
+
+    loadLevelSelection(level)
+}
+
+function closeLevelSelector(){
+    setLevelSelectorState(false)
 }
 
 function setDefaultPuzzleData(){
@@ -92,8 +222,10 @@ function setup(){
     setInterval(() => {
         savePuzzleData(savingSystem)
     }, 300000)
+    levelSelectorReturn.addEventListener("click", closeLevelSelector)
+    levelSelectorSections.addEventListener("scroll", onLevelSelectionScroll)
 
-    setLevelSelectorState(true)
+    setLevelSelectorState(false)
 }
 
 setup()
