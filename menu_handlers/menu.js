@@ -8,9 +8,18 @@ const levels = [
     {
         levelName: "Intro",
         levelNameColor: "rgb(255, 0, 0)",
+        levelColorDarker: "rgb(201, 0, 0)",
         levelDesc: "Introduction puzzles",
         levels: [],
         levelsFileName: "intro.json"
+    }
+]
+const levelSeparators = [
+    {
+        separatorName: "Intro",
+        separatorBackgroundColor: "rgb(201, 0, 0)",
+        separatorBorderColor: "rgb(255, 0, 0)",
+        separatorLevels: ["Intro"]
     }
 ]
 let puzzleData = {
@@ -23,6 +32,8 @@ let levelColors = ["rgb(100, 100, 100)", "rgb(66, 66, 66)", "rgb(255, 255, 255)"
 let puzzleSize = [500, 500]
 let currentLevel = null
 let currentLevelIndex = 0
+let prevLevelElement = null
+let separators = []
 
 const levelsHolder = document.querySelector("#levels-holder")
 const levelsHeader = document.querySelector("#levels-header")
@@ -34,6 +45,12 @@ const pagesCount = document.querySelector("#pages-count")
 const levelHolder = document.querySelector("#level")
 const levelReturn = document.querySelector("#level-header-return")
 const levelHeaderName = document.querySelector("#level-header-name")
+const completeDialogue = document.querySelector("#complete-dialogue")
+const nextLevelButton = document.querySelector("#next-level")
+const exitLevelButton = document.querySelector("#exit-level")
+const closeDialogueButton = document.querySelector("#close-dialogue")
+const dialogueBackgroundDarkness = document.querySelector("#background-darkness")
+const nextLevelExtraButton = document.querySelector("#next-level-extra")
 
 function loadAllLevels(){
     let filesLoaded = 0
@@ -71,10 +88,88 @@ function getLevelPuzzleData(level){
     return null
 }
 
-function createLevelSelect(level){
+function separatorCorrectCheck(){
+    for (const separatorData of levelSeparators){
+        let allCorrect = true
+
+        for (const level of levels){
+            let exists = false
+
+            for (const separatorLevelName of separatorData.separatorLevels){
+                if (separatorLevelName !== level.levelName) continue
+
+                exists = true
+
+                break
+            }
+
+            if (!exists) continue
+
+            let solvedAmount = getLevelPuzzleData(level).levelsSolved.length
+            let totalLevels =  level.levels.length
+
+            if (solvedAmount >= totalLevels) continue
+
+            allCorrect = false
+
+            break
+        }
+
+        for (const separator of separators){
+            if (separator.separatorName !== separatorData.separatorName) continue
+
+            if (allCorrect){
+                if (separator.correct){
+                    separator.correct.remove()
+                }
+
+                const separatorCorrect = document.createElement("img")
+                separatorCorrect.setAttribute("src", "images/correct.png")
+                separator.element.append(separatorCorrect)
+
+                separator.correct = separatorCorrect
+            }
+            else{
+                if (separator.correct){
+                    separator.correct.remove()
+                    separator.correct = null
+                }
+            }
+
+            break
+        }
+    }
+}
+
+function createLevelSelect(level, index){
+    let separatorData = levelSeparators[index]
+
+    if (separatorData){
+        const separator = document.createElement("div")
+        separator.classList.add("separator")
+        separator.style.backgroundColor = separatorData.separatorBackgroundColor
+        separator.style.borderBottom = `${separatorData.separatorBorderColor} 3px solid`
+        levelsHolder.append(separator)
+
+        const separatorHeader = document.createElement("h1")
+        separatorHeader.innerText = separatorData.separatorName
+        separator.append(separatorHeader)
+
+        separators.push({
+            element: separator,
+            index: index,
+            correct: null,
+            separatorName: separatorData.separatorName
+        })
+    }
+
     const levelSelect = document.createElement("div")
     levelSelect.classList.add("level-select")
     levelsHolder.append(levelSelect)
+
+    const levelHoverBackground = document.createElement("div")
+    levelHoverBackground.style.backgroundColor = level.levelNameColor
+    levelSelect.append(levelHoverBackground)
 
     const levelName = document.createElement("h2")
     levelName.innerText = level.levelName
@@ -89,8 +184,22 @@ function createLevelSelect(level){
     levelData.innerText = `${getLevelPuzzleData(level).levelsSolved.length} / ${level.levels.length}`
     levelSelect.append(levelData)
 
+    if (getLevelPuzzleData(level).levelsSolved.length >= level.levels.length){
+        const correct = document.createElement("img")
+        correct.setAttribute("src", "images/correct.png")
+        levelSelect.append(correct)
+    }
+
     levelSelect.addEventListener("click", () => {
         openLevelSelector(level)
+
+        levelHoverBackground.style.opacity = "0"
+    })
+    levelSelect.addEventListener("mouseenter", () => {
+        levelHoverBackground.style.opacity = "0.25"
+    })
+    levelSelect.addEventListener("mouseleave", () => {
+        levelHoverBackground.style.opacity = "0"
     })
 }
 
@@ -142,6 +251,11 @@ function loadLevel(level, levelIndex){
     currentLevelIndex = levelIndex
 
     levelHolder.style.visibility = "visible"
+
+    if (prevLevelElement){
+        prevLevelElement.remove()
+        prevLevelElement = null
+    }
 
     for (const levelData of level.levels){
         if (levelData.levelIndex !== levelIndex) continue
@@ -197,6 +311,8 @@ function loadLevel(level, levelIndex){
         levelHeaderName.innerText = `level ${levelIndex + 1}`
         levelHeaderName.style.color = level.levelNameColor
 
+        prevLevelElement = puzzleData.element
+
         break
     }
 }
@@ -230,20 +346,26 @@ function onCorrectLevelSolution(){
         levelsHolder.firstChild.remove()
     }
 
-    for (const level of levels){
-        createLevelSelect(level)
-    }
+    separators = []
+    for (let i = 0; i < levels.length; i++){
+        const level = levels[i]
 
-    if (currentLevelIndex < currentLevel.levels.length - 1){
-        loadLevel(currentLevel, currentLevelIndex + 1)
+        createLevelSelect(level, i)
     }
-    else {
-        exitLevel()
-    }
+    separatorCorrectCheck()
+
+    completeDialogue.style.visibility = "visible"
+    dialogueBackgroundDarkness.style.visibility = "visible"
+    completeDialogue.querySelector("h1").style.backgroundColor = currentLevel.levelColorDarker
+    completeDialogue.querySelector("h1").style.borderBottomColor = currentLevel.levelNameColor
+    completeDialogue.style.borderColor = currentLevel.levelNameColor
 }
 
 function exitLevel(){
     levelHolder.style.visibility = "hidden"
+    completeDialogue.style.visibility = "hidden"
+    dialogueBackgroundDarkness.style.visibility = "hidden"
+    nextLevelExtraButton.style.visibility = "hidden"
 
     currentLevel = null
     currentLevelIndex = null
@@ -397,9 +519,13 @@ function setup(){
     const savingSystem = new SavingSystem("puzzle_data")
     savingSystem.load(onPuzzleDataLoad)
 
-    for (const level of levels){
-        createLevelSelect(level)
+    separators = []
+    for (let i = 0; i < levels.length; i++){
+        const level = levels[i]
+
+        createLevelSelect(level, i)
     }
+    separatorCorrectCheck()
 
     window.addEventListener("beforeunload", () => {
         savePuzzleData(savingSystem)
@@ -408,12 +534,68 @@ function setup(){
         savePuzzleData(savingSystem)
     }, 300000)
     levelSelectorReturn.addEventListener("click", closeLevelSelector)
+    levelSelectorReturn.addEventListener("mouseenter", () => {
+        levelSelectorReturn.style.backgroundColor = "white"
+        levelSelectorReturn.querySelector("img").setAttribute("src", "images/arrow_hover.png")
+    })
+    levelSelectorReturn.addEventListener("mouseleave", () => {
+        levelSelectorReturn.style.backgroundColor = "transparent"
+        levelSelectorReturn.querySelector("img").setAttribute("src", "images/arrow.png")
+    })
+
     levelSelectorSections.addEventListener("scroll", onLevelSelectionScroll)
     levelReturn.addEventListener("click", exitLevel)
+    levelReturn.addEventListener("mouseenter", () => {
+        levelReturn.style.backgroundColor = "white"
+        levelReturn.querySelector("img").setAttribute("src", "images/arrow_hover.png")
+    })
+    levelReturn.addEventListener("mouseleave", () => {
+        levelReturn.style.backgroundColor = "transparent"
+        levelReturn.querySelector("img").setAttribute("src", "images/arrow.png")
+    })
+
+    closeDialogueButton.addEventListener("click", () => {
+        completeDialogue.style.visibility = "hidden"
+        dialogueBackgroundDarkness.style.visibility = "hidden"
+        nextLevelExtraButton.style.visibility = "visible"
+    })
+    closeDialogueButton.addEventListener("mouseenter", () => {
+        closeDialogueButton.setAttribute("src", "images/close_hover.png")
+    })
+    closeDialogueButton.addEventListener("mouseleave", () => {
+        closeDialogueButton.setAttribute("src", "images/close.png")
+    })
+
+    exitLevelButton.addEventListener("click", exitLevel)
+    nextLevelButton.addEventListener("click", () => {
+        completeDialogue.style.visibility = "hidden"
+        dialogueBackgroundDarkness.style.visibility = "hidden"
+        nextLevelExtraButton.style.visibility = "hidden"
+
+        loadLevel(currentLevel, currentLevelIndex + 1)
+    })
+    nextLevelExtraButton.addEventListener("click", () => {
+        nextLevelExtraButton.style.visibility = "hidden"
+        completeDialogue.style.visibility = "hidden"
+        dialogueBackgroundDarkness.style.visibility = "hidden"
+
+        loadLevel(currentLevel, currentLevelIndex + 1)
+    })
+    nextLevelExtraButton.addEventListener("mouseenter", () => {
+        nextLevelExtraButton.style.backgroundColor = "white"
+        nextLevelExtraButton.querySelector("img").setAttribute("src", "images/arrow_hover.png")
+    })
+    nextLevelExtraButton.addEventListener("mouseleave", () => {
+        nextLevelExtraButton.style.backgroundColor = "transparent"
+        nextLevelExtraButton.querySelector("img").setAttribute("src", "images/arrow.png")
+    })
 
     setLevelSelectorState(false)
 
     levelHolder.style.visibility = "hidden"
+    completeDialogue.style.visibility = "hidden"
+    dialogueBackgroundDarkness.style.visibility = "hidden"
+    nextLevelExtraButton.style.visibility = "hidden"
 }
 
 loadAllLevels()
