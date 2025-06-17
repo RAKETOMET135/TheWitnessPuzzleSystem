@@ -57,6 +57,7 @@
     left: 50%;
     translate: -50%;
     margin-bottom: 10px;
+    cursor: pointer;
 }
 .level-select > h2 {
     user-select: none;
@@ -155,6 +156,7 @@
     font-family: "Funnel Display", sans-serif;
     font-size: 2rem;
     text-align: left;
+    user-select: none;
 }
 #level-selector-sections > div > div > div {
     position: absolute;
@@ -173,6 +175,7 @@
     font-family: "Funnel Display", sans-serif;
     font-size: 1.5rem;
     font-weight: bold;
+    user-select: none;
 }
 #pages-count {
     position: absolute;

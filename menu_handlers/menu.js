@@ -5,7 +5,11 @@ const levels = [
         levelName: "Intro",
         levelNameColor: "rgb(255, 0, 0)",
         levelDesc: "Introduction puzzles",
-        levels: [5, 8, 5, 4, 8, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
+        levels: [
+            {levelIndex: 0, locked: false, key: null},
+            {levelIndex: 1, locked: true, key: 0}
+
+            ]
     }
 ]
 let puzzleData = {
@@ -96,7 +100,18 @@ function onLevelSelectionScroll(){
             circle.element.style.backgroundColor = "rgb(162, 162, 162)"
         }
     }
+}
+
+function loadLevel(level, levelIndex){
+     
+}
+
+function isLevelCompleted(level, levelIndex){
+    let completed = false
+
     
+
+    return completed
 }
 
 function loadLevelSelection(level){
@@ -135,7 +150,7 @@ function loadLevelSelection(level){
         let levelsOnPage = 30
         if (createdLevels + levelsOnPage > levels.length) levelsOnPage = levels.length - createdLevels
 
-        pageHeader.innerText = `${createdLevels} - ${createdLevels + levelsOnPage}`
+        pageHeader.innerText = `${createdLevels + 1} - ${createdLevels + levelsOnPage}`
 
         for (let j = 0; j < levelsOnPage; j++){
             let createdLevelIndex = createdLevels
@@ -150,8 +165,19 @@ function loadLevelSelection(level){
             levelButtonColorIndex++
             if (levelButtonColorIndex > levelButtonColors.length -1) levelButtonColorIndex = 0
 
-            levelButton.style.borderColor = borderColor
-            levelButton.style.backgroundColor = buttonBackground
+            if (levelData.locked && !isLevelCompleted(level, levelData.key)){
+                levelButton.style.borderColor = "rgb(94, 94, 94)"
+                levelButton.style.backgroundColor = "rgb(60, 60, 60)"
+                levelButton.style.color = "rgb(60, 60, 60)"
+            }
+            else{
+                levelButton.style.borderColor = borderColor
+                levelButton.style.backgroundColor = buttonBackground
+
+                levelButton.addEventListener("click", () => {
+                    loadLevel(level, createdLevelIndex)
+                })
+            }
 
             createdLevels++
         }
