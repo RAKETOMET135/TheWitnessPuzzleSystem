@@ -12,6 +12,14 @@ const levels = [
         levelDesc: "Introduction puzzles",
         levels: [],
         levelsFileName: "intro.json"
+    },
+    {
+        levelName: "Hexagons",
+        levelNameColor: "rgb(15, 255, 27)",
+        levelColorDarker: "rgb(12, 211, 22)",
+        levelDesc: "Puzzles with hexagons",
+        levels: [],
+        levelsFileName: "hexagons.json"
     }
 ]
 const levelSeparators = [
@@ -19,8 +27,9 @@ const levelSeparators = [
         separatorName: "Intro",
         separatorBackgroundColor: "rgb(201, 0, 0)",
         separatorBorderColor: "rgb(255, 0, 0)",
-        separatorLevels: ["Intro"]
-    }
+        separatorLevels: ["Intro", "Hexagons"]
+    },
+    null
 ]
 let puzzleData = {
     levelsData: []
@@ -51,6 +60,7 @@ const exitLevelButton = document.querySelector("#exit-level")
 const closeDialogueButton = document.querySelector("#close-dialogue")
 const dialogueBackgroundDarkness = document.querySelector("#background-darkness")
 const nextLevelExtraButton = document.querySelector("#next-level-extra")
+const levelsReturnButton = document.querySelector("#levels-return")
 
 function loadAllLevels(){
     let filesLoaded = 0
@@ -90,6 +100,8 @@ function getLevelPuzzleData(level){
 
 function separatorCorrectCheck(){
     for (const separatorData of levelSeparators){
+        if (!separatorData) continue
+
         let allCorrect = true
 
         for (const level of levels){
@@ -208,11 +220,13 @@ function setLevelSelectorState(state){
         levelSelector.style.visibility = "visible"
         levelsHolder.style.visibility = "hidden"
         levelsHeader.style.visibility = "hidden"
+        levelsReturnButton.style.visibility = "hidden"
     }
     else{
         levelSelector.style.visibility = "hidden"
         levelsHolder.style.visibility = "visible"
         levelsHeader.style.visibility = "visible"
+        levelsReturnButton.style.visibility = "visible"
     }
 }
 
@@ -359,6 +373,13 @@ function onCorrectLevelSolution(){
     completeDialogue.querySelector("h1").style.backgroundColor = currentLevel.levelColorDarker
     completeDialogue.querySelector("h1").style.borderBottomColor = currentLevel.levelNameColor
     completeDialogue.style.borderColor = currentLevel.levelNameColor
+
+    if (currentLevelIndex >= currentLevel.levels.length - 1){
+        nextLevelButton.style.display = "none"
+    }
+    else {
+        nextLevelButton.style.display = "block"
+    }
 }
 
 function exitLevel(){
@@ -450,6 +471,10 @@ function loadLevelSelection(level){
                 levelButton.style.borderColor = "rgb(94, 94, 94)"
                 levelButton.style.backgroundColor = "rgb(60, 60, 60)"
                 levelButton.style.color = "rgb(60, 60, 60)"
+
+                const lock = document.createElement("img")
+                lock.setAttribute("src", "images/lock.png")
+                levelButton.append(lock)
             }
             else{
                 levelButton.style.borderColor = borderColor
@@ -496,6 +521,10 @@ function closeLevelSelector(){
 }
 
 function setDefaultPuzzleData(){
+    puzzleData = {
+        levelsData: []
+    }
+
     for (const level of levels){
         puzzleData.levelsData.push({
             levelName: level.levelName,
@@ -558,6 +587,12 @@ function setup(){
         completeDialogue.style.visibility = "hidden"
         dialogueBackgroundDarkness.style.visibility = "hidden"
         nextLevelExtraButton.style.visibility = "visible"
+
+        if (currentLevel){
+            if (currentLevelIndex >= currentLevel.levels.length - 1){
+                nextLevelExtraButton.style.visibility = "hidden"
+            }
+        }
     })
     closeDialogueButton.addEventListener("mouseenter", () => {
         closeDialogueButton.setAttribute("src", "images/close_hover.png")
@@ -590,12 +625,34 @@ function setup(){
         nextLevelExtraButton.querySelector("img").setAttribute("src", "images/arrow.png")
     })
 
+    levelsReturnButton.addEventListener("click", () => {
+
+    })
+    levelsReturnButton.addEventListener("mouseenter", () => {
+        levelsReturnButton.style.backgroundColor = "white"
+        levelsReturnButton.querySelector("img").setAttribute("src", "images/arrow_hover.png")
+    })
+    levelsReturnButton.addEventListener("mouseleave", () => {
+        levelsReturnButton.style.backgroundColor = "transparent"
+        levelsReturnButton.querySelector("img").setAttribute("src", "images/arrow.png")
+    })
+
     setLevelSelectorState(false)
 
     levelHolder.style.visibility = "hidden"
     completeDialogue.style.visibility = "hidden"
     dialogueBackgroundDarkness.style.visibility = "hidden"
     nextLevelExtraButton.style.visibility = "hidden"
+
+
+    //for testing - data reset
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "p"){
+            setDefaultPuzzleData()
+            
+            window.location.href = ""
+        }
+    })
 }
 
 loadAllLevels()

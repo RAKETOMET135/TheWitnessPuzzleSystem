@@ -148,6 +148,7 @@ function createPuzzleEnds(puzzle, puzzlePoints, ends, size, endLength, colors){
             endPoint.style.width = `${size}px`
             endPoint.style.height = `${size}px`
             endPoint.style.backgroundColor = colors[1]
+            endPoint.style.zIndex = "10"
             
             const line = document.createElement("div")
             line.classList.add("puzzle-line")

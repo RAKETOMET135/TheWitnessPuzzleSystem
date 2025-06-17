@@ -15,9 +15,11 @@
     width: 100%;
     text-align: center;
     top: 10%;
-    font-size: 3rem;
+    font-size: 4rem;
     user-select: none;
     font-family: "Funnel Display", sans-serif;
+    margin: 0;
+    margin-bottom: 10px;
 }
 #levels-header > span {
     margin-left: -5px;
@@ -48,6 +50,25 @@
     overflow-x: hidden;
     overflow-y: scroll;
     scrollbar-width: none;
+}
+#levels-return {
+    width: 45px;
+    aspect-ratio: 1/1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background-color: transparent;
+    border: 3px solid white;
+    border-radius: 1000px;
+    position: absolute;
+    top: 0;
+    margin-left: 5px;
+    margin-top: 15px;
+}
+#levels-return > img {
+    width: 35px;
+    aspect-ratio: 1/1;
 }
 
 .separator {
@@ -235,6 +256,19 @@
     font-size: 1.5rem;
     font-weight: bold;
     user-select: none;
+    position: relative;
+    transition: filter 0.1s;
+}
+#level-selector-sections > div > div > div > button:hover {
+    filter: brightness(1.1);
+}
+#level-selector-sections > div > div > div > button > img {
+    width: 70%;
+    height: 70%;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    translate: -50% -50%;
 }
 #pages-count {
     position: absolute;

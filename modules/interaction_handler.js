@@ -875,7 +875,7 @@ function handleDrawingBoth(clientX, clientY, movementX, movementY){
             }
         }
         
-        if (drawLineMove[1] > 0 && drawLinePivot[1] < _puzzleData.pointSize + (_puzzleData.pointSize * 3) * (_puzzleData.grid[1] - 1) && !closeLineRemovals.bottom && !closeLineRemovalsSymmetry.bottom){
+        if (drawLineMove[1] > 0 && drawLinePivot[1] < _puzzleData.pointSize + (_puzzleData.pointSize * 3) * (_puzzleData.grid[1] - 1) - 1 && !closeLineRemovals.bottom && !closeLineRemovalsSymmetry.bottom){
             if (closeBreakPoints.bottom && drawLineMove[1] > _puzzleData.pointSize / 2 || closeBreakPointsSymmetry.bottom && drawLineMove[1] > _puzzleData.pointSize / 2){
                 drawLineMove[1] = _puzzleData.pointSize / 2
             }
