@@ -69,7 +69,7 @@ const _puzzleData = createPuzzle([500, 500], [4, 4], [[0, 3]], [[3, 0, "up"]],
 )
 */
 
-
+/*
 const _puzzleData = createPuzzle([500, 500], [5, 5], [[0, 4], [1, 4]], [[2, 0, "up"]],
     ["rgb(100, 100, 100)", "rgb(66, 66, 66)", "rgb(255, 255, 255)", "rgb(50, 255, 50)", "rgb(255, 50, 50)", "rgb(33, 33, 33)", "rgb(250, 200, 0)",
         "rgb(255, 220, 0)", "rgb(44, 44, 255)"
@@ -92,7 +92,7 @@ const _puzzleData = createPuzzle([500, 500], [5, 5], [[0, 4], [1, 4]], [[2, 0, "
         ]
     }
 )
-
+*/
 
 /*
 const _puzzleData = createPuzzle([500, 500], [4, 4], [[0, 3]], [[3, 0, "up"]],
@@ -143,6 +143,8 @@ const _puzzleData = createPuzzle([500, 500], [4, 4], [[0, 3]], [[3, 0, "up"]],
 )
 */
 
+/*
 document.body.append(_puzzleData.element)
 
 handlePuzzle(_puzzleData, validate_solution)
+*/

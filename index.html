@@ -5,10 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Witness Puzzle System</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="menu_style.css">
 </head>
 <body>
     <div id="background"></div>
 
+    <div id="levels">
+        <h1 id="levels-header">
+            <span>l</span>
+            <span>e</span>
+            <span>v</span>
+            <span>e</span>
+            <span>l</span>
+            <span>s</span>
+        </h1>
+
+        <div id="levels-holder"></div>
+
+        <div id="level-selector">
+            <div id="header">
+                <button id="level-selector-return">
+                    <p><</p>
+                </button>
+                <h1 id="level-selector-name">level name placeholder</h1>
+            </div>
+        </div>
+    </div>
+
     <script src="main.js" type="module"></script>
+    <script src="menu_handlers/menu.js" type="module"></script>
 </body>
 </html>
