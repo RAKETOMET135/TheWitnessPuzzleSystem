@@ -193,6 +193,12 @@ function createLevelSelect(level, index){
     levelSelect.append(levelDesc)
 
     const levelData = document.createElement("p")
+
+    if (!getLevelPuzzleData(level)){
+        window.localStorage.removeItem("puzzle_data")
+        window.location.href = ""
+    }
+
     levelData.innerText = `${getLevelPuzzleData(level).levelsSolved.length} / ${level.levels.length}`
     levelSelect.append(levelData)
 
