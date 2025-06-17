@@ -57,6 +57,7 @@
     left: 50%;
     translate: -50%;
     margin-bottom: 10px;
+    cursor: pointer;
 }
 .level-select > h2 {
     user-select: none;
@@ -93,12 +94,12 @@
     width: 100%;
     height: 100%;
 }
-#header {
+#header, #level-header {
     position: absolute;
     width: 100%;
     height: 50px;
 }
-#level-selector-return {
+#level-selector-return, #level-header-return {
     height: 90%;
     aspect-ratio: 1/1;
     margin-left: 5px;
@@ -113,10 +114,10 @@
     align-items: center;
     justify-content: center;
 }
-#level-selector-return > p {
+#level-selector-return > p, #level-header-return > p {
     font-size: 2rem;
 }
-#level-selector-name {
+#level-selector-name, #level-header-name {
     color: white;
     font-family: "Funnel Display", sans-serif;
     font-size: 1.5rem;
@@ -126,6 +127,83 @@
     translate: -50% -4px;
     text-align: center;
     width: 72.5%;
+}
+#level-selector-sections {
+    height: calc(100% - 55px);
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    overflow-y: hidden;
+    overflow-x: scroll;
+    scrollbar-width: none;
+}
+#level-selector-sections > div {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    display: inline-block;
+}
+#level-selector-sections > div > div {
+    width: 75%;
+    height: 75%;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    translate: -50% -50%;
+}
+#level-selector-sections > div > div > h1 {
+    color: white;
+    font-family: "Funnel Display", sans-serif;
+    font-size: 2rem;
+    text-align: left;
+    user-select: none;
+}
+#level-selector-sections > div > div > div {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 85%;
+    width: 100%;
+}
+#level-selector-sections > div > div > div > button {
+    width: 54px;
+    border: 4px solid;
+    aspect-ratio: 1/1;
+    margin: 2px;
+    cursor: pointer;
+    color: white;
+    font-family: "Funnel Display", sans-serif;
+    font-size: 1.5rem;
+    font-weight: bold;
+    user-select: none;
+}
+#pages-count {
+    position: absolute;
+    left: 50%;
+    bottom: 5%;
+    translate: -50%;
+    width: 80%;
+    height: 25px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+#pages-count > div {
+    background-color: rgb(162, 162, 162);
+    border-radius: 1000px;
+    width: 15px;
+    aspect-ratio: 1/1;
+    margin: 5px;
+}
+
+#level {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: black;
 }
 
 @media (width < 800px) {
