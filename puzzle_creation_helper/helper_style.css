@@ -1,0 +1,51 @@
+body {
+    background-color: rgb(22, 22, 22);
+}
+
+#grid-size-x {
+    position: absolute;
+    left: 50%;
+    translate: -50%;
+    top: 2%;
+    outline: none;
+    text-align: center;
+}
+#grid-size-y {
+    position: absolute;
+    left: 50%;
+    translate: -50% 100%;
+    top: 2%;
+    outline: none;
+    text-align: center;
+}
+#grid-size-apply {
+    position: absolute;
+    left: 50%;
+    translate: -50% 200%;
+    top: 2%;
+    cursor: pointer;
+}
+
+#export-data {
+    position: absolute;
+    left: 50%;
+    translate: -50%;
+    bottom: 10%;
+    cursor: pointer;
+}
+#add-data {
+    position: absolute;
+    left: 50%;
+    translate: -50% -200%;
+    bottom: 10%;
+    cursor: pointer;
+}
+
+#created-puzzles {
+    color: white;
+    position: absolute;
+    left: 50%;
+    translate: -50%;
+    top: 15%;
+    user-select: none;
+}

@@ -3,13 +3,32 @@
         {
             "levelIndex": 0,
             "locked": false,
-            "key": null,
-            "gridSize": [2, 2],
-            "starts": [[0, 1]],
-            "ends": [[1, 0, "up"]],
+            "key": 0,
+            "gridSize": [
+                2,
+                2
+            ],
+            "starts": [
+                [
+                    0,
+                    1
+                ]
+            ],
+            "ends": [
+                [
+                    1,
+                    0,
+                    "up"
+                ]
+            ],
             "lineBreaks": [],
             "lineRemovals": [],
-            "hexagons": [[1, 1]],
+            "hexagons": [
+                [
+                    1,
+                    1
+                ]
+            ],
             "colors": [],
             "triangles": [],
             "stars": [],
@@ -24,12 +43,42 @@
             "levelIndex": 1,
             "locked": true,
             "key": 0,
-            "gridSize": [3, 3],
-            "starts": [[1, 1]],
-            "ends": [[1, 0, "up"]],
+            "gridSize": [
+                3,
+                3
+            ],
+            "starts": [
+                [
+                    1,
+                    1
+                ]
+            ],
+            "ends": [
+                [
+                    1,
+                    0,
+                    "up"
+                ]
+            ],
             "lineBreaks": [],
-            "lineRemovals": [[0, 0, "down"], [0, 0, "right"]],
-            "hexagons": [[0, 2]],
+            "lineRemovals": [
+                [
+                    0,
+                    0,
+                    "down"
+                ],
+                [
+                    0,
+                    0,
+                    "right"
+                ]
+            ],
+            "hexagons": [
+                [
+                    0,
+                    2
+                ]
+            ],
             "colors": [],
             "triangles": [],
             "stars": [],
@@ -44,12 +93,50 @@
             "levelIndex": 2,
             "locked": true,
             "key": 1,
-            "gridSize": [3, 3],
-            "starts": [[0, 1]],
-            "ends": [[1, 0, "up"]],
+            "gridSize": [
+                3,
+                3
+            ],
+            "starts": [
+                [
+                    0,
+                    1
+                ]
+            ],
+            "ends": [
+                [
+                    1,
+                    0,
+                    "up"
+                ]
+            ],
             "lineBreaks": [],
-            "lineRemovals": [[0, 0, "down"], [0, 0, "right"]],
-            "hexagons": [[0, 2], [1, 0.5], [1.5, 1]],
+            "lineRemovals": [
+                [
+                    0,
+                    0,
+                    "right"
+                ],
+                [
+                    0,
+                    0,
+                    "down"
+                ]
+            ],
+            "hexagons": [
+                [
+                    1,
+                    0.5
+                ],
+                [
+                    1.5,
+                    1
+                ],
+                [
+                    0,
+                    2
+                ]
+            ],
             "colors": [],
             "triangles": [],
             "stars": [],
@@ -64,12 +151,39 @@
             "levelIndex": 3,
             "locked": true,
             "key": 2,
-            "gridSize": [3, 3],
-            "starts": [[0, 1]],
-            "ends": [[0, 2, "down"]],
+            "gridSize": [
+                3,
+                3
+            ],
+            "starts": [
+                [
+                    0,
+                    1
+                ]
+            ],
+            "ends": [
+                [
+                    0,
+                    2,
+                    "down"
+                ]
+            ],
             "lineBreaks": [],
             "lineRemovals": [],
-            "hexagons": [[0.5, 2], [1, 0.5], [1.5, 1]],
+            "hexagons": [
+                [
+                    1,
+                    0.5
+                ],
+                [
+                    1.5,
+                    1
+                ],
+                [
+                    0.5,
+                    2
+                ]
+            ],
             "colors": [],
             "triangles": [],
             "stars": [],
@@ -84,12 +198,2858 @@
             "levelIndex": 4,
             "locked": true,
             "key": 3,
-            "gridSize": [4, 4],
-            "starts": [[0, 1]],
-            "ends": [[3, 0, "up"]],
-            "lineBreaks": [[2, 0, "right"], [1, 1, "down"]],
+            "gridSize": [
+                4,
+                4
+            ],
+            "starts": [
+                [
+                    0,
+                    1
+                ]
+            ],
+            "ends": [
+                [
+                    3,
+                    0,
+                    "up"
+                ]
+            ],
+            "lineBreaks": [
+                [
+                    2,
+                    0,
+                    "right"
+                ],
+                [
+                    1,
+                    1,
+                    "down"
+                ]
+            ],
             "lineRemovals": [],
-            "hexagons": [[0, 2], [2, 0.5], [1.5, 3]],
+            "hexagons": [
+                [
+                    2,
+                    0.5
+                ],
+                [
+                    0,
+                    2
+                ],
+                [
+                    1.5,
+                    3
+                ]
+            ],
+            "colors": [],
+            "triangles": [],
+            "stars": [],
+            "blocks": [],
+            "removeBlocks": [],
+            "eliminationMarks": [],
+            "symmetry": null,
+            "symmetryHexagons": [],
+            "symmetryOpacity": 1
+        },
+        {
+            "levelIndex": 5,
+            "locked": true,
+            "key": 4,
+            "gridSize": [
+                4,
+                4
+            ],
+            "starts": [
+                [
+                    0,
+                    3
+                ]
+            ],
+            "ends": [
+                [
+                    2,
+                    0,
+                    "up"
+                ]
+            ],
+            "lineBreaks": [
+                [
+                    0,
+                    0,
+                    "right"
+                ]
+            ],
+            "lineRemovals": [],
+            "hexagons": [
+                [
+                    1,
+                    0.5
+                ],
+                [
+                    0.5,
+                    1
+                ],
+                [
+                    2.5,
+                    1
+                ]
+            ],
+            "colors": [],
+            "triangles": [],
+            "stars": [],
+            "blocks": [],
+            "removeBlocks": [],
+            "eliminationMarks": [],
+            "symmetry": null,
+            "symmetryHexagons": [],
+            "symmetryOpacity": 1
+        },
+        {
+            "levelIndex": 6,
+            "locked": true,
+            "key": 5,
+            "gridSize": [
+                4,
+                4
+            ],
+            "starts": [
+                [
+                    1,
+                    1
+                ]
+            ],
+            "ends": [
+                [
+                    0,
+                    0,
+                    "up"
+                ]
+            ],
+            "lineBreaks": [
+                [
+                    1,
+                    0,
+                    "down"
+                ],
+                [
+                    0,
+                    1,
+                    "right"
+                ],
+                [
+                    3,
+                    1,
+                    "down"
+                ]
+            ],
+            "lineRemovals": [],
+            "hexagons": [
+                [
+                    0,
+                    2
+                ],
+                [
+                    2,
+                    0
+                ],
+                [
+                    3,
+                    3
+                ]
+            ],
+            "colors": [],
+            "triangles": [],
+            "stars": [],
+            "blocks": [],
+            "removeBlocks": [],
+            "eliminationMarks": [],
+            "symmetry": null,
+            "symmetryHexagons": [],
+            "symmetryOpacity": 1
+        },
+        {
+            "levelIndex": 7,
+            "locked": true,
+            "key": 6,
+            "gridSize": [
+                4,
+                4
+            ],
+            "starts": [
+                [
+                    1,
+                    3
+                ],
+                [
+                    0,
+                    2
+                ]
+            ],
+            "ends": [
+                [
+                    0,
+                    1,
+                    "left"
+                ]
+            ],
+            "lineBreaks": [
+                [
+                    1,
+                    1,
+                    "down"
+                ]
+            ],
+            "lineRemovals": [
+                [
+                    0,
+                    3,
+                    "right"
+                ],
+                [
+                    0,
+                    2,
+                    "down"
+                ]
+            ],
+            "hexagons": [
+                [
+                    1,
+                    2.5
+                ],
+                [
+                    0,
+                    0.5
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2.5,
+                    2
+                ]
+            ],
+            "colors": [],
+            "triangles": [],
+            "stars": [],
+            "blocks": [],
+            "removeBlocks": [],
+            "eliminationMarks": [],
+            "symmetry": null,
+            "symmetryHexagons": [],
+            "symmetryOpacity": 1
+        },
+        {
+            "levelIndex": 8,
+            "locked": true,
+            "key": 7,
+            "gridSize": [
+                4,
+                4
+            ],
+            "starts": [
+                [
+                    0,
+                    3
+                ]
+            ],
+            "ends": [
+                [
+                    3,
+                    0,
+                    "up"
+                ]
+            ],
+            "lineBreaks": [],
+            "lineRemovals": [
+                [
+                    0,
+                    1,
+                    "down"
+                ],
+                [
+                    0,
+                    0,
+                    "down"
+                ],
+                [
+                    0,
+                    1,
+                    "right"
+                ],
+                [
+                    0,
+                    0,
+                    "right"
+                ],
+                [
+                    1,
+                    0,
+                    "down"
+                ],
+                [
+                    1,
+                    0,
+                    "right"
+                ]
+            ],
+            "hexagons": [
+                [
+                    1,
+                    1
+                ],
+                [
+                    2,
+                    0
+                ],
+                [
+                    3,
+                    3
+                ]
+            ],
+            "colors": [],
+            "triangles": [],
+            "stars": [],
+            "blocks": [],
+            "removeBlocks": [],
+            "eliminationMarks": [],
+            "symmetry": null,
+            "symmetryHexagons": [],
+            "symmetryOpacity": 1
+        },
+        {
+            "levelIndex": 9,
+            "locked": true,
+            "key": 8,
+            "gridSize": [
+                4,
+                4
+            ],
+            "starts": [
+                [
+                    1,
+                    3
+                ]
+            ],
+            "ends": [
+                [
+                    3,
+                    0,
+                    "up"
+                ]
+            ],
+            "lineBreaks": [
+                [
+                    0,
+                    1,
+                    "down"
+                ],
+                [
+                    2,
+                    1,
+                    "right"
+                ],
+                [
+                    1,
+                    2,
+                    "right"
+                ]
+            ],
+            "lineRemovals": [],
+            "hexagons": [
+                [
+                    0,
+                    0.5
+                ],
+                [
+                    3,
+                    0.5
+                ],
+                [
+                    2,
+                    1.5
+                ]
+            ],
+            "colors": [],
+            "triangles": [],
+            "stars": [],
+            "blocks": [],
+            "removeBlocks": [],
+            "eliminationMarks": [],
+            "symmetry": null,
+            "symmetryHexagons": [],
+            "symmetryOpacity": 1
+        },
+        {
+            "levelIndex": 10,
+            "locked": true,
+            "key": 9,
+            "gridSize": [
+                4,
+                4
+            ],
+            "starts": [
+                [
+                    2,
+                    1
+                ],
+                [
+                    1,
+                    1
+                ],
+                [
+                    1,
+                    3
+                ]
+            ],
+            "ends": [
+                [
+                    2,
+                    3,
+                    "down"
+                ]
+            ],
+            "lineBreaks": [
+                [
+                    2,
+                    2,
+                    "down"
+                ],
+                [
+                    2,
+                    2,
+                    "right"
+                ]
+            ],
+            "lineRemovals": [],
+            "hexagons": [
+                [
+                    2,
+                    1.5
+                ],
+                [
+                    2,
+                    0.5
+                ],
+                [
+                    1,
+                    0.5
+                ],
+                [
+                    1,
+                    1.5
+                ]
+            ],
+            "colors": [],
+            "triangles": [],
+            "stars": [],
+            "blocks": [],
+            "removeBlocks": [],
+            "eliminationMarks": [],
+            "symmetry": null,
+            "symmetryHexagons": [],
+            "symmetryOpacity": 1
+        },
+        {
+            "levelIndex": 11,
+            "locked": true,
+            "key": 10,
+            "gridSize": [
+                4,
+                4
+            ],
+            "starts": [
+                [
+                    2,
+                    0
+                ]
+            ],
+            "ends": [
+                [
+                    0,
+                    3,
+                    "down"
+                ]
+            ],
+            "lineBreaks": [
+                [
+                    1,
+                    1,
+                    "right"
+                ],
+                [
+                    2,
+                    2,
+                    "right"
+                ]
+            ],
+            "lineRemovals": [
+                [
+                    0,
+                    1,
+                    "down"
+                ],
+                [
+                    0,
+                    1,
+                    "right"
+                ],
+                [
+                    0,
+                    0,
+                    "down"
+                ],
+                [
+                    0,
+                    0,
+                    "right"
+                ]
+            ],
+            "hexagons": [
+                [
+                    2,
+                    1.5
+                ],
+                [
+                    2,
+                    1
+                ],
+                [
+                    3,
+                    1
+                ],
+                [
+                    3,
+                    2
+                ]
+            ],
+            "colors": [],
+            "triangles": [],
+            "stars": [],
+            "blocks": [],
+            "removeBlocks": [],
+            "eliminationMarks": [],
+            "symmetry": null,
+            "symmetryHexagons": [],
+            "symmetryOpacity": 1
+        },
+        {
+            "levelIndex": 12,
+            "locked": true,
+            "key": 11,
+            "gridSize": [
+                4,
+                4
+            ],
+            "starts": [
+                [
+                    0,
+                    2
+                ]
+            ],
+            "ends": [
+                [
+                    3,
+                    0,
+                    "up"
+                ]
+            ],
+            "lineBreaks": [],
+            "lineRemovals": [],
+            "hexagons": [
+                [
+                    1,
+                    3
+                ],
+                [
+                    1,
+                    2
+                ],
+                [
+                    2,
+                    2
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    3,
+                    3
+                ],
+                [
+                    3,
+                    2
+                ],
+                [
+                    3,
+                    1
+                ],
+                [
+                    2,
+                    1
+                ],
+                [
+                    1,
+                    1
+                ],
+                [
+                    0,
+                    1
+                ],
+                [
+                    3,
+                    0
+                ],
+                [
+                    2,
+                    0
+                ],
+                [
+                    1,
+                    0
+                ],
+                [
+                    0,
+                    0
+                ],
+                [
+                    0,
+                    3
+                ]
+            ],
+            "colors": [],
+            "triangles": [],
+            "stars": [],
+            "blocks": [],
+            "removeBlocks": [],
+            "eliminationMarks": [],
+            "symmetry": null,
+            "symmetryHexagons": [],
+            "symmetryOpacity": 1
+        },
+        {
+            "levelIndex": 13,
+            "locked": true,
+            "key": 12,
+            "gridSize": [
+                4,
+                4
+            ],
+            "starts": [
+                [
+                    0,
+                    3
+                ]
+            ],
+            "ends": [
+                [
+                    0,
+                    0,
+                    "up"
+                ]
+            ],
+            "lineBreaks": [],
+            "lineRemovals": [],
+            "hexagons": [
+                [
+                    1,
+                    2.5
+                ],
+                [
+                    0.5,
+                    2
+                ],
+                [
+                    0.5,
+                    1
+                ],
+                [
+                    1.5,
+                    1
+                ],
+                [
+                    2,
+                    0.5
+                ],
+                [
+                    2.5,
+                    3
+                ]
+            ],
+            "colors": [],
+            "triangles": [],
+            "stars": [],
+            "blocks": [],
+            "removeBlocks": [],
+            "eliminationMarks": [],
+            "symmetry": null,
+            "symmetryHexagons": [],
+            "symmetryOpacity": 1
+        },
+        {
+            "levelIndex": 14,
+            "locked": true,
+            "key": 13,
+            "gridSize": [
+                4,
+                4
+            ],
+            "starts": [
+                [
+                    3,
+                    3
+                ]
+            ],
+            "ends": [
+                [
+                    2,
+                    0,
+                    "up"
+                ]
+            ],
+            "lineBreaks": [
+                [
+                    1,
+                    1,
+                    "down"
+                ]
+            ],
+            "lineRemovals": [],
+            "hexagons": [
+                [
+                    0.5,
+                    3
+                ],
+                [
+                    0.5,
+                    2
+                ],
+                [
+                    0.5,
+                    1
+                ],
+                [
+                    0.5,
+                    0
+                ]
+            ],
+            "colors": [],
+            "triangles": [],
+            "stars": [],
+            "blocks": [],
+            "removeBlocks": [],
+            "eliminationMarks": [],
+            "symmetry": null,
+            "symmetryHexagons": [],
+            "symmetryOpacity": 1
+        },
+        {
+            "levelIndex": 15,
+            "locked": true,
+            "key": 14,
+            "gridSize": [
+                4,
+                4
+            ],
+            "starts": [
+                [
+                    3,
+                    3
+                ]
+            ],
+            "ends": [
+                [
+                    1,
+                    0,
+                    "up"
+                ],
+                [
+                    1,
+                    3,
+                    "down"
+                ]
+            ],
+            "lineBreaks": [
+                [
+                    2,
+                    1,
+                    "down"
+                ],
+                [
+                    1,
+                    1,
+                    "down"
+                ],
+                [
+                    1,
+                    1,
+                    "right"
+                ],
+                [
+                    1,
+                    2,
+                    "right"
+                ]
+            ],
+            "lineRemovals": [],
+            "hexagons": [
+                [
+                    1,
+                    2
+                ],
+                [
+                    1,
+                    1
+                ],
+                [
+                    2,
+                    1
+                ],
+                [
+                    2,
+                    2
+                ],
+                [
+                    3,
+                    1.5
+                ],
+                [
+                    0,
+                    1.5
+                ]
+            ],
+            "colors": [],
+            "triangles": [],
+            "stars": [],
+            "blocks": [],
+            "removeBlocks": [],
+            "eliminationMarks": [],
+            "symmetry": null,
+            "symmetryHexagons": [],
+            "symmetryOpacity": 1
+        },
+        {
+            "levelIndex": 16,
+            "locked": true,
+            "key": 15,
+            "gridSize": [
+                4,
+                4
+            ],
+            "starts": [
+                [
+                    0,
+                    0
+                ]
+            ],
+            "ends": [
+                [
+                    3,
+                    3,
+                    "right"
+                ]
+            ],
+            "lineBreaks": [],
+            "lineRemovals": [],
+            "hexagons": [
+                [
+                    1.5,
+                    1
+                ],
+                [
+                    1.5,
+                    2
+                ],
+                [
+                    1.5,
+                    3
+                ],
+                [
+                    3,
+                    1.5
+                ],
+                [
+                    0,
+                    1.5
+                ],
+                [
+                    2,
+                    0
+                ]
+            ],
+            "colors": [],
+            "triangles": [],
+            "stars": [],
+            "blocks": [],
+            "removeBlocks": [],
+            "eliminationMarks": [],
+            "symmetry": null,
+            "symmetryHexagons": [],
+            "symmetryOpacity": 1
+        },
+        {
+            "levelIndex": 17,
+            "locked": true,
+            "key": 16,
+            "gridSize": [
+                4,
+                4
+            ],
+            "starts": [
+                [
+                    1,
+                    1
+                ]
+            ],
+            "ends": [
+                [
+                    0,
+                    3,
+                    "down"
+                ]
+            ],
+            "lineBreaks": [],
+            "lineRemovals": [],
+            "hexagons": [
+                [
+                    0,
+                    0
+                ],
+                [
+                    1,
+                    0
+                ],
+                [
+                    2,
+                    0
+                ],
+                [
+                    2,
+                    1
+                ],
+                [
+                    2,
+                    2
+                ],
+                [
+                    1,
+                    2
+                ],
+                [
+                    0,
+                    2
+                ],
+                [
+                    0,
+                    1
+                ],
+                [
+                    3,
+                    0
+                ],
+                [
+                    3,
+                    1
+                ],
+                [
+                    3,
+                    2
+                ],
+                [
+                    3,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    1,
+                    3
+                ],
+                [
+                    0,
+                    3
+                ],
+                [
+                    2.5,
+                    2
+                ]
+            ],
+            "colors": [],
+            "triangles": [],
+            "stars": [],
+            "blocks": [],
+            "removeBlocks": [],
+            "eliminationMarks": [],
+            "symmetry": null,
+            "symmetryHexagons": [],
+            "symmetryOpacity": 1
+        },
+        {
+            "levelIndex": 18,
+            "locked": true,
+            "key": 17,
+            "gridSize": [
+                4,
+                4
+            ],
+            "starts": [
+                [
+                    3,
+                    0
+                ]
+            ],
+            "ends": [
+                [
+                    0,
+                    0,
+                    "up"
+                ]
+            ],
+            "lineBreaks": [],
+            "lineRemovals": [],
+            "hexagons": [
+                [
+                    2,
+                    0
+                ],
+                [
+                    1,
+                    0
+                ],
+                [
+                    1,
+                    1
+                ],
+                [
+                    2,
+                    1
+                ],
+                [
+                    3,
+                    1
+                ],
+                [
+                    3,
+                    2
+                ],
+                [
+                    2,
+                    2
+                ],
+                [
+                    1,
+                    2
+                ],
+                [
+                    1,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    3,
+                    3
+                ],
+                [
+                    0,
+                    3
+                ],
+                [
+                    0,
+                    2
+                ],
+                [
+                    0,
+                    1
+                ],
+                [
+                    0,
+                    0
+                ],
+                [
+                    1.5,
+                    2
+                ],
+                [
+                    1.5,
+                    0
+                ]
+            ],
+            "colors": [],
+            "triangles": [],
+            "stars": [],
+            "blocks": [],
+            "removeBlocks": [],
+            "eliminationMarks": [],
+            "symmetry": null,
+            "symmetryHexagons": [],
+            "symmetryOpacity": 1
+        },
+        {
+            "levelIndex": 19,
+            "locked": true,
+            "key": 18,
+            "gridSize": [
+                4,
+                4
+            ],
+            "starts": [
+                [
+                    0,
+                    3
+                ],
+                [
+                    3,
+                    3
+                ]
+            ],
+            "ends": [
+                [
+                    0,
+                    0,
+                    "up"
+                ]
+            ],
+            "lineBreaks": [
+                [
+                    1,
+                    1,
+                    "right"
+                ]
+            ],
+            "lineRemovals": [],
+            "hexagons": [
+                [
+                    2,
+                    3
+                ],
+                [
+                    1,
+                    3
+                ],
+                [
+                    1,
+                    2
+                ],
+                [
+                    2,
+                    2
+                ],
+                [
+                    2,
+                    1
+                ],
+                [
+                    1,
+                    1
+                ],
+                [
+                    0,
+                    1
+                ],
+                [
+                    0,
+                    2
+                ],
+                [
+                    3,
+                    2
+                ],
+                [
+                    3,
+                    1
+                ],
+                [
+                    3,
+                    0
+                ],
+                [
+                    2,
+                    0
+                ],
+                [
+                    1,
+                    0
+                ],
+                [
+                    0,
+                    0
+                ],
+                [
+                    2,
+                    2.5
+                ]
+            ],
+            "colors": [],
+            "triangles": [],
+            "stars": [],
+            "blocks": [],
+            "removeBlocks": [],
+            "eliminationMarks": [],
+            "symmetry": null,
+            "symmetryHexagons": [],
+            "symmetryOpacity": 1
+        },
+        {
+            "levelIndex": 20,
+            "locked": true,
+            "key": 19,
+            "gridSize": [
+                4,
+                4
+            ],
+            "starts": [
+                [
+                    1,
+                    2
+                ]
+            ],
+            "ends": [
+                [
+                    2,
+                    0,
+                    "up"
+                ]
+            ],
+            "lineBreaks": [
+                [
+                    1,
+                    1,
+                    "down"
+                ],
+                [
+                    2,
+                    2,
+                    "down"
+                ],
+                [
+                    2,
+                    1,
+                    "right"
+                ]
+            ],
+            "lineRemovals": [],
+            "hexagons": [
+                [
+                    1,
+                    1
+                ],
+                [
+                    0,
+                    1
+                ],
+                [
+                    0,
+                    2
+                ],
+                [
+                    0,
+                    3
+                ],
+                [
+                    1,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    2
+                ],
+                [
+                    2,
+                    1
+                ],
+                [
+                    3,
+                    2.5
+                ],
+                [
+                    3,
+                    1
+                ],
+                [
+                    3,
+                    2
+                ],
+                [
+                    3,
+                    3
+                ],
+                [
+                    3,
+                    0
+                ],
+                [
+                    1,
+                    0
+                ],
+                [
+                    0,
+                    0
+                ],
+                [
+                    2,
+                    0
+                ]
+            ],
+            "colors": [],
+            "triangles": [],
+            "stars": [],
+            "blocks": [],
+            "removeBlocks": [],
+            "eliminationMarks": [],
+            "symmetry": null,
+            "symmetryHexagons": [],
+            "symmetryOpacity": 1
+        },
+        {
+            "levelIndex": 21,
+            "locked": true,
+            "key": 20,
+            "gridSize": [
+                4,
+                4
+            ],
+            "starts": [
+                [
+                    0,
+                    0
+                ]
+            ],
+            "ends": [
+                [
+                    3,
+                    0,
+                    "up"
+                ]
+            ],
+            "lineBreaks": [
+                [
+                    2,
+                    0,
+                    "right"
+                ]
+            ],
+            "lineRemovals": [],
+            "hexagons": [
+                [
+                    3,
+                    0
+                ],
+                [
+                    2,
+                    0
+                ],
+                [
+                    2,
+                    0.5
+                ],
+                [
+                    2,
+                    1
+                ],
+                [
+                    3,
+                    1
+                ],
+                [
+                    2.5,
+                    1
+                ],
+                [
+                    0,
+                    2
+                ],
+                [
+                    0,
+                    1
+                ],
+                [
+                    1,
+                    0
+                ],
+                [
+                    1,
+                    1
+                ],
+                [
+                    1,
+                    2
+                ],
+                [
+                    2,
+                    2
+                ],
+                [
+                    3,
+                    2
+                ],
+                [
+                    3,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    1,
+                    3
+                ],
+                [
+                    0,
+                    3
+                ]
+            ],
+            "colors": [],
+            "triangles": [],
+            "stars": [],
+            "blocks": [],
+            "removeBlocks": [],
+            "eliminationMarks": [],
+            "symmetry": null,
+            "symmetryHexagons": [],
+            "symmetryOpacity": 1
+        },
+        {
+            "levelIndex": 22,
+            "locked": true,
+            "key": 21,
+            "gridSize": [
+                4,
+                4
+            ],
+            "starts": [
+                [
+                    0,
+                    3
+                ]
+            ],
+            "ends": [
+                [
+                    0,
+                    0,
+                    "up"
+                ]
+            ],
+            "lineBreaks": [],
+            "lineRemovals": [],
+            "hexagons": [
+                [
+                    0,
+                    0
+                ],
+                [
+                    0,
+                    1
+                ],
+                [
+                    0,
+                    2
+                ],
+                [
+                    1,
+                    3
+                ],
+                [
+                    1,
+                    2
+                ],
+                [
+                    1,
+                    1
+                ],
+                [
+                    1,
+                    0
+                ],
+                [
+                    2,
+                    0
+                ],
+                [
+                    3,
+                    0
+                ],
+                [
+                    3,
+                    1
+                ],
+                [
+                    2,
+                    1
+                ],
+                [
+                    2,
+                    2
+                ],
+                [
+                    3,
+                    2
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    3,
+                    3
+                ],
+                [
+                    2,
+                    0.5
+                ]
+            ],
+            "colors": [],
+            "triangles": [],
+            "stars": [],
+            "blocks": [],
+            "removeBlocks": [],
+            "eliminationMarks": [],
+            "symmetry": null,
+            "symmetryHexagons": [],
+            "symmetryOpacity": 1
+        },
+        {
+            "levelIndex": 23,
+            "locked": true,
+            "key": 22,
+            "gridSize": [
+                4,
+                4
+            ],
+            "starts": [
+                [
+                    3,
+                    0
+                ]
+            ],
+            "ends": [
+                [
+                    0,
+                    0,
+                    "left"
+                ]
+            ],
+            "lineBreaks": [],
+            "lineRemovals": [],
+            "hexagons": [
+                [
+                    0,
+                    0
+                ],
+                [
+                    0,
+                    1
+                ],
+                [
+                    0,
+                    2
+                ],
+                [
+                    0,
+                    3
+                ],
+                [
+                    1,
+                    3
+                ],
+                [
+                    1,
+                    2
+                ],
+                [
+                    1,
+                    1
+                ],
+                [
+                    1,
+                    0
+                ],
+                [
+                    2,
+                    0
+                ],
+                [
+                    2,
+                    1
+                ],
+                [
+                    2,
+                    2
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    3,
+                    3
+                ],
+                [
+                    3,
+                    2
+                ],
+                [
+                    3,
+                    1
+                ],
+                [
+                    1.5,
+                    2
+                ],
+                [
+                    0,
+                    0.5
+                ],
+                [
+                    2,
+                    0.5
+                ]
+            ],
+            "colors": [],
+            "triangles": [],
+            "stars": [],
+            "blocks": [],
+            "removeBlocks": [],
+            "eliminationMarks": [],
+            "symmetry": null,
+            "symmetryHexagons": [],
+            "symmetryOpacity": 1
+        },
+        {
+            "levelIndex": 24,
+            "locked": true,
+            "key": 23,
+            "gridSize": [
+                4,
+                4
+            ],
+            "starts": [
+                [
+                    0,
+                    0
+                ]
+            ],
+            "ends": [
+                [
+                    2,
+                    3,
+                    "down"
+                ]
+            ],
+            "lineBreaks": [],
+            "lineRemovals": [],
+            "hexagons": [
+                [
+                    3,
+                    3
+                ],
+                [
+                    3,
+                    2
+                ],
+                [
+                    2,
+                    2
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    1
+                ],
+                [
+                    2,
+                    0
+                ],
+                [
+                    3,
+                    0
+                ],
+                [
+                    3,
+                    1
+                ],
+                [
+                    1,
+                    1
+                ],
+                [
+                    1,
+                    0
+                ],
+                [
+                    0,
+                    1
+                ],
+                [
+                    0,
+                    2
+                ],
+                [
+                    1,
+                    2
+                ],
+                [
+                    1,
+                    3
+                ],
+                [
+                    0,
+                    3
+                ],
+                [
+                    2.5,
+                    1
+                ],
+                [
+                    2.5,
+                    2
+                ]
+            ],
+            "colors": [],
+            "triangles": [],
+            "stars": [],
+            "blocks": [],
+            "removeBlocks": [],
+            "eliminationMarks": [],
+            "symmetry": null,
+            "symmetryHexagons": [],
+            "symmetryOpacity": 1
+        },
+        {
+            "levelIndex": 25,
+            "locked": true,
+            "key": 24,
+            "gridSize": [
+                4,
+                4
+            ],
+            "starts": [
+                [
+                    3,
+                    0
+                ]
+            ],
+            "ends": [
+                [
+                    0,
+                    0,
+                    "left"
+                ]
+            ],
+            "lineBreaks": [
+                [
+                    0,
+                    1,
+                    "right"
+                ],
+                [
+                    3,
+                    1,
+                    "down"
+                ]
+            ],
+            "lineRemovals": [],
+            "hexagons": [
+                [
+                    0,
+                    0
+                ],
+                [
+                    1,
+                    0
+                ],
+                [
+                    2,
+                    0
+                ],
+                [
+                    2,
+                    1
+                ],
+                [
+                    1,
+                    1
+                ],
+                [
+                    0,
+                    1
+                ],
+                [
+                    0,
+                    2
+                ],
+                [
+                    1,
+                    2
+                ],
+                [
+                    2,
+                    2
+                ],
+                [
+                    3,
+                    2
+                ],
+                [
+                    3,
+                    1
+                ],
+                [
+                    3,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    1,
+                    3
+                ],
+                [
+                    0,
+                    3
+                ]
+            ],
+            "colors": [],
+            "triangles": [],
+            "stars": [],
+            "blocks": [],
+            "removeBlocks": [],
+            "eliminationMarks": [],
+            "symmetry": null,
+            "symmetryHexagons": [],
+            "symmetryOpacity": 1
+        },
+        {
+            "levelIndex": 26,
+            "locked": true,
+            "key": 25,
+            "gridSize": [
+                4,
+                4
+            ],
+            "starts": [
+                [
+                    0,
+                    3
+                ]
+            ],
+            "ends": [
+                [
+                    3,
+                    3,
+                    "down"
+                ]
+            ],
+            "lineBreaks": [
+                [
+                    1,
+                    3,
+                    "right"
+                ]
+            ],
+            "lineRemovals": [],
+            "hexagons": [
+                [
+                    0.5,
+                    2
+                ],
+                [
+                    2,
+                    2.5
+                ],
+                [
+                    2,
+                    0.5
+                ],
+                [
+                    1,
+                    0.5
+                ],
+                [
+                    0,
+                    0.5
+                ],
+                [
+                    3,
+                    0.5
+                ]
+            ],
+            "colors": [],
+            "triangles": [],
+            "stars": [],
+            "blocks": [],
+            "removeBlocks": [],
+            "eliminationMarks": [],
+            "symmetry": null,
+            "symmetryHexagons": [],
+            "symmetryOpacity": 1
+        },
+        {
+            "levelIndex": 27,
+            "locked": true,
+            "key": 26,
+            "gridSize": [
+                4,
+                4
+            ],
+            "starts": [
+                [
+                    3,
+                    0
+                ]
+            ],
+            "ends": [
+                [
+                    3,
+                    3,
+                    "down"
+                ]
+            ],
+            "lineBreaks": [],
+            "lineRemovals": [],
+            "hexagons": [
+                [
+                    2,
+                    0
+                ],
+                [
+                    1,
+                    0
+                ],
+                [
+                    0,
+                    0
+                ],
+                [
+                    3,
+                    1
+                ],
+                [
+                    3,
+                    2
+                ],
+                [
+                    3,
+                    3
+                ],
+                [
+                    2,
+                    1.5
+                ],
+                [
+                    0.5,
+                    2
+                ],
+                [
+                    1,
+                    2.5
+                ]
+            ],
+            "colors": [],
+            "triangles": [],
+            "stars": [],
+            "blocks": [],
+            "removeBlocks": [],
+            "eliminationMarks": [],
+            "symmetry": null,
+            "symmetryHexagons": [],
+            "symmetryOpacity": 1
+        },
+        {
+            "levelIndex": 28,
+            "locked": true,
+            "key": 27,
+            "gridSize": [
+                4,
+                4
+            ],
+            "starts": [
+                [
+                    0,
+                    3
+                ]
+            ],
+            "ends": [
+                [
+                    3,
+                    0,
+                    "up"
+                ]
+            ],
+            "lineBreaks": [
+                [
+                    2,
+                    2,
+                    "right"
+                ]
+            ],
+            "lineRemovals": [
+                [
+                    1,
+                    0,
+                    "right"
+                ],
+                [
+                    2,
+                    0,
+                    "right"
+                ],
+                [
+                    2,
+                    0,
+                    "down"
+                ]
+            ],
+            "hexagons": [
+                [
+                    0,
+                    2
+                ],
+                [
+                    0,
+                    1
+                ],
+                [
+                    0,
+                    0
+                ],
+                [
+                    1,
+                    0
+                ],
+                [
+                    1,
+                    1
+                ],
+                [
+                    2,
+                    1
+                ],
+                [
+                    3,
+                    0
+                ],
+                [
+                    3,
+                    1
+                ],
+                [
+                    3,
+                    2
+                ],
+                [
+                    2,
+                    2
+                ],
+                [
+                    1,
+                    2
+                ],
+                [
+                    1,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    3,
+                    3
+                ],
+                [
+                    0.5,
+                    2
+                ]
+            ],
+            "colors": [],
+            "triangles": [],
+            "stars": [],
+            "blocks": [],
+            "removeBlocks": [],
+            "eliminationMarks": [],
+            "symmetry": null,
+            "symmetryHexagons": [],
+            "symmetryOpacity": 1
+        },
+        {
+            "levelIndex": 29,
+            "locked": true,
+            "key": 28,
+            "gridSize": [
+                4,
+                4
+            ],
+            "starts": [
+                [
+                    3,
+                    3
+                ]
+            ],
+            "ends": [
+                [
+                    1,
+                    3,
+                    "down"
+                ]
+            ],
+            "lineBreaks": [
+                [
+                    1,
+                    1,
+                    "right"
+                ]
+            ],
+            "lineRemovals": [
+                [
+                    2,
+                    3,
+                    "right"
+                ]
+            ],
+            "hexagons": [
+                [
+                    2,
+                    2
+                ],
+                [
+                    1,
+                    2
+                ],
+                [
+                    1,
+                    1
+                ],
+                [
+                    2,
+                    1
+                ],
+                [
+                    2,
+                    1.5
+                ],
+                [
+                    1,
+                    1.5
+                ],
+                [
+                    0,
+                    1.5
+                ]
+            ],
+            "colors": [],
+            "triangles": [],
+            "stars": [],
+            "blocks": [],
+            "removeBlocks": [],
+            "eliminationMarks": [],
+            "symmetry": null,
+            "symmetryHexagons": [],
+            "symmetryOpacity": 1
+        },
+        {
+            "levelIndex": 30,
+            "locked": true,
+            "key": 29,
+            "gridSize": [
+                5,
+                5
+            ],
+            "starts": [
+                [
+                    0,
+                    4
+                ]
+            ],
+            "ends": [
+                [
+                    4,
+                    0,
+                    "up"
+                ]
+            ],
+            "lineBreaks": [
+                [
+                    3,
+                    0,
+                    "down"
+                ],
+                [
+                    3,
+                    2,
+                    "right"
+                ],
+                [
+                    2,
+                    2,
+                    "down"
+                ]
+            ],
+            "lineRemovals": [],
+            "hexagons": [
+                [
+                    1,
+                    4
+                ],
+                [
+                    1,
+                    3
+                ],
+                [
+                    0,
+                    3
+                ],
+                [
+                    0,
+                    2
+                ],
+                [
+                    1,
+                    2
+                ],
+                [
+                    1,
+                    1
+                ],
+                [
+                    0,
+                    1
+                ],
+                [
+                    0,
+                    0
+                ],
+                [
+                    1,
+                    0
+                ],
+                [
+                    2,
+                    0
+                ],
+                [
+                    2,
+                    1
+                ],
+                [
+                    2,
+                    2
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    4
+                ],
+                [
+                    3,
+                    4
+                ],
+                [
+                    4,
+                    4
+                ],
+                [
+                    4,
+                    3
+                ],
+                [
+                    3,
+                    3
+                ],
+                [
+                    3,
+                    2
+                ],
+                [
+                    4,
+                    2
+                ],
+                [
+                    4,
+                    1
+                ],
+                [
+                    3,
+                    1
+                ],
+                [
+                    3,
+                    0
+                ],
+                [
+                    4,
+                    0
+                ]
+            ],
+            "colors": [],
+            "triangles": [],
+            "stars": [],
+            "blocks": [],
+            "removeBlocks": [],
+            "eliminationMarks": [],
+            "symmetry": null,
+            "symmetryHexagons": [],
+            "symmetryOpacity": 1
+        },
+        {
+            "levelIndex": 31,
+            "locked": true,
+            "key": 30,
+            "gridSize": [
+                5,
+                5
+            ],
+            "starts": [
+                [
+                    2,
+                    2
+                ]
+            ],
+            "ends": [
+                [
+                    4,
+                    0,
+                    "up"
+                ]
+            ],
+            "lineBreaks": [
+                [
+                    3,
+                    0,
+                    "down"
+                ],
+                [
+                    3,
+                    3,
+                    "down"
+                ],
+                [
+                    1,
+                    3,
+                    "down"
+                ],
+                [
+                    1,
+                    0,
+                    "down"
+                ],
+                [
+                    0,
+                    1,
+                    "right"
+                ],
+                [
+                    0,
+                    3,
+                    "right"
+                ],
+                [
+                    4,
+                    2,
+                    "down"
+                ]
+            ],
+            "lineRemovals": [],
+            "hexagons": [
+                [
+                    2,
+                    1
+                ],
+                [
+                    1,
+                    1
+                ],
+                [
+                    1,
+                    2
+                ],
+                [
+                    1,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    3,
+                    3
+                ],
+                [
+                    3,
+                    2
+                ],
+                [
+                    3,
+                    1
+                ],
+                [
+                    3,
+                    0
+                ],
+                [
+                    2,
+                    0
+                ],
+                [
+                    1,
+                    0
+                ],
+                [
+                    0,
+                    0
+                ],
+                [
+                    0,
+                    1
+                ],
+                [
+                    0,
+                    2
+                ],
+                [
+                    0,
+                    3
+                ],
+                [
+                    0,
+                    4
+                ],
+                [
+                    1,
+                    4
+                ],
+                [
+                    2,
+                    4
+                ],
+                [
+                    3,
+                    4
+                ],
+                [
+                    4,
+                    4
+                ],
+                [
+                    4,
+                    3
+                ],
+                [
+                    4,
+                    2
+                ],
+                [
+                    4,
+                    1
+                ],
+                [
+                    4,
+                    0
+                ]
+            ],
+            "colors": [],
+            "triangles": [],
+            "stars": [],
+            "blocks": [],
+            "removeBlocks": [],
+            "eliminationMarks": [],
+            "symmetry": null,
+            "symmetryHexagons": [],
+            "symmetryOpacity": 1
+        },
+        {
+            "levelIndex": 32,
+            "locked": true,
+            "key": 31,
+            "gridSize": [
+                5,
+                5
+            ],
+            "starts": [
+                [
+                    0,
+                    0
+                ]
+            ],
+            "ends": [
+                [
+                    4,
+                    0,
+                    "up"
+                ]
+            ],
+            "lineBreaks": [],
+            "lineRemovals": [
+                [
+                    2,
+                    1,
+                    "down"
+                ],
+                [
+                    2,
+                    2,
+                    "down"
+                ],
+                [
+                    3,
+                    1,
+                    "down"
+                ],
+                [
+                    3,
+                    2,
+                    "down"
+                ]
+            ],
+            "hexagons": [
+                [
+                    0,
+                    1
+                ],
+                [
+                    1,
+                    1
+                ],
+                [
+                    1,
+                    0
+                ],
+                [
+                    2,
+                    0
+                ],
+                [
+                    2,
+                    1
+                ],
+                [
+                    3,
+                    0
+                ],
+                [
+                    3,
+                    1
+                ],
+                [
+                    4,
+                    1
+                ],
+                [
+                    4,
+                    0
+                ],
+                [
+                    4,
+                    2
+                ],
+                [
+                    3,
+                    3
+                ],
+                [
+                    4,
+                    3
+                ],
+                [
+                    4,
+                    4
+                ],
+                [
+                    3,
+                    4
+                ],
+                [
+                    2,
+                    4
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    1,
+                    3
+                ],
+                [
+                    1,
+                    4
+                ],
+                [
+                    0,
+                    4
+                ],
+                [
+                    0,
+                    3
+                ],
+                [
+                    0,
+                    2
+                ],
+                [
+                    1,
+                    2
+                ],
+                [
+                    2,
+                    2
+                ],
+                [
+                    3,
+                    2
+                ]
+            ],
+            "colors": [],
+            "triangles": [],
+            "stars": [],
+            "blocks": [],
+            "removeBlocks": [],
+            "eliminationMarks": [],
+            "symmetry": null,
+            "symmetryHexagons": [],
+            "symmetryOpacity": 1
+        },
+        {
+            "levelIndex": 33,
+            "locked": true,
+            "key": 32,
+            "gridSize": [
+                5,
+                5
+            ],
+            "starts": [
+                [
+                    2,
+                    0
+                ]
+            ],
+            "ends": [
+                [
+                    1,
+                    4,
+                    "down"
+                ]
+            ],
+            "lineBreaks": [
+                [
+                    4,
+                    0,
+                    "down"
+                ],
+                [
+                    0,
+                    0,
+                    "down"
+                ]
+            ],
+            "lineRemovals": [],
+            "hexagons": [
+                [
+                    2,
+                    1
+                ],
+                [
+                    2,
+                    2
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    4
+                ],
+                [
+                    0.5,
+                    3
+                ],
+                [
+                    0.5,
+                    2
+                ],
+                [
+                    0.5,
+                    1
+                ],
+                [
+                    3.5,
+                    1
+                ],
+                [
+                    3.5,
+                    2
+                ],
+                [
+                    3.5,
+                    3
+                ],
+                [
+                    0.5,
+                    4
+                ],
+                [
+                    3.5,
+                    4
+                ]
+            ],
+            "colors": [],
+            "triangles": [],
+            "stars": [],
+            "blocks": [],
+            "removeBlocks": [],
+            "eliminationMarks": [],
+            "symmetry": null,
+            "symmetryHexagons": [],
+            "symmetryOpacity": 1
+        },
+        {
+            "levelIndex": 34,
+            "locked": true,
+            "key": 33,
+            "gridSize": [
+                5,
+                5
+            ],
+            "starts": [
+                [
+                    4,
+                    0
+                ],
+                [
+                    0,
+                    0
+                ]
+            ],
+            "ends": [
+                [
+                    2,
+                    0,
+                    "up"
+                ]
+            ],
+            "lineBreaks": [
+                [
+                    4,
+                    1,
+                    "down"
+                ]
+            ],
+            "lineRemovals": [],
+            "hexagons": [
+                [
+                    1,
+                    4
+                ],
+                [
+                    0,
+                    4
+                ],
+                [
+                    0,
+                    3
+                ],
+                [
+                    1,
+                    3
+                ],
+                [
+                    0,
+                    2
+                ],
+                [
+                    1,
+                    2
+                ],
+                [
+                    1,
+                    1
+                ],
+                [
+                    0,
+                    1
+                ],
+                [
+                    1,
+                    0
+                ],
+                [
+                    2,
+                    0
+                ],
+                [
+                    3,
+                    0
+                ],
+                [
+                    3,
+                    1
+                ],
+                [
+                    2,
+                    1
+                ],
+                [
+                    2,
+                    2
+                ],
+                [
+                    3,
+                    2
+                ],
+                [
+                    4,
+                    2
+                ],
+                [
+                    4,
+                    1
+                ],
+                [
+                    4,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    4
+                ],
+                [
+                    3,
+                    4
+                ],
+                [
+                    4,
+                    4
+                ],
+                [
+                    3,
+                    3
+                ]
+            ],
             "colors": [],
             "triangles": [],
             "stars": [],

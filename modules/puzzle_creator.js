@@ -337,7 +337,7 @@ function createPuzzleLineRemovals(puzzle, size, lineRemovals, colors, puzzleLine
                     puzzleLine: puzzleLine,
                     position: puzzleLine.position,
                     gridPosition: [lineRemoval[0], lineRemoval[1]],
-                    direction: gridPosition[2]
+                    direction: lineRemoval[2]
                 })
             }
             else if (puzzleLine.direction === "vertical" && lineRemoval[2] === "down"){
@@ -350,7 +350,7 @@ function createPuzzleLineRemovals(puzzle, size, lineRemovals, colors, puzzleLine
                     puzzleLine: puzzleLine,
                     position: puzzleLine.position,
                     gridPosition: [lineRemoval[0], lineRemoval[1]],
-                    direction: gridPosition[2]
+                    direction: lineRemoval[2]
                 })
             }
         }
@@ -435,6 +435,7 @@ function createHexagons(puzzle, puzzlePoints, size, colors, hexagons){
         hexagonElement.style.backgroundColor = colors[5]
         hexagonElement.style.rotate = "90deg"
         hexagonElement.style.scale = "0.9"
+        hexagonElement.style.zIndex = "10"
 
         puzzle.append(hexagonElement)
         hexagonData.push({
