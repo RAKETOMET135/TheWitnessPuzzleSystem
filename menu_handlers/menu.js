@@ -1,6 +1,6 @@
 import { SavingSystem } from "./saving_system.js"
 import { createPuzzle } from "../modules/puzzle_creator.js"
-import { handlePuzzle } from "../modules/interaction_handler.js"
+import { handlePuzzle, removeEvents } from "../modules/interaction_handler.js"
 import { validate_solution } from "../modules/solution_validator.js"
 import { Block } from "../structure/block.js"
 
@@ -393,6 +393,13 @@ function exitLevel(){
     completeDialogue.style.visibility = "hidden"
     dialogueBackgroundDarkness.style.visibility = "hidden"
     nextLevelExtraButton.style.visibility = "hidden"
+
+    if (prevLevelElement){
+        prevLevelElement.remove()
+        prevLevelElement = null
+    }
+
+    removeEvents()
 
     currentLevel = null
     currentLevelIndex = null

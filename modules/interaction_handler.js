@@ -33,7 +33,7 @@ let closeLineRemovalsSymmetry = null
 let isSymmetry = false
 let symmetryLinePoints = []
 
-function removeEvents(){
+export function removeEvents(){
     _events.forEach(_event => {
         _event.element.removeEventListener(_event.type, _event.handler)
     })
