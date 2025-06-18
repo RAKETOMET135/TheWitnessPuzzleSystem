@@ -237,6 +237,7 @@
     font-size: 2rem;
     text-align: left;
     user-select: none;
+    text-align: center;
 }
 #level-selector-sections > div > div > div {
     position: absolute;
@@ -244,9 +245,10 @@
     left: 0;
     height: 85%;
     width: 100%;
+    text-align: center;
 }
 #level-selector-sections > div > div > div > button {
-    width: 54px;
+    width: 45px;
     border: 4px solid;
     aspect-ratio: 1/1;
     margin: 2px;
