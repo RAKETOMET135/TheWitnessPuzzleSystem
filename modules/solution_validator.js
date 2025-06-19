@@ -77,6 +77,8 @@ function checkHexagons(solutionPointsGrid, ruleData, puzzleData){
         }
     }
 
+    correctHexagons = [...new Set(correctHexagons)]
+
     if (ruleData.length === correctHexagons.length){
         correct = true
     }
